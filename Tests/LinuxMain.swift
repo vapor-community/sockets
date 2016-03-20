@@ -1,6 +1,6 @@
 import XCTest
-@testable import Sockstest
+@testable import Corelibtest
 
 XCTMain([
-	Socks(),
+	ConversionTests(),
 ])

@@ -8,8 +8,4 @@
 
 import XCTest
 
-class CorelibTests: XCTestCase {
 
-    
-    
-}

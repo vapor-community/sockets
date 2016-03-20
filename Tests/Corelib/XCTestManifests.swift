@@ -7,7 +7,7 @@
 //
 
 extension ConversionTests {
-    static var allTests : [(String, ConversionTests -> () throws -> Void)] {
+    var allTests : [(String, () throws -> Void)] {
         return [
                    ("testNumberArrayToPeriodSeparatedString", testNumberArrayToPeriodSeparatedString)
         ]
