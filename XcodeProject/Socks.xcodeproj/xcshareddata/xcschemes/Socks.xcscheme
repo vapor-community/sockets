@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "______Target_Socks"
+               BuildableName = "libSocks.dylib"
+               BlueprintName = "Socks"
+               ReferencedContainer = "container:Socks.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "______Target_SocksCore"
                BuildableName = "libSocksCore.dylib"
                BlueprintName = "SocksCore"
@@ -83,9 +97,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "______Target_SocksCore"
-            BuildableName = "libSocksCore.dylib"
-            BlueprintName = "SocksCore"
+            BlueprintIdentifier = "______Target_Socks"
+            BuildableName = "libSocks.dylib"
+            BlueprintName = "Socks"
             ReferencedContainer = "container:Socks.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

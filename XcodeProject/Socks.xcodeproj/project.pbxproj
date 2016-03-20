@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3AA9299C1C9F294B00DAA101 /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
-		3AA9299D1C9F294B00DAA101 /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
+		3ABCFAC11C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
+		3ABCFAC21C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
+		3ABCFAC31C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
 		_LinkFileRef_SocksCore /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
+		__src_cc_ref_Sources/Socks/Socks.swift /* Socks.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Socks/Socks.swift /* Socks.swift */; };
 		"__src_cc_ref_Sources/SocksCore/Address+C.swift" /* Address+C.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Sources/SocksCore/Address+C.swift" /* Address+C.swift */; };
 		__src_cc_ref_Sources/SocksCore/Address.swift /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Address.swift /* Address.swift */; };
 		__src_cc_ref_Sources/SocksCore/Bytes.swift /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Bytes.swift /* Bytes.swift */; };
@@ -29,7 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3AA9299E1C9F294E00DAA101 /* PBXContainerItemProxy */ = {
+		3ABCFAC41C9F2BCB00A6A140 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = __RootObject_ /* Project object */;
 			proxyType = 1;
@@ -39,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		__PBXFileRef_Sources/Socks/Socks.swift /* Socks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socks.swift; sourceTree = "<group>"; };
 		"__PBXFileRef_Sources/SocksCore/Address+C.swift" /* Address+C.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Address+C.swift"; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/SocksCore/Address.swift /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/SocksCore/Bytes.swift /* Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
@@ -55,6 +58,7 @@
 		__PBXFileRef_Tests/SocksCore/ConversionTests.swift /* ConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionTests.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Tests/SocksCore/LiveTests.swift /* LiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTests.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Tests/SocksCore/XCTestManifests.swift /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		"_____Product_Socks" /* libSocks.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libSocks.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_SocksCore" /* libSocksCore.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libSocksCore.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_SocksCoreExampleClient" /* SocksCoreExampleClient */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = SocksCoreExampleClient; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_SocksCoreExampleServer" /* SocksCoreExampleServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = SocksCoreExampleServer; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,6 +66,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		"___LinkPhase_Socks" /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				_LinkFileRef_SocksCore /* libSocksCore.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		"___LinkPhase_SocksCore" /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
@@ -73,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				_LinkFileRef_SocksCore /* libSocksCore.dylib in Frameworks */,
+				3ABCFAC11C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				3AA9299C1C9F294B00DAA101 /* libSocksCore.dylib in Frameworks */,
+				3ABCFAC21C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				3AA9299D1C9F294B00DAA101 /* libSocksCore.dylib in Frameworks */,
+				3ABCFAC31C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				TestProducts_ /* Tests */,
+				"_____Product_Socks" /* libSocks.dylib */,
 				"_____Product_SocksCore" /* libSocksCore.dylib */,
 				"_____Product_SocksCoreExampleClient" /* SocksCoreExampleClient */,
 				"_____Product_SocksCoreExampleServer" /* SocksCoreExampleServer */,
@@ -127,11 +140,21 @@
 		"_____Sources_" /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				"_______Group_Socks" /* Socks */,
 				"_______Group_SocksCore" /* SocksCore */,
 				"_______Group_SocksCoreExampleClient" /* SocksCoreExampleClient */,
 				"_______Group_SocksCoreExampleServer" /* SocksCoreExampleServer */,
 			);
 			name = Sources;
+			sourceTree = "<group>";
+		};
+		"_______Group_Socks" /* Socks */ = {
+			isa = PBXGroup;
+			children = (
+				__PBXFileRef_Sources/Socks/Socks.swift /* Socks.swift */,
+			);
+			name = Socks;
+			path = ../Sources/Socks;
 			sourceTree = "<group>";
 		};
 		"_______Group_SocksCore" /* SocksCore */ = {
@@ -193,6 +216,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		"______Target_Socks" /* Socks */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = "_______Confs_Socks" /* Build configuration list for PBXNativeTarget "Socks" */;
+			buildPhases = (
+				CompilePhase_Socks /* Sources */,
+				"___LinkPhase_Socks" /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				__Dependency_SocksCore /* PBXTargetDependency */,
+			);
+			name = Socks;
+			productName = Socks;
+			productReference = "_____Product_Socks" /* libSocks.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 		"______Target_SocksCore" /* SocksCore */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = "_______Confs_SocksCore" /* Build configuration list for PBXNativeTarget "SocksCore" */;
@@ -280,6 +320,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				"______Target_Socks" /* Socks */,
 				"______Target_SocksCore" /* SocksCore */,
 				"______Target_SocksCoreExampleClient" /* SocksCoreExampleClient */,
 				"______Target_SocksCoreExampleServer" /* SocksCoreExampleServer */,
@@ -289,6 +330,14 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CompilePhase_Socks /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				__src_cc_ref_Sources/Socks/Socks.swift /* Socks.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CompilePhase_SocksCore /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
@@ -339,11 +388,25 @@
 		__Dependency_SocksCore /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "______Target_SocksCore" /* SocksCore */;
-			targetProxy = 3AA9299E1C9F294E00DAA101 /* PBXContainerItemProxy */;
+			targetProxy = 3ABCFAC41C9F2BCB00A6A140 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		_ReleaseConf_Socks /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_INSTALL_NAME_BASE = "$(CONFIGURATION_BUILD_DIR)";
+				ENABLE_TESTABILITY = YES;
+				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_MODULE_NAME = Socks;
+				PRODUCT_NAME = "lib$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		_ReleaseConf_SocksCore /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -398,6 +461,21 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
+		};
+		"___DebugConf_Socks" /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_INSTALL_NAME_BASE = "$(CONFIGURATION_BUILD_DIR)";
+				ENABLE_TESTABILITY = YES;
+				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_MODULE_NAME = Socks;
+				PRODUCT_NAME = "lib$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
 		};
 		"___DebugConf_SocksCore" /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -478,6 +556,15 @@
 			buildConfigurations = (
 				"_______Debug_" /* Debug */,
 				"_____Release_" /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		"_______Confs_Socks" /* Build configuration list for PBXNativeTarget "Socks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				"___DebugConf_Socks" /* Debug */,
+				_ReleaseConf_Socks /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
