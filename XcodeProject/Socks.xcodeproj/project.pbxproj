@@ -1,304 +1,290 @@
 // !$*UTF8*$!
 {
-	archiveVersion = 1;
-	classes = {
-	};
-	objectVersion = 46;
-	objects = {
-
-/* Begin PBXBuildFile section */
-		_LinkFileRef_Corelib /* libCorelib.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Corelib" /* libCorelib.dylib */; };
-		__src_cc_ref_Sources/Corelib/Types.swift /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Types.swift /* Types.swift */; };
-		__src_cc_ref_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */; };
-/* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		3AB4226F1C9EBBF700961E74 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = __RootObject_ /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = "______Target_Corelib";
-			remoteInfo = Corelib;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXFileReference section */
-		3AB422701C9EBC0200961E74 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/Corelib/Types.swift /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorelibTests.swift; sourceTree = "<group>"; };
-		"_____Product_Corelib" /* libCorelib.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libCorelib.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		"_____Product_CorelibTestSuite" /* Corelib.testsuite.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = Corelib.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-/* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		"___LinkPhase_Corelib" /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		"___LinkPhase_CorelibTestSuite" /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 0;
-			files = (
-				_LinkFileRef_Corelib /* libCorelib.dylib in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
-/* Begin PBXGroup section */
-		TestProducts_ /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				"_____Product_CorelibTestSuite" /* Corelib.testsuite.xctest */,
-			);
-			name = Tests;
-			sourceTree = "<group>";
-		};
-		"___RootGroup_" = {
-			isa = PBXGroup;
-			children = (
-				3AB422701C9EBC0200961E74 /* Package.swift */,
-				"_____Sources_" /* Sources */,
-				"_______Tests_" /* Tests */,
-				"____Products_" /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		"____Products_" /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				TestProducts_ /* Tests */,
-				"_____Product_Corelib" /* libCorelib.dylib */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		"_____Sources_" /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				"_______Group_Corelib" /* Corelib */,
-			);
-			name = Sources;
-			sourceTree = "<group>";
-		};
-		"_______Group_Corelib" /* Corelib */ = {
-			isa = PBXGroup;
-			children = (
-				__PBXFileRef_Sources/Corelib/Types.swift /* Types.swift */,
-			);
-			name = Corelib;
-			path = ../Sources/Corelib;
-			sourceTree = "<group>";
-		};
-		"_______Group_CorelibTestSuite" /* Corelib.testsuite */ = {
-			isa = PBXGroup;
-			children = (
-				__PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */,
-			);
-			name = Corelib.testsuite;
-			path = ../Tests/Corelib;
-			sourceTree = "<group>";
-		};
-		"_______Tests_" /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				"_______Group_CorelibTestSuite" /* Corelib.testsuite */,
-			);
-			name = Tests;
-			sourceTree = "<group>";
-		};
-/* End PBXGroup section */
-
-/* Begin PBXNativeTarget section */
-		"______Target_Corelib" /* Corelib */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = "_______Confs_Corelib" /* Build configuration list for PBXNativeTarget "Corelib" */;
-			buildPhases = (
-				CompilePhase_Corelib /* Sources */,
-				"___LinkPhase_Corelib" /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Corelib;
-			productName = Corelib;
-			productReference = "_____Product_Corelib" /* libCorelib.dylib */;
-			productType = "com.apple.product-type.library.dynamic";
-		};
-		"______Target_CorelibTestSuite" /* Corelib.testsuite */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = "_______Confs_CorelibTestSuite" /* Build configuration list for PBXNativeTarget "Corelib.testsuite" */;
-			buildPhases = (
-				CompilePhase_CorelibTestSuite /* Sources */,
-				"___LinkPhase_CorelibTestSuite" /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				__Dependency_Corelib /* PBXTargetDependency */,
-			);
-			name = Corelib.testsuite;
-			productName = CorelibTestSuite;
-			productReference = "_____Product_CorelibTestSuite" /* Corelib.testsuite.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-/* End PBXNativeTarget section */
-
-/* Begin PBXProject section */
-		__RootObject_ /* Project object */ = {
-			isa = PBXProject;
-			attributes = {
-				LastUpgradeCheck = 9999;
-			};
-			buildConfigurationList = "___RootConfs_" /* Build configuration list for PBXProject "Socks" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-			);
-			mainGroup = "___RootGroup_";
-			productRefGroup = "____Products_" /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				"______Target_Corelib" /* Corelib */,
-				"______Target_CorelibTestSuite" /* Corelib.testsuite */,
-			);
-		};
-/* End PBXProject section */
-
-/* Begin PBXSourcesBuildPhase section */
-		CompilePhase_Corelib /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 0;
-			files = (
-				__src_cc_ref_Sources/Corelib/Types.swift /* Types.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CompilePhase_CorelibTestSuite /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 0;
-			files = (
-				__src_cc_ref_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		__Dependency_Corelib /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = "______Target_Corelib" /* Corelib */;
-			targetProxy = 3AB4226F1C9EBBF700961E74 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin XCBuildConfiguration section */
-		_ReleaseConf_Corelib /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DYLIB_INSTALL_NAME_BASE = "$(CONFIGURATION_BUILD_DIR)";
-				ENABLE_TESTABILITY = YES;
-				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				OTHER_SWIFT_FLAGS = "-DXcode";
-				PRODUCT_MODULE_NAME = Corelib;
-				PRODUCT_NAME = "lib$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		_ReleaseConf_CorelibTestSuite /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				OTHER_SWIFT_FLAGS = "-DXcode";
-				PRODUCT_MODULE_NAME = CorelibTestSuite;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		"___DebugConf_Corelib" /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DYLIB_INSTALL_NAME_BASE = "$(CONFIGURATION_BUILD_DIR)";
-				ENABLE_TESTABILITY = YES;
-				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				OTHER_SWIFT_FLAGS = "-DXcode";
-				PRODUCT_MODULE_NAME = Corelib;
-				PRODUCT_NAME = "lib$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
-		};
-		"___DebugConf_CorelibTestSuite" /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				OTHER_SWIFT_FLAGS = "-DXcode";
-				PRODUCT_MODULE_NAME = CorelibTestSuite;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
-		};
-		"_____Release_" /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Release;
-		};
-		"_______Debug_" /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Debug;
-		};
-/* End XCBuildConfiguration section */
-
-/* Begin XCConfigurationList section */
-		"___RootConfs_" /* Build configuration list for PBXProject "Socks" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				"_______Debug_" /* Debug */,
-				"_____Release_" /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		"_______Confs_Corelib" /* Build configuration list for PBXNativeTarget "Corelib" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				"___DebugConf_Corelib" /* Debug */,
-				_ReleaseConf_Corelib /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		"_______Confs_CorelibTestSuite" /* Build configuration list for PBXNativeTarget "Corelib.testsuite" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				"___DebugConf_CorelibTestSuite" /* Debug */,
-				_ReleaseConf_CorelibTestSuite /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-/* End XCConfigurationList section */
-	};
-	rootObject = __RootObject_ /* Project object */;
+    archiveVersion = 1;
+    classes = {};
+    objectVersion = 46;
+    rootObject = __RootObject_;
+    objects = {
+        __RootObject_ = {
+            isa = PBXProject;
+            attributes = {LastUpgradeCheck = 9999;};
+            buildConfigurationList = ___RootConfs_;
+            compatibilityVersion = 'Xcode 3.2';
+            developmentRegion = English;
+            hasScannedForEncodings = 0;
+            knownRegions = (en);
+            mainGroup = ___RootGroup_;
+            productRefGroup = ____Products_;
+            projectDirPath = '';
+            projectRoot = '';
+            targets = (______Target_Corelib, ______Target_CorelibTestSuite);
+        };
+        ___RootGroup_ = {
+            isa = PBXGroup;
+            children = (_____Sources_, _______Tests_, ____Products_);
+            sourceTree = '<group>';
+        };
+        _______Group_Corelib = {
+            isa = PBXGroup;
+            name = Corelib;
+            path = '../Sources/Corelib';
+            sourceTree = '<group>';
+            children = ('__PBXFileRef_Sources/Corelib/Address+C.swift', '__PBXFileRef_Sources/Corelib/Address.swift', '__PBXFileRef_Sources/Corelib/Bytes.swift', '__PBXFileRef_Sources/Corelib/Conversions.swift', '__PBXFileRef_Sources/Corelib/Error.swift', '__PBXFileRef_Sources/Corelib/libc.swift', '__PBXFileRef_Sources/Corelib/Socket.swift', '__PBXFileRef_Sources/Corelib/Types.swift');
+        };
+        '__PBXFileRef_Sources/Corelib/Address+C.swift' = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            name = 'Address+C.swift';
+            sourceTree = '<group>';
+        };
+        '__PBXFileRef_Sources/Corelib/Address.swift' = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            name = 'Address.swift';
+            sourceTree = '<group>';
+        };
+        '__PBXFileRef_Sources/Corelib/Bytes.swift' = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            name = 'Bytes.swift';
+            sourceTree = '<group>';
+        };
+        '__PBXFileRef_Sources/Corelib/Conversions.swift' = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            name = 'Conversions.swift';
+            sourceTree = '<group>';
+        };
+        '__PBXFileRef_Sources/Corelib/Error.swift' = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            name = 'Error.swift';
+            sourceTree = '<group>';
+        };
+        '__PBXFileRef_Sources/Corelib/libc.swift' = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            name = 'libc.swift';
+            sourceTree = '<group>';
+        };
+        '__PBXFileRef_Sources/Corelib/Socket.swift' = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            name = 'Socket.swift';
+            sourceTree = '<group>';
+        };
+        '__PBXFileRef_Sources/Corelib/Types.swift' = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            name = 'Types.swift';
+            sourceTree = '<group>';
+        };
+        ______Target_Corelib = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = _______Confs_Corelib;
+            buildPhases = (CompilePhase_Corelib, ___LinkPhase_Corelib);
+            buildRules = ();
+            dependencies = ();
+            name = Corelib;
+            productName = Corelib;
+            productReference = _____Product_Corelib;
+            productType = 'com.apple.product-type.library.dynamic';
+        };
+        _____Product_Corelib = {
+            isa = PBXFileReference;
+            explicitFileType = 'compiled.mach-o.dylib';
+            path = 'Corelib.dylib';
+            sourceTree = BUILT_PRODUCTS_DIR;
+        };
+        CompilePhase_Corelib = {
+            isa = PBXSourcesBuildPhase;
+            files = ('__src_cc_ref_Sources/Corelib/Address+C.swift', '__src_cc_ref_Sources/Corelib/Address.swift', '__src_cc_ref_Sources/Corelib/Bytes.swift', '__src_cc_ref_Sources/Corelib/Conversions.swift', '__src_cc_ref_Sources/Corelib/Error.swift', '__src_cc_ref_Sources/Corelib/libc.swift', '__src_cc_ref_Sources/Corelib/Socket.swift', '__src_cc_ref_Sources/Corelib/Types.swift');
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+        ___LinkPhase_Corelib = {
+            isa = PBXFrameworksBuildPhase;
+            files = ();
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+        '__src_cc_ref_Sources/Corelib/Address+C.swift' = {
+            isa = PBXBuildFile;
+            fileRef = '__PBXFileRef_Sources/Corelib/Address+C.swift';
+        };
+        '__src_cc_ref_Sources/Corelib/Address.swift' = {
+            isa = PBXBuildFile;
+            fileRef = '__PBXFileRef_Sources/Corelib/Address.swift';
+        };
+        '__src_cc_ref_Sources/Corelib/Bytes.swift' = {
+            isa = PBXBuildFile;
+            fileRef = '__PBXFileRef_Sources/Corelib/Bytes.swift';
+        };
+        '__src_cc_ref_Sources/Corelib/Conversions.swift' = {
+            isa = PBXBuildFile;
+            fileRef = '__PBXFileRef_Sources/Corelib/Conversions.swift';
+        };
+        '__src_cc_ref_Sources/Corelib/Error.swift' = {
+            isa = PBXBuildFile;
+            fileRef = '__PBXFileRef_Sources/Corelib/Error.swift';
+        };
+        '__src_cc_ref_Sources/Corelib/libc.swift' = {
+            isa = PBXBuildFile;
+            fileRef = '__PBXFileRef_Sources/Corelib/libc.swift';
+        };
+        '__src_cc_ref_Sources/Corelib/Socket.swift' = {
+            isa = PBXBuildFile;
+            fileRef = '__PBXFileRef_Sources/Corelib/Socket.swift';
+        };
+        '__src_cc_ref_Sources/Corelib/Types.swift' = {
+            isa = PBXBuildFile;
+            fileRef = '__PBXFileRef_Sources/Corelib/Types.swift';
+        };
+        _LinkFileRef_Corelib = {
+            isa = PBXBuildFile;
+            fileRef = _____Product_Corelib;
+        };
+        _______Confs_Corelib = {
+            isa = XCConfigurationList;
+            buildConfigurations = (___DebugConf_Corelib, _ReleaseConf_Corelib);
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Debug;
+        };
+        ___DebugConf_Corelib = {
+            isa = XCBuildConfiguration;
+            buildSettings = { DYLIB_INSTALL_NAME_BASE = '$(CONFIGURATION_BUILD_DIR)'; LD_RUNPATH_SEARCH_PATHS = '/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx'; PRODUCT_MODULE_NAME = Corelib; ENABLE_TESTABILITY = YES; OTHER_SWIFT_FLAGS = -DXcode; COMBINE_HIDPI_IMAGES = YES; MACOSX_DEPLOYMENT_TARGET = '10.10'; SWIFT_OPTIMIZATION_LEVEL = -Onone; PRODUCT_NAME = 'lib$(TARGET_NAME)'; };
+            name = Debug;
+        };
+        _ReleaseConf_Corelib = {
+            isa = XCBuildConfiguration;
+            buildSettings = { DYLIB_INSTALL_NAME_BASE = '$(CONFIGURATION_BUILD_DIR)'; LD_RUNPATH_SEARCH_PATHS = '/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx'; PRODUCT_MODULE_NAME = Corelib; ENABLE_TESTABILITY = YES; OTHER_SWIFT_FLAGS = -DXcode; COMBINE_HIDPI_IMAGES = YES; MACOSX_DEPLOYMENT_TARGET = '10.10'; PRODUCT_NAME = 'lib$(TARGET_NAME)'; };
+            name = Release;
+        };
+        __Dependency_Corelib = {
+            isa = PBXTargetDependency;
+            target = ______Target_Corelib;
+        };
+        _______Group_CorelibTestSuite = {
+            isa = PBXGroup;
+            name = Corelib.testsuite;
+            path = '../Tests/Corelib';
+            sourceTree = '<group>';
+            children = ('__PBXFileRef_Tests/Corelib/ConversionTests.swift', '__PBXFileRef_Tests/Corelib/CorelibTests.swift');
+        };
+        '__PBXFileRef_Tests/Corelib/ConversionTests.swift' = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            name = 'ConversionTests.swift';
+            sourceTree = '<group>';
+        };
+        '__PBXFileRef_Tests/Corelib/CorelibTests.swift' = {
+            isa = PBXFileReference;
+            lastKnownFileType = sourcecode.swift;
+            name = 'CorelibTests.swift';
+            sourceTree = '<group>';
+        };
+        ______Target_CorelibTestSuite = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = _______Confs_CorelibTestSuite;
+            buildPhases = (CompilePhase_CorelibTestSuite, ___LinkPhase_CorelibTestSuite);
+            buildRules = ();
+            dependencies = (__Dependency_Corelib);
+            name = Corelib.testsuite;
+            productName = CorelibTestSuite;
+            productReference = _____Product_CorelibTestSuite;
+            productType = 'com.apple.product-type.bundle.unit-test';
+        };
+        _____Product_CorelibTestSuite = {
+            isa = PBXFileReference;
+            explicitFileType = 'compiled.mach-o.wrapper.cfbundle';
+            path = 'CorelibTestSuite.xctest';
+            sourceTree = BUILT_PRODUCTS_DIR;
+        };
+        CompilePhase_CorelibTestSuite = {
+            isa = PBXSourcesBuildPhase;
+            files = ('__src_cc_ref_Tests/Corelib/ConversionTests.swift', '__src_cc_ref_Tests/Corelib/CorelibTests.swift');
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+        ___LinkPhase_CorelibTestSuite = {
+            isa = PBXFrameworksBuildPhase;
+            files = (_LinkFileRef_Corelib);
+            runOnlyForDeploymentPostprocessing = 0;
+        };
+        '__src_cc_ref_Tests/Corelib/ConversionTests.swift' = {
+            isa = PBXBuildFile;
+            fileRef = '__PBXFileRef_Tests/Corelib/ConversionTests.swift';
+        };
+        '__src_cc_ref_Tests/Corelib/CorelibTests.swift' = {
+            isa = PBXBuildFile;
+            fileRef = '__PBXFileRef_Tests/Corelib/CorelibTests.swift';
+        };
+        _LinkFileRef_CorelibTestSuite = {
+            isa = PBXBuildFile;
+            fileRef = _____Product_CorelibTestSuite;
+        };
+        _______Confs_CorelibTestSuite = {
+            isa = XCConfigurationList;
+            buildConfigurations = (___DebugConf_CorelibTestSuite, _ReleaseConf_CorelibTestSuite);
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Debug;
+        };
+        ___DebugConf_CorelibTestSuite = {
+            isa = XCBuildConfiguration;
+            buildSettings = { LD_RUNPATH_SEARCH_PATHS = '@loader_path/../Frameworks'; PRODUCT_MODULE_NAME = CorelibTestSuite; OTHER_SWIFT_FLAGS = -DXcode; COMBINE_HIDPI_IMAGES = YES; MACOSX_DEPLOYMENT_TARGET = '10.10'; SWIFT_OPTIMIZATION_LEVEL = -Onone; EMBEDDED_CONTENT_CONTAINS_SWIFT = YES; PRODUCT_NAME = '$(TARGET_NAME)'; };
+            name = Debug;
+        };
+        _ReleaseConf_CorelibTestSuite = {
+            isa = XCBuildConfiguration;
+            buildSettings = { LD_RUNPATH_SEARCH_PATHS = '@loader_path/../Frameworks'; PRODUCT_MODULE_NAME = CorelibTestSuite; OTHER_SWIFT_FLAGS = -DXcode; COMBINE_HIDPI_IMAGES = YES; MACOSX_DEPLOYMENT_TARGET = '10.10'; EMBEDDED_CONTENT_CONTAINS_SWIFT = YES; PRODUCT_NAME = '$(TARGET_NAME)'; };
+            name = Release;
+        };
+        __Dependency_CorelibTestSuite = {
+            isa = PBXTargetDependency;
+            target = ______Target_CorelibTestSuite;
+        };
+        _____Sources_ = {
+            isa = PBXGroup;
+            children = (_______Group_Corelib);
+            name = Sources;
+            sourceTree = '<group>';
+        };
+        _______Tests_ = {
+            isa = PBXGroup;
+            children = (_______Group_CorelibTestSuite);
+            name = Tests;
+            sourceTree = '<group>';
+        };
+        _______Tests_ = {
+            isa = PBXGroup;
+            children = (_______Group_CorelibTestSuite);
+            name = Tests;
+            sourceTree = '<group>';
+        };
+       TestProducts_ = {
+            isa = PBXGroup;
+            children = (_____Product_CorelibTestSuite);
+            name = Tests;
+            sourceTree = '<group>';
+        };
+        ____Products_ = {
+            isa = PBXGroup;
+            children = (TestProducts_, _____Product_Corelib);
+            name = Products;
+            sourceTree = '<group>';
+        };
+        _______Debug_ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {};
+            name = Debug;
+        };
+        _____Release_ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {};
+            name = Release;
+        };
+        ___RootConfs_ = {
+            isa = XCConfigurationList;
+            buildConfigurations = (_______Debug_, _____Release_);
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Debug;
+        };
+    };
 }
