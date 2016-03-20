@@ -8,12 +8,24 @@
 
 #if os(Linux)
     import Glibc
+    private let socket_close = Glibc.close
 #else
     import Darwin
+    private let socket_close = Darwin.close
 #endif
 
 protocol Socket {
-    
+    func send(data: [UInt8]) throws
+    func recv(maxBytes: Int) throws -> [UInt8]
+    func close() throws
+}
+
+protocol ClientSocket: Socket {
+    func connect() throws
+}
+
+protocol ServerSocket: Socket {
+    //TODO
 }
 
 class RawSocket {
@@ -31,23 +43,17 @@ class RawSocket {
         self.descriptor = descriptor
     }
     
+    func close() throws {
+        if socket_close(self.descriptor) != 0 {
+            throw Error(.CloseSocketFailed)
+        }
+    }
+    
     deinit {
-        //FIXME: close can fail, how do we communicate that
-        //when deinit cannot throw?
-        close(self.descriptor)
+        _ = try? close()
     }
 }
 
-class InternetSocket: Socket {
-    
-    let rawSocket: RawSocket
-    
-    init(rawSocket: RawSocket) {
-        self.rawSocket = rawSocket
-    }
-    
-    
-}
 
 
 

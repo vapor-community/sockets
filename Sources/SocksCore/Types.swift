@@ -31,7 +31,7 @@ enum AddressFamily {
 }
 
 typealias Descriptor = Int32
-typealias Port = UInt16
+public typealias Port = UInt16
 
 //Extensions
 
@@ -42,7 +42,7 @@ protocol CTypeInt32Convertible {
 extension ProtocolFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Inet: return Int32(PF_INET)
+        case .Inet: return PF_INET
         }
     }
 }
@@ -50,8 +50,19 @@ extension ProtocolFamily: CTypeInt32Convertible {
 extension SocketType: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Stream: return Int32(SOCK_STREAM)
-        case .Dgram: return Int32(SOCK_DGRAM)
+        case .Stream:
+        #if os(Linux) 
+            return Int32(SOCK_STREAM.rawValue)
+        #else
+            return SOCK_STREAM
+        #endif
+        
+        case .Dgram:
+        #if os(Linux)
+            return Int32(SOCK_DGRAM.rawValue)
+        #else
+            return SOCK_DGRAM
+        #endif
         }
     }
 }
@@ -68,7 +79,7 @@ extension Protocol: CTypeInt32Convertible {
 extension AddressFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Inet: return Int32(AF_INET)
+        case .Inet: return AF_INET
         }
     }
 }

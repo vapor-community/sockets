@@ -1,5 +1,8 @@
 import PackageDescription
 
 let package = Package(
-    name: "Socks"
+    name: "Socks",
+    targets: [
+    	Target(name: "SocksCore")
+    ]
 )

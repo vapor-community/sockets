@@ -1,6 +1,7 @@
 import XCTest
-@testable import Sockstest
+@testable import SocksCoretest
 
 XCTMain([
-	Socks(),
+	ConversionTests(),
+	LiveTests()
 ])
