@@ -18,7 +18,7 @@ enum ProtocolFamily {
 
 enum SocketType {
     case Stream
-    case Dgram
+    case Datagram
 }
 
 enum Protocol {
@@ -57,7 +57,7 @@ extension SocketType: CTypeInt32Convertible {
             return SOCK_STREAM
         #endif
         
-        case .Dgram:
+        case .Datagram:
         #if os(Linux)
             return Int32(SOCK_DGRAM.rawValue)
         #else
