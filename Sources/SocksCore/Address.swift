@@ -25,13 +25,19 @@ protocol Address {
 
 typealias RawInternetAddress = Int32
 
-enum InternetAddressType {
+public enum InternetAddressType {
     case Hostname(String)
     case IPv4(Bytes4)
 }
 
-struct InternetAddress: Address {
-    let port: Port
-    let address: InternetAddressType
+public struct InternetAddress: Address {
+    
+    public let address: InternetAddressType
+    public let port: Port
+    
+    public init(address: InternetAddressType, port: Port) {
+        self.address = address
+        self.port = port
+    }
 }
 

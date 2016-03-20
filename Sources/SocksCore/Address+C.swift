@@ -33,7 +33,7 @@ extension InternetAddress {
         }
         
         addr.sin_family = sa_family_t(AF_INET)
-        addr.sin_port = self.port
+        addr.sin_port = in_port_t(htons(in_port_t(self.port)))
         addr.sin_zero = (0, 0, 0, 0, 0, 0, 0, 0)
         
         let res = sockaddr_cast(&addr).memory

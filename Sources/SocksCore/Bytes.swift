@@ -15,10 +15,15 @@ struct Bytes14 {
     }
 }
 
-struct Bytes4 {
-    let raw: (UInt8, UInt8, UInt8, UInt8)
+public struct Bytes4 {
     
-    static func fromArray(array a: [UInt8]) -> Bytes4 {
+    public let raw: (UInt8, UInt8, UInt8, UInt8)
+    
+    public init(raw: (UInt8, UInt8, UInt8, UInt8)) {
+        self.raw = raw
+    }
+    
+    public static func fromArray(array a: [UInt8]) -> Bytes4 {
         assert(a.count == 4, "Array must have exactly 4 elements")
         return Bytes4(raw: (a[0], a[1], a[2], a[3]))
     }

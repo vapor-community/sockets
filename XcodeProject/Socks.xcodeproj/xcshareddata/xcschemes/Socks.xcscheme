@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "______Target_Corelib"
-               BuildableName = "libCorelib.dylib"
-               BlueprintName = "Corelib"
+               BlueprintIdentifier = "______Target_SocksCore"
+               BuildableName = "libSocksCore.dylib"
+               BlueprintName = "SocksCore"
                ReferencedContainer = "container:Socks.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "______Target_CorelibTestSuite"
-               BuildableName = "Corelib.testsuite.xctest"
-               BlueprintName = "Corelib.testsuite"
+               BlueprintIdentifier = "______Target_SocksCoreTestSuite"
+               BuildableName = "SocksCore.testsuite.xctest"
+               BlueprintName = "SocksCore.testsuite"
                ReferencedContainer = "container:Socks.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -55,9 +55,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "______Target_Corelib"
-            BuildableName = "libCorelib.dylib"
-            BlueprintName = "Corelib"
+            BlueprintIdentifier = "______Target_SocksCore"
+            BuildableName = "libSocksCore.dylib"
+            BlueprintName = "SocksCore"
             ReferencedContainer = "container:Socks.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

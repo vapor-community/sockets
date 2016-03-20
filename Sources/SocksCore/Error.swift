@@ -13,9 +13,14 @@
 #endif
 
 public enum ErrorReason {
+    
     case CreateSocketFailed
+    case CloseSocketFailed
+    
     case IPAddressValidationFailed
     case FailedToGetIPFromHostname(String)
+    
+    case ConnectFailed
     
     case Generic(String)
 }
