@@ -14,3 +14,11 @@ extension ConversionTests {
     }
 }
 
+extension LiveTests {
+    var allTests : [(String, () throws -> Void)] {
+        return [
+                   ("testLive_Connect_Google", testLive_Connect_Google),
+                   ("testLive_HTTP_Get_Google", testLive_HTTP_Get_Google)
+        ]
+    }
+}

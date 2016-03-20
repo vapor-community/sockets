@@ -15,8 +15,8 @@
 #endif
 
 protocol Socket {
-    func send() throws
-    func recv() throws
+    func send(data: [UInt8]) throws
+    func recv(maxBytes: Int) throws -> [UInt8]
     func close() throws
 }
 

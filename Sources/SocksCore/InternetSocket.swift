@@ -35,12 +35,23 @@ extension InternetSocket : Socket {
         try self.rawSocket.close()
     }
     
-    func recv() throws {
+    func recv(maxBytes: Int = BufferCapacity) throws -> [UInt8] {
         
+        let data = Bytes(capacity: maxBytes)
+        let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
+        let receivedBytes = socket_recv(self.rawSocket.descriptor, data.rawBytes, data.capacity, flags)
+        guard receivedBytes > -1 else { throw Error(.ReadFailed) }
+        let finalBytes = data.characters[0..<receivedBytes]
+        let out = Array(finalBytes.map({ UInt8($0) }))
+        return out
     }
     
-    func send() throws {
+    func send(data: [UInt8]) throws {
         
+        let len = data.count
+        let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
+        let sentLen = socket_send(self.rawSocket.descriptor, data, len, flags)
+        guard sentLen == len else { throw Error(.SendFailedToSendAllBytes) }
     }
 }
 
