@@ -7,13 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		_LinkFileRef_Corelib /* libCorelib.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Corelib" /* libCorelib.dylib */; };
+		_LinkFileRef_Corelib /* Corelib.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Corelib" /* Corelib.dylib */; };
+		"__src_cc_ref_Sources/Corelib/Address+C.swift" /* Address+C.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Sources/Corelib/Address+C.swift" /* Address+C.swift */; };
+		__src_cc_ref_Sources/Corelib/Address.swift /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Address.swift /* Address.swift */; };
+		__src_cc_ref_Sources/Corelib/Bytes.swift /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Bytes.swift /* Bytes.swift */; };
+		__src_cc_ref_Sources/Corelib/Conversions.swift /* Conversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Conversions.swift /* Conversions.swift */; };
+		__src_cc_ref_Sources/Corelib/Error.swift /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Error.swift /* Error.swift */; };
+		__src_cc_ref_Sources/Corelib/Socket.swift /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Socket.swift /* Socket.swift */; };
 		__src_cc_ref_Sources/Corelib/Types.swift /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Types.swift /* Types.swift */; };
+		__src_cc_ref_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift */; };
 		__src_cc_ref_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3AB4226F1C9EBBF700961E74 /* PBXContainerItemProxy */ = {
+		3AB422861C9ED2C900961E74 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = __RootObject_ /* Project object */;
 			proxyType = 1;
@@ -23,11 +30,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3AB422701C9EBC0200961E74 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Sources/Corelib/Address+C.swift" /* Address+C.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Address+C.swift"; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/Corelib/Address.swift /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/Corelib/Bytes.swift /* Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/Corelib/Conversions.swift /* Conversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversions.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/Corelib/Error.swift /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/Corelib/Socket.swift /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/Corelib/Types.swift /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionTests.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorelibTests.swift; sourceTree = "<group>"; };
-		"_____Product_Corelib" /* libCorelib.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libCorelib.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		"_____Product_CorelibTestSuite" /* Corelib.testsuite.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = Corelib.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_Corelib" /* Corelib.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; name = Corelib.dylib; path = libCorelib.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_CorelibTestSuite" /* CorelibTestSuite.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; name = CorelibTestSuite.xctest; path = Corelib.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,7 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				_LinkFileRef_Corelib /* libCorelib.dylib in Frameworks */,
+				_LinkFileRef_Corelib /* Corelib.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,7 +65,7 @@
 		TestProducts_ /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				"_____Product_CorelibTestSuite" /* Corelib.testsuite.xctest */,
+				"_____Product_CorelibTestSuite" /* CorelibTestSuite.xctest */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -60,7 +73,6 @@
 		"___RootGroup_" = {
 			isa = PBXGroup;
 			children = (
-				3AB422701C9EBC0200961E74 /* Package.swift */,
 				"_____Sources_" /* Sources */,
 				"_______Tests_" /* Tests */,
 				"____Products_" /* Products */,
@@ -71,7 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				TestProducts_ /* Tests */,
-				"_____Product_Corelib" /* libCorelib.dylib */,
+				"_____Product_Corelib" /* Corelib.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,6 +99,12 @@
 		"_______Group_Corelib" /* Corelib */ = {
 			isa = PBXGroup;
 			children = (
+				"__PBXFileRef_Sources/Corelib/Address+C.swift" /* Address+C.swift */,
+				__PBXFileRef_Sources/Corelib/Address.swift /* Address.swift */,
+				__PBXFileRef_Sources/Corelib/Bytes.swift /* Bytes.swift */,
+				__PBXFileRef_Sources/Corelib/Conversions.swift /* Conversions.swift */,
+				__PBXFileRef_Sources/Corelib/Error.swift /* Error.swift */,
+				__PBXFileRef_Sources/Corelib/Socket.swift /* Socket.swift */,
 				__PBXFileRef_Sources/Corelib/Types.swift /* Types.swift */,
 			);
 			name = Corelib;
@@ -96,6 +114,7 @@
 		"_______Group_CorelibTestSuite" /* Corelib.testsuite */ = {
 			isa = PBXGroup;
 			children = (
+				__PBXFileRef_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift */,
 				__PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */,
 			);
 			name = Corelib.testsuite;
@@ -126,7 +145,7 @@
 			);
 			name = Corelib;
 			productName = Corelib;
-			productReference = "_____Product_Corelib" /* libCorelib.dylib */;
+			productReference = "_____Product_Corelib" /* Corelib.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		"______Target_CorelibTestSuite" /* Corelib.testsuite */ = {
@@ -143,7 +162,7 @@
 			);
 			name = Corelib.testsuite;
 			productName = CorelibTestSuite;
-			productReference = "_____Product_CorelibTestSuite" /* Corelib.testsuite.xctest */;
+			productReference = "_____Product_CorelibTestSuite" /* CorelibTestSuite.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -177,6 +196,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				"__src_cc_ref_Sources/Corelib/Address+C.swift" /* Address+C.swift in Sources */,
+				__src_cc_ref_Sources/Corelib/Address.swift /* Address.swift in Sources */,
+				__src_cc_ref_Sources/Corelib/Bytes.swift /* Bytes.swift in Sources */,
+				__src_cc_ref_Sources/Corelib/Conversions.swift /* Conversions.swift in Sources */,
+				__src_cc_ref_Sources/Corelib/Error.swift /* Error.swift in Sources */,
+				__src_cc_ref_Sources/Corelib/Socket.swift /* Socket.swift in Sources */,
 				__src_cc_ref_Sources/Corelib/Types.swift /* Types.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,6 +210,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				__src_cc_ref_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift in Sources */,
 				__src_cc_ref_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,7 +221,7 @@
 		__Dependency_Corelib /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "______Target_Corelib" /* Corelib */;
-			targetProxy = 3AB4226F1C9EBBF700961E74 /* PBXContainerItemProxy */;
+			targetProxy = 3AB422861C9ED2C900961E74 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
