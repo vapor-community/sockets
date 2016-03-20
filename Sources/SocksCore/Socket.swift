@@ -21,7 +21,7 @@ public protocol Socket {
     func close() throws
 }
 
-protocol ClientSocket: Socket {
+public protocol ClientSocket: Socket {
     func connect() throws
 }
 
@@ -64,12 +64,19 @@ public class RawSocket : Socket {
         }
     }
     
-    deinit {
-        _ = try? close()
-    }
-    
     func copyWithNewDescriptor(descriptor: Descriptor) throws -> RawSocket {
         return try RawSocket(descriptor: descriptor, protocolFamily: self.protocolFamily, socketType: self.socketType, protocolType: self.protocolType)
+    }
+}
+
+extension RawSocket {
+    
+    public static func TCP() throws -> RawSocket {
+        return try RawSocket(protocolFamily: .Inet, socketType: .Stream, protocol: .TCP)
+    }
+    
+    public static func UDP() throws -> RawSocket {
+        return try RawSocket(protocolFamily: .Inet, socketType: .Datagram, protocol: .UDP)
     }
 }
 

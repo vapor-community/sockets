@@ -7,5 +7,7 @@ let package = Package(
 		Target(name: "Socks", dependencies: [.Target(name: "SocksCore")]),
     	Target(name: "SocksCoreExampleServer", dependencies: [.Target(name: "SocksCore")]),
     	Target(name: "SocksCoreExampleClient", dependencies: [.Target(name: "SocksCore")]),
+    	Target(name: "SocksExampleServer", dependencies: [.Target(name: "Socks")]),
+    	Target(name: "SocksExampleClient", dependencies: [.Target(name: "Socks")]),
     ]
 )
