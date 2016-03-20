@@ -40,7 +40,7 @@ protocol CTypeInt32Convertible {
 extension ProtocolFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Inet: return PF_INET
+        case .Inet: return Int32(PF_INET)
         }
     }
 }
@@ -48,7 +48,7 @@ extension ProtocolFamily: CTypeInt32Convertible {
 extension SocketType: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Stream: return SOCK_STREAM
+        case .Stream: return Int32(SOCK_STREAM)
         }
     }
 }
@@ -64,7 +64,7 @@ extension Protocol: CTypeInt32Convertible {
 extension AddressFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Inet: return AF_INET
+        case .Inet: return Int32(AF_INET)
         }
     }
 }
