@@ -14,7 +14,7 @@
     private let socket_close = Darwin.close
 #endif
 
-protocol Socket {
+public protocol Socket {
     var descriptor: Descriptor { get }
     func send(data: [UInt8]) throws
     func recv(maxBytes: Int) throws -> [UInt8]
@@ -25,15 +25,15 @@ protocol ClientSocket: Socket {
     func connect() throws
 }
 
-protocol ServerSocket: Socket {
+public protocol ServerSocket: Socket {
     func bind() throws
     func listen(queueLimit: Int32) throws
     func accept() throws -> Socket
 }
 
-class RawSocket : Socket {
+public class RawSocket : Socket {
     
-    let descriptor: Descriptor
+    public let descriptor: Descriptor
     let protocolFamily: ProtocolFamily
     let socketType: SocketType
     let protocolType: Protocol
@@ -46,7 +46,7 @@ class RawSocket : Socket {
         self.descriptor = descriptor
     }
     
-    convenience init(protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocol protocolType: Protocol) throws {
+    public convenience init(protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocol protocolType: Protocol) throws {
         
         let cProtocolFam = protocolFamily.toCType()
         let cType = socketType.toCType()
@@ -58,7 +58,7 @@ class RawSocket : Socket {
         try self.init(descriptor: descriptor, protocolFamily: protocolFamily, socketType: socketType, protocolType: protocolType)
     }
     
-    func close() throws {
+    public func close() throws {
         if socket_close(self.descriptor) != 0 {
             throw Error(.CloseSocketFailed)
         }

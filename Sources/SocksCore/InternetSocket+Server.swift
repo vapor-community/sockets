@@ -20,20 +20,20 @@
 
 extension InternetSocket : ServerSocket {
     
-    func bind() throws {
+    public func bind() throws {
         
         var addr = try self.address.toCType()
         let res = socket_bind(self.descriptor, &addr, socklen_t(sizeof(sockaddr)))
         guard res > -1 else { throw Error(.BindFailed) }
     }
     
-    func listen(queueLimit: Int32 = 4096) throws {
+    public func listen(queueLimit: Int32 = 4096) throws {
         
         let res = socket_listen(self.descriptor, queueLimit)
         guard res > -1 else { throw Error(.ListenFailed) }
     }
     
-    func accept() throws -> Socket {
+    public func accept() throws -> Socket {
         
         var addr = sockaddr()
         var len = socklen_t()

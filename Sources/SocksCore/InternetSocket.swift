@@ -6,21 +6,21 @@
 //
 //
 
-class InternetSocket: Socket {
+public class InternetSocket: Socket {
     
-    let rawSocket: RawSocket
-    let address: InternetAddress
+    public let rawSocket: RawSocket
+    public let address: InternetAddress
     
-    var descriptor: Descriptor {
+    public var descriptor: Descriptor {
         return self.rawSocket.descriptor
     }
     
-    init(rawSocket: RawSocket, address: InternetAddress) {
+    public init(rawSocket: RawSocket, address: InternetAddress) {
         self.rawSocket = rawSocket
         self.address = address
     }
     
-    func close() throws {
+    public func close() throws {
         try self.rawSocket.close()
     }
 }

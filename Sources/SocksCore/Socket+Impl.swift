@@ -18,7 +18,7 @@
 
 extension Socket {
     
-    func recv(maxBytes: Int = BufferCapacity) throws -> [UInt8] {
+    public func recv(maxBytes: Int = BufferCapacity) throws -> [UInt8] {
         
         let data = Bytes(capacity: maxBytes)
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
@@ -29,7 +29,7 @@ extension Socket {
         return out
     }
     
-    func send(data: [UInt8]) throws {
+    public func send(data: [UInt8]) throws {
         
         let len = data.count
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum

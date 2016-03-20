@@ -72,7 +72,7 @@ class Bytes {
 
 extension CollectionType where Generator.Element == CChar {
     
-    func toString() throws -> String {
+    public func toString() throws -> String {
         let selfArray = Array(self) + [0]
         guard let string = String.fromCString(selfArray) else {
             throw Error(.UnparsableBytes)
@@ -83,12 +83,8 @@ extension CollectionType where Generator.Element == CChar {
 
 extension CollectionType where Generator.Element == UInt8 {
     
-    func toString() throws -> String {
-        let selfArray = Array(self.map { CChar($0) }) + [0]
-        guard let string = String.fromCString(selfArray) else {
-            throw Error(.UnparsableBytes)
-        }
-        return string
+    public func toString() throws -> String {
+        return try self.map { CChar($0) }.toString()
     }
 }
 

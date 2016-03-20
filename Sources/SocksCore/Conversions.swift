@@ -29,7 +29,7 @@ extension Array {
 
 extension String {
     
-    func toBytes() -> [UInt8] {
+    public func toBytes() -> [UInt8] {
         return Array(self.utf8)
     }
 }

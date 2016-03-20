@@ -16,7 +16,7 @@
 
 extension InternetSocket : ClientSocket {
     
-    func connect() throws {
+    public func connect() throws {
         
         var addr = try self.address.toCType()
         let res = socket_connect(self.descriptor, &addr, socklen_t(sizeof(sockaddr)))

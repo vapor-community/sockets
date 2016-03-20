@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3AA9299C1C9F294B00DAA101 /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
+		3AA9299D1C9F294B00DAA101 /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
 		_LinkFileRef_SocksCore /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
 		"__src_cc_ref_Sources/SocksCore/Address+C.swift" /* Address+C.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Sources/SocksCore/Address+C.swift" /* Address+C.swift */; };
 		__src_cc_ref_Sources/SocksCore/Address.swift /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Address.swift /* Address.swift */; };
@@ -19,13 +21,15 @@
 		"__src_cc_ref_Sources/SocksCore/Socket+Impl.swift" /* Socket+Impl.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Sources/SocksCore/Socket+Impl.swift" /* Socket+Impl.swift */; };
 		__src_cc_ref_Sources/SocksCore/Socket.swift /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Socket.swift /* Socket.swift */; };
 		__src_cc_ref_Sources/SocksCore/Types.swift /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Types.swift /* Types.swift */; };
+		__src_cc_ref_Sources/SocksCoreExampleClient/main.swift /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCoreExampleClient/main.swift /* main.swift */; };
+		__src_cc_ref_Sources/SocksCoreExampleServer/main.swift /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCoreExampleServer/main.swift /* main.swift */; };
 		__src_cc_ref_Tests/SocksCore/ConversionTests.swift /* ConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/SocksCore/ConversionTests.swift /* ConversionTests.swift */; };
 		__src_cc_ref_Tests/SocksCore/LiveTests.swift /* LiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/SocksCore/LiveTests.swift /* LiveTests.swift */; };
 		__src_cc_ref_Tests/SocksCore/XCTestManifests.swift /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/SocksCore/XCTestManifests.swift /* XCTestManifests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3ABE25B61C9F239000BBC4EF /* PBXContainerItemProxy */ = {
+		3AA9299E1C9F294E00DAA101 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = __RootObject_ /* Project object */;
 			proxyType = 1;
@@ -46,10 +50,14 @@
 		"__PBXFileRef_Sources/SocksCore/Socket+Impl.swift" /* Socket+Impl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Socket+Impl.swift"; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/SocksCore/Socket.swift /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/SocksCore/Types.swift /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/SocksCoreExampleClient/main.swift /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/SocksCoreExampleServer/main.swift /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Tests/SocksCore/ConversionTests.swift /* ConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionTests.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Tests/SocksCore/LiveTests.swift /* LiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTests.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Tests/SocksCore/XCTestManifests.swift /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		"_____Product_SocksCore" /* libSocksCore.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libSocksCore.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_SocksCoreExampleClient" /* SocksCoreExampleClient */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = SocksCoreExampleClient; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_SocksCoreExampleServer" /* SocksCoreExampleServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = SocksCoreExampleServer; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_SocksCoreTestSuite" /* SocksCore.testsuite.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = SocksCore.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -61,11 +69,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		"___LinkPhase_SocksCoreTestSuite" /* Frameworks */ = {
+		"___LinkPhase_SocksCoreExampleClient" /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
 				_LinkFileRef_SocksCore /* libSocksCore.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		"___LinkPhase_SocksCoreExampleServer" /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				3AA9299C1C9F294B00DAA101 /* libSocksCore.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		"___LinkPhase_SocksCoreTestSuite" /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				3AA9299D1C9F294B00DAA101 /* libSocksCore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +118,8 @@
 			children = (
 				TestProducts_ /* Tests */,
 				"_____Product_SocksCore" /* libSocksCore.dylib */,
+				"_____Product_SocksCoreExampleClient" /* SocksCoreExampleClient */,
+				"_____Product_SocksCoreExampleServer" /* SocksCoreExampleServer */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,6 +128,8 @@
 			isa = PBXGroup;
 			children = (
 				"_______Group_SocksCore" /* SocksCore */,
+				"_______Group_SocksCoreExampleClient" /* SocksCoreExampleClient */,
+				"_______Group_SocksCoreExampleServer" /* SocksCoreExampleServer */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -123,6 +151,24 @@
 			);
 			name = SocksCore;
 			path = ../Sources/SocksCore;
+			sourceTree = "<group>";
+		};
+		"_______Group_SocksCoreExampleClient" /* SocksCoreExampleClient */ = {
+			isa = PBXGroup;
+			children = (
+				__PBXFileRef_Sources/SocksCoreExampleClient/main.swift /* main.swift */,
+			);
+			name = SocksCoreExampleClient;
+			path = ../Sources/SocksCoreExampleClient;
+			sourceTree = "<group>";
+		};
+		"_______Group_SocksCoreExampleServer" /* SocksCoreExampleServer */ = {
+			isa = PBXGroup;
+			children = (
+				__PBXFileRef_Sources/SocksCoreExampleServer/main.swift /* main.swift */,
+			);
+			name = SocksCoreExampleServer;
+			path = ../Sources/SocksCoreExampleServer;
 			sourceTree = "<group>";
 		};
 		"_______Group_SocksCoreTestSuite" /* SocksCore.testsuite */ = {
@@ -163,6 +209,40 @@
 			productReference = "_____Product_SocksCore" /* libSocksCore.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
+		"______Target_SocksCoreExampleClient" /* SocksCoreExampleClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = "_______Confs_SocksCoreExampleClient" /* Build configuration list for PBXNativeTarget "SocksCoreExampleClient" */;
+			buildPhases = (
+				CompilePhase_SocksCoreExampleClient /* Sources */,
+				"___LinkPhase_SocksCoreExampleClient" /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				__Dependency_SocksCore /* PBXTargetDependency */,
+			);
+			name = SocksCoreExampleClient;
+			productName = SocksCoreExampleClient;
+			productReference = "_____Product_SocksCoreExampleClient" /* SocksCoreExampleClient */;
+			productType = "com.apple.product-type.tool";
+		};
+		"______Target_SocksCoreExampleServer" /* SocksCoreExampleServer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = "_______Confs_SocksCoreExampleServer" /* Build configuration list for PBXNativeTarget "SocksCoreExampleServer" */;
+			buildPhases = (
+				CompilePhase_SocksCoreExampleServer /* Sources */,
+				"___LinkPhase_SocksCoreExampleServer" /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				__Dependency_SocksCore /* PBXTargetDependency */,
+			);
+			name = SocksCoreExampleServer;
+			productName = SocksCoreExampleServer;
+			productReference = "_____Product_SocksCoreExampleServer" /* SocksCoreExampleServer */;
+			productType = "com.apple.product-type.tool";
+		};
 		"______Target_SocksCoreTestSuite" /* SocksCore.testsuite */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = "_______Confs_SocksCoreTestSuite" /* Build configuration list for PBXNativeTarget "SocksCore.testsuite" */;
@@ -201,6 +281,8 @@
 			projectRoot = "";
 			targets = (
 				"______Target_SocksCore" /* SocksCore */,
+				"______Target_SocksCoreExampleClient" /* SocksCoreExampleClient */,
+				"______Target_SocksCoreExampleServer" /* SocksCoreExampleServer */,
 				"______Target_SocksCoreTestSuite" /* SocksCore.testsuite */,
 			);
 		};
@@ -225,6 +307,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CompilePhase_SocksCoreExampleClient /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				__src_cc_ref_Sources/SocksCoreExampleClient/main.swift /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CompilePhase_SocksCoreExampleServer /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				__src_cc_ref_Sources/SocksCoreExampleServer/main.swift /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CompilePhase_SocksCoreTestSuite /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
@@ -241,7 +339,7 @@
 		__Dependency_SocksCore /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "______Target_SocksCore" /* SocksCore */;
-			targetProxy = 3ABE25B61C9F239000BBC4EF /* PBXContainerItemProxy */;
+			targetProxy = 3AA9299E1C9F294E00DAA101 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -257,6 +355,34 @@
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_MODULE_NAME = SocksCore;
 				PRODUCT_NAME = "lib$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		_ReleaseConf_SocksCoreExampleClient /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_MODULE_NAME = SocksCoreExampleClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
+			};
+			name = Release;
+		};
+		_ReleaseConf_SocksCoreExampleServer /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_MODULE_NAME = SocksCoreExampleServer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
 			};
 			name = Release;
 		};
@@ -284,6 +410,36 @@
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_MODULE_NAME = SocksCore;
 				PRODUCT_NAME = "lib$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		"___DebugConf_SocksCoreExampleClient" /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_MODULE_NAME = SocksCoreExampleClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		"___DebugConf_SocksCoreExampleServer" /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_MODULE_NAME = SocksCoreExampleServer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -331,6 +487,24 @@
 			buildConfigurations = (
 				"___DebugConf_SocksCore" /* Debug */,
 				_ReleaseConf_SocksCore /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		"_______Confs_SocksCoreExampleClient" /* Build configuration list for PBXNativeTarget "SocksCoreExampleClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				"___DebugConf_SocksCoreExampleClient" /* Debug */,
+				_ReleaseConf_SocksCoreExampleClient /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		"_______Confs_SocksCoreExampleServer" /* Build configuration list for PBXNativeTarget "SocksCoreExampleServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				"___DebugConf_SocksCoreExampleServer" /* Debug */,
+				_ReleaseConf_SocksCoreExampleServer /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
