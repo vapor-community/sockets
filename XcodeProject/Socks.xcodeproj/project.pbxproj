@@ -7,57 +7,59 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3AB422891C9ED5A400961E74 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB422871C9ED4BB00961E74 /* XCTestManifests.swift */; };
-		_LinkFileRef_Corelib /* libCorelib.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Corelib" /* libCorelib.dylib */; };
-		"__src_cc_ref_Sources/Corelib/Address+C.swift" /* Address+C.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Sources/Corelib/Address+C.swift" /* Address+C.swift */; };
-		__src_cc_ref_Sources/Corelib/Address.swift /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Address.swift /* Address.swift */; };
-		__src_cc_ref_Sources/Corelib/Bytes.swift /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Bytes.swift /* Bytes.swift */; };
-		__src_cc_ref_Sources/Corelib/Conversions.swift /* Conversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Conversions.swift /* Conversions.swift */; };
-		__src_cc_ref_Sources/Corelib/Error.swift /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Error.swift /* Error.swift */; };
-		__src_cc_ref_Sources/Corelib/Socket.swift /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Socket.swift /* Socket.swift */; };
-		__src_cc_ref_Sources/Corelib/Types.swift /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Types.swift /* Types.swift */; };
-		__src_cc_ref_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift */; };
-		__src_cc_ref_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */; };
+		3A2ABD831C9F00720042ECAD /* LiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2ABD821C9F00720042ECAD /* LiveTests.swift */; };
+		3A2ABD851C9F02670042ECAD /* InternetSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2ABD841C9F02670042ECAD /* InternetSocket.swift */; };
+		_LinkFileRef_SocksCore /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
+		"__src_cc_ref_Sources/SocksCore/Address+C.swift" /* Address+C.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Sources/SocksCore/Address+C.swift" /* Address+C.swift */; };
+		__src_cc_ref_Sources/SocksCore/Address.swift /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Address.swift /* Address.swift */; };
+		__src_cc_ref_Sources/SocksCore/Bytes.swift /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Bytes.swift /* Bytes.swift */; };
+		__src_cc_ref_Sources/SocksCore/Conversions.swift /* Conversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Conversions.swift /* Conversions.swift */; };
+		__src_cc_ref_Sources/SocksCore/Error.swift /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Error.swift /* Error.swift */; };
+		__src_cc_ref_Sources/SocksCore/Socket.swift /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Socket.swift /* Socket.swift */; };
+		__src_cc_ref_Sources/SocksCore/Types.swift /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/SocksCore/Types.swift /* Types.swift */; };
+		__src_cc_ref_Tests/SocksCore/ConversionTests.swift /* ConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/SocksCore/ConversionTests.swift /* ConversionTests.swift */; };
+		__src_cc_ref_Tests/SocksCore/XCTestManifests.swift /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/SocksCore/XCTestManifests.swift /* XCTestManifests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3AB422861C9ED2C900961E74 /* PBXContainerItemProxy */ = {
+		3A2ABD811C9EFFE10042ECAD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = __RootObject_ /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = "______Target_Corelib";
-			remoteInfo = Corelib;
+			remoteGlobalIDString = "______Target_SocksCore";
+			remoteInfo = SocksCore;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3AB422871C9ED4BB00961E74 /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
-		"__PBXFileRef_Sources/Corelib/Address+C.swift" /* Address+C.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Address+C.swift"; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/Corelib/Address.swift /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/Corelib/Bytes.swift /* Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/Corelib/Conversions.swift /* Conversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversions.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/Corelib/Error.swift /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/Corelib/Socket.swift /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/Corelib/Types.swift /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionTests.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorelibTests.swift; sourceTree = "<group>"; };
-		"_____Product_Corelib" /* libCorelib.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libCorelib.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		"_____Product_CorelibTestSuite" /* CorelibTestSuite.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; name = CorelibTestSuite.xctest; path = Corelib.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A2ABD821C9F00720042ECAD /* LiveTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveTests.swift; sourceTree = "<group>"; };
+		3A2ABD841C9F02670042ECAD /* InternetSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InternetSocket.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Sources/SocksCore/Address+C.swift" /* Address+C.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Address+C.swift"; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/SocksCore/Address.swift /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/SocksCore/Bytes.swift /* Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/SocksCore/Conversions.swift /* Conversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversions.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/SocksCore/Error.swift /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/SocksCore/Socket.swift /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/SocksCore/Types.swift /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/SocksCore/ConversionTests.swift /* ConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionTests.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/SocksCore/XCTestManifests.swift /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		"_____Product_SocksCore" /* libSocksCore.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libSocksCore.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_SocksCoreTestSuite" /* SocksCore.testsuite.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = SocksCore.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		"___LinkPhase_Corelib" /* Frameworks */ = {
+		"___LinkPhase_SocksCore" /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		"___LinkPhase_CorelibTestSuite" /* Frameworks */ = {
+		"___LinkPhase_SocksCoreTestSuite" /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				_LinkFileRef_Corelib /* libCorelib.dylib in Frameworks */,
+				_LinkFileRef_SocksCore /* libSocksCore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,7 +69,7 @@
 		TestProducts_ /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				"_____Product_CorelibTestSuite" /* CorelibTestSuite.xctest */,
+				"_____Product_SocksCoreTestSuite" /* SocksCore.testsuite.xctest */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -85,7 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				TestProducts_ /* Tests */,
-				"_____Product_Corelib" /* libCorelib.dylib */,
+				"_____Product_SocksCore" /* libSocksCore.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -93,41 +95,42 @@
 		"_____Sources_" /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				"_______Group_Corelib" /* Corelib */,
+				"_______Group_SocksCore" /* SocksCore */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
 		};
-		"_______Group_Corelib" /* Corelib */ = {
+		"_______Group_SocksCore" /* SocksCore */ = {
 			isa = PBXGroup;
 			children = (
-				"__PBXFileRef_Sources/Corelib/Address+C.swift" /* Address+C.swift */,
-				__PBXFileRef_Sources/Corelib/Address.swift /* Address.swift */,
-				__PBXFileRef_Sources/Corelib/Bytes.swift /* Bytes.swift */,
-				__PBXFileRef_Sources/Corelib/Conversions.swift /* Conversions.swift */,
-				__PBXFileRef_Sources/Corelib/Error.swift /* Error.swift */,
-				__PBXFileRef_Sources/Corelib/Socket.swift /* Socket.swift */,
-				__PBXFileRef_Sources/Corelib/Types.swift /* Types.swift */,
+				__PBXFileRef_Sources/SocksCore/Address.swift /* Address.swift */,
+				"__PBXFileRef_Sources/SocksCore/Address+C.swift" /* Address+C.swift */,
+				__PBXFileRef_Sources/SocksCore/Bytes.swift /* Bytes.swift */,
+				__PBXFileRef_Sources/SocksCore/Conversions.swift /* Conversions.swift */,
+				__PBXFileRef_Sources/SocksCore/Error.swift /* Error.swift */,
+				__PBXFileRef_Sources/SocksCore/Socket.swift /* Socket.swift */,
+				3A2ABD841C9F02670042ECAD /* InternetSocket.swift */,
+				__PBXFileRef_Sources/SocksCore/Types.swift /* Types.swift */,
 			);
-			name = Corelib;
-			path = ../Sources/Corelib;
+			name = SocksCore;
+			path = ../Sources/SocksCore;
 			sourceTree = "<group>";
 		};
-		"_______Group_CorelibTestSuite" /* Corelib.testsuite */ = {
+		"_______Group_SocksCoreTestSuite" /* SocksCore.testsuite */ = {
 			isa = PBXGroup;
 			children = (
-				__PBXFileRef_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift */,
-				__PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */,
-				3AB422871C9ED4BB00961E74 /* XCTestManifests.swift */,
+				__PBXFileRef_Tests/SocksCore/ConversionTests.swift /* ConversionTests.swift */,
+				__PBXFileRef_Tests/SocksCore/XCTestManifests.swift /* XCTestManifests.swift */,
+				3A2ABD821C9F00720042ECAD /* LiveTests.swift */,
 			);
-			name = Corelib.testsuite;
-			path = ../Tests/Corelib;
+			name = SocksCore.testsuite;
+			path = ../Tests/SocksCore;
 			sourceTree = "<group>";
 		};
 		"_______Tests_" /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				"_______Group_CorelibTestSuite" /* Corelib.testsuite */,
+				"_______Group_SocksCoreTestSuite" /* SocksCore.testsuite */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -135,37 +138,37 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		"______Target_Corelib" /* Corelib */ = {
+		"______Target_SocksCore" /* SocksCore */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = "_______Confs_Corelib" /* Build configuration list for PBXNativeTarget "Corelib" */;
+			buildConfigurationList = "_______Confs_SocksCore" /* Build configuration list for PBXNativeTarget "SocksCore" */;
 			buildPhases = (
-				CompilePhase_Corelib /* Sources */,
-				"___LinkPhase_Corelib" /* Frameworks */,
+				CompilePhase_SocksCore /* Sources */,
+				"___LinkPhase_SocksCore" /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Corelib;
-			productName = Corelib;
-			productReference = "_____Product_Corelib" /* libCorelib.dylib */;
+			name = SocksCore;
+			productName = SocksCore;
+			productReference = "_____Product_SocksCore" /* libSocksCore.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
-		"______Target_CorelibTestSuite" /* Corelib.testsuite */ = {
+		"______Target_SocksCoreTestSuite" /* SocksCore.testsuite */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = "_______Confs_CorelibTestSuite" /* Build configuration list for PBXNativeTarget "Corelib.testsuite" */;
+			buildConfigurationList = "_______Confs_SocksCoreTestSuite" /* Build configuration list for PBXNativeTarget "SocksCore.testsuite" */;
 			buildPhases = (
-				CompilePhase_CorelibTestSuite /* Sources */,
-				"___LinkPhase_CorelibTestSuite" /* Frameworks */,
+				CompilePhase_SocksCoreTestSuite /* Sources */,
+				"___LinkPhase_SocksCoreTestSuite" /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				__Dependency_Corelib /* PBXTargetDependency */,
+				__Dependency_SocksCore /* PBXTargetDependency */,
 			);
-			name = Corelib.testsuite;
-			productName = CorelibTestSuite;
-			productReference = "_____Product_CorelibTestSuite" /* CorelibTestSuite.xctest */;
+			name = SocksCore.testsuite;
+			productName = SocksCoreTestSuite;
+			productReference = "_____Product_SocksCoreTestSuite" /* SocksCore.testsuite.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -188,49 +191,50 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				"______Target_Corelib" /* Corelib */,
-				"______Target_CorelibTestSuite" /* Corelib.testsuite */,
+				"______Target_SocksCore" /* SocksCore */,
+				"______Target_SocksCoreTestSuite" /* SocksCore.testsuite */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		CompilePhase_Corelib /* Sources */ = {
+		CompilePhase_SocksCore /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				"__src_cc_ref_Sources/Corelib/Address+C.swift" /* Address+C.swift in Sources */,
-				__src_cc_ref_Sources/Corelib/Address.swift /* Address.swift in Sources */,
-				__src_cc_ref_Sources/Corelib/Bytes.swift /* Bytes.swift in Sources */,
-				__src_cc_ref_Sources/Corelib/Conversions.swift /* Conversions.swift in Sources */,
-				__src_cc_ref_Sources/Corelib/Error.swift /* Error.swift in Sources */,
-				__src_cc_ref_Sources/Corelib/Socket.swift /* Socket.swift in Sources */,
-				__src_cc_ref_Sources/Corelib/Types.swift /* Types.swift in Sources */,
+				"__src_cc_ref_Sources/SocksCore/Address+C.swift" /* Address+C.swift in Sources */,
+				3A2ABD851C9F02670042ECAD /* InternetSocket.swift in Sources */,
+				__src_cc_ref_Sources/SocksCore/Address.swift /* Address.swift in Sources */,
+				__src_cc_ref_Sources/SocksCore/Bytes.swift /* Bytes.swift in Sources */,
+				__src_cc_ref_Sources/SocksCore/Conversions.swift /* Conversions.swift in Sources */,
+				__src_cc_ref_Sources/SocksCore/Error.swift /* Error.swift in Sources */,
+				__src_cc_ref_Sources/SocksCore/Socket.swift /* Socket.swift in Sources */,
+				__src_cc_ref_Sources/SocksCore/Types.swift /* Types.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CompilePhase_CorelibTestSuite /* Sources */ = {
+		CompilePhase_SocksCoreTestSuite /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				__src_cc_ref_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift in Sources */,
-				__src_cc_ref_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift in Sources */,
-				3AB422891C9ED5A400961E74 /* XCTestManifests.swift in Sources */,
+				3A2ABD831C9F00720042ECAD /* LiveTests.swift in Sources */,
+				__src_cc_ref_Tests/SocksCore/ConversionTests.swift /* ConversionTests.swift in Sources */,
+				__src_cc_ref_Tests/SocksCore/XCTestManifests.swift /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		__Dependency_Corelib /* PBXTargetDependency */ = {
+		__Dependency_SocksCore /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = "______Target_Corelib" /* Corelib */;
-			targetProxy = 3AB422861C9ED2C900961E74 /* PBXContainerItemProxy */;
+			target = "______Target_SocksCore" /* SocksCore */;
+			targetProxy = 3A2ABD811C9EFFE10042ECAD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		_ReleaseConf_Corelib /* Release */ = {
+		_ReleaseConf_SocksCore /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -239,12 +243,12 @@
 				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-DXcode";
-				PRODUCT_MODULE_NAME = Corelib;
+				PRODUCT_MODULE_NAME = SocksCore;
 				PRODUCT_NAME = "lib$(TARGET_NAME)";
 			};
 			name = Release;
 		};
-		_ReleaseConf_CorelibTestSuite /* Release */ = {
+		_ReleaseConf_SocksCoreTestSuite /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -252,12 +256,12 @@
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-DXcode";
-				PRODUCT_MODULE_NAME = CorelibTestSuite;
+				PRODUCT_MODULE_NAME = SocksCoreTestSuite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
-		"___DebugConf_Corelib" /* Debug */ = {
+		"___DebugConf_SocksCore" /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -266,13 +270,13 @@
 				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-DXcode";
-				PRODUCT_MODULE_NAME = Corelib;
+				PRODUCT_MODULE_NAME = SocksCore;
 				PRODUCT_NAME = "lib$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		"___DebugConf_CorelibTestSuite" /* Debug */ = {
+		"___DebugConf_SocksCoreTestSuite" /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -280,7 +284,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-DXcode";
-				PRODUCT_MODULE_NAME = CorelibTestSuite;
+				PRODUCT_MODULE_NAME = SocksCoreTestSuite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -310,20 +314,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		"_______Confs_Corelib" /* Build configuration list for PBXNativeTarget "Corelib" */ = {
+		"_______Confs_SocksCore" /* Build configuration list for PBXNativeTarget "SocksCore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				"___DebugConf_Corelib" /* Debug */,
-				_ReleaseConf_Corelib /* Release */,
+				"___DebugConf_SocksCore" /* Debug */,
+				_ReleaseConf_SocksCore /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		"_______Confs_CorelibTestSuite" /* Build configuration list for PBXNativeTarget "Corelib.testsuite" */ = {
+		"_______Confs_SocksCoreTestSuite" /* Build configuration list for PBXNativeTarget "SocksCore.testsuite" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				"___DebugConf_CorelibTestSuite" /* Debug */,
-				_ReleaseConf_CorelibTestSuite /* Release */,
+				"___DebugConf_SocksCoreTestSuite" /* Debug */,
+				_ReleaseConf_SocksCoreTestSuite /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

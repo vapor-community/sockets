@@ -6,6 +6,30 @@
 //
 //
 
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
+
+public struct Bytes4 {
+    
+    public let raw: (UInt8, UInt8, UInt8, UInt8)
+    
+    public init(raw: (UInt8, UInt8, UInt8, UInt8)) {
+        self.raw = raw
+    }
+    
+    public static func fromArray(array a: [UInt8]) -> Bytes4 {
+        assert(a.count == 4, "Array must have exactly 4 elements")
+        return Bytes4(raw: (a[0], a[1], a[2], a[3]))
+    }
+    
+    func toArray() -> [UInt8] {
+        return [raw.0, raw.1, raw.2, raw.3]
+    }
+}
+
 struct Bytes14 {
     let raw: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
@@ -15,16 +39,58 @@ struct Bytes14 {
     }
 }
 
-struct Bytes4 {
-    let raw: (UInt8, UInt8, UInt8, UInt8)
+let BufferCapacity = 512
+
+class Bytes {
     
-    static func fromArray(array a: [UInt8]) -> Bytes4 {
-        assert(a.count == 4, "Array must have exactly 4 elements")
-        return Bytes4(raw: (a[0], a[1], a[2], a[3]))
+    let rawBytes: UnsafeMutablePointer<UInt8>
+    let capacity: Int
+    
+    init(capacity: Int = BufferCapacity) {
+        self.rawBytes = UnsafeMutablePointer<UInt8>(malloc(capacity + 1))
+        //add null strings terminator at location 'capacity'
+        //so that whatever we receive, we always terminate properly when converting to a string?
+        //otherwise we might overread and read garbage, potentially opening a security hole.
+        self.rawBytes[capacity] = UInt8(0)
+        self.capacity = capacity
     }
     
-    func toArray() -> [UInt8] {
-        return [raw.0, raw.1, raw.2, raw.3]
+    deinit {
+        free(self.rawBytes)
+    }
+    
+    var characters: [CChar] {
+        var data = [CChar](count: self.capacity, repeatedValue: 0)
+        memcpy(&data, self.rawBytes, data.count)
+        return data
+    }
+    
+    func toString() throws -> String {
+        return try self.characters.toString()
     }
 }
+
+extension CollectionType where Generator.Element == CChar {
+    
+    func toString() throws -> String {
+        let selfArray = Array(self) + [0]
+        guard let string = String.fromCString(selfArray) else {
+            throw Error(.UnparsableBytes)
+        }
+        return string
+    }
+}
+
+extension CollectionType where Generator.Element == UInt8 {
+    
+    func toString() throws -> String {
+        let selfArray = Array(self.map { CChar($0) }) + [0]
+        guard let string = String.fromCString(selfArray) else {
+            throw Error(.UnparsableBytes)
+        }
+        return string
+    }
+}
+
+
 

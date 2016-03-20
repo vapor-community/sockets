@@ -29,7 +29,7 @@ enum AddressFamily {
 }
 
 typealias Descriptor = Int32
-typealias Port = UInt16
+public typealias Port = UInt16
 
 //Extensions
 
