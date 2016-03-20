@@ -12,25 +12,25 @@
     import Darwin
 #endif
 
-enum ProtocolFamily {
+public enum ProtocolFamily {
     case Inet
 }
 
-enum SocketType {
+public enum SocketType {
     case Stream
     case Datagram
 }
 
-enum Protocol {
+public enum Protocol {
     case TCP
     case UDP
 }
 
-enum AddressFamily {
+public enum AddressFamily {
     case Inet
 }
 
-typealias Descriptor = Int32
+public typealias Descriptor = Int32
 public typealias Port = UInt16
 
 //Extensions

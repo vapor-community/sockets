@@ -14,7 +14,8 @@
     private let socket_close = Darwin.close
 #endif
 
-protocol Socket {
+public protocol Socket {
+    var descriptor: Descriptor { get }
     func send(data: [UInt8]) throws
     func recv(maxBytes: Int) throws -> [UInt8]
     func close() throws
@@ -24,26 +25,40 @@ protocol ClientSocket: Socket {
     func connect() throws
 }
 
-protocol ServerSocket: Socket {
-    //TODO
+public protocol ServerSocket: Socket {
+    func bind() throws
+    func listen(queueLimit: Int32) throws
+    func accept() throws -> Socket
 }
 
-class RawSocket {
+public class RawSocket : Socket {
     
-    let descriptor: Descriptor
+    public let descriptor: Descriptor
+    let protocolFamily: ProtocolFamily
+    let socketType: SocketType
+    let protocolType: Protocol
     
-    init(protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocol prot: Protocol) throws {
+    private init(descriptor: Descriptor, protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocolType: Protocol) throws {
         
-        let cProtocolFam = protocolFamily.toCType()
-        let cType = socketType.toCType()
-        let cProtocol = prot.toCType()
-        
-        let descriptor = socket(cProtocolFam, cType, cProtocol)
-        guard descriptor > 0 else { throw Error(.CreateSocketFailed) }
+        self.protocolFamily = protocolFamily
+        self.socketType = socketType
+        self.protocolType = protocolType
         self.descriptor = descriptor
     }
     
-    func close() throws {
+    public convenience init(protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocol protocolType: Protocol) throws {
+        
+        let cProtocolFam = protocolFamily.toCType()
+        let cType = socketType.toCType()
+        let cProtocol = protocolType.toCType()
+        
+        let descriptor = socket(cProtocolFam, cType, cProtocol)
+        guard descriptor > 0 else { throw Error(.CreateSocketFailed) }
+        
+        try self.init(descriptor: descriptor, protocolFamily: protocolFamily, socketType: socketType, protocolType: protocolType)
+    }
+    
+    public func close() throws {
         if socket_close(self.descriptor) != 0 {
             throw Error(.CloseSocketFailed)
         }
@@ -51,6 +66,10 @@ class RawSocket {
     
     deinit {
         _ = try? close()
+    }
+    
+    func copyWithNewDescriptor(descriptor: Descriptor) throws -> RawSocket {
+        return try RawSocket(descriptor: descriptor, protocolFamily: self.protocolFamily, socketType: self.socketType, protocolType: self.protocolType)
     }
 }
 
