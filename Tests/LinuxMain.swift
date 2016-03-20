@@ -1,5 +1,5 @@
 import XCTest
-@testable import Corelibtest
+@testable import SocksCoretest
 
 XCTMain([
 	ConversionTests(),
