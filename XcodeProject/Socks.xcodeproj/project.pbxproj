@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3ABCFAC11C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
-		3ABCFAC21C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
-		3ABCFAC31C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
+		3AABD9201C9F3C08000FE30F /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
+		3AABD9211C9F3C08000FE30F /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
+		3AABD9221C9F3C08000FE30F /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
 		_LinkFileRef_SocksCore /* libSocksCore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_SocksCore" /* libSocksCore.dylib */; };
 		__src_cc_ref_Sources/Socks/Socks.swift /* Socks.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Socks/Socks.swift /* Socks.swift */; };
 		"__src_cc_ref_Sources/SocksCore/Address+C.swift" /* Address+C.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Sources/SocksCore/Address+C.swift" /* Address+C.swift */; };
@@ -31,7 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3ABCFAC41C9F2BCB00A6A140 /* PBXContainerItemProxy */ = {
+		3AABD9231C9F3C0C000FE30F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = __RootObject_ /* Project object */;
 			proxyType = 1;
@@ -85,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				3ABCFAC11C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */,
+				3AABD9201C9F3C08000FE30F /* libSocksCore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				3ABCFAC21C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */,
+				3AABD9211C9F3C08000FE30F /* libSocksCore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,7 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				3ABCFAC31C9F2BC800A6A140 /* libSocksCore.dylib in Frameworks */,
+				3AABD9221C9F3C08000FE30F /* libSocksCore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,7 +388,7 @@
 		__Dependency_SocksCore /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "______Target_SocksCore" /* SocksCore */;
-			targetProxy = 3ABCFAC41C9F2BCB00A6A140 /* PBXContainerItemProxy */;
+			targetProxy = 3AABD9231C9F3C0C000FE30F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -425,7 +425,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
+				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-03-01-a.xctoolchain/usr/lib/swift/macosx/";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_MODULE_NAME = SocksCoreExampleClient;
@@ -439,7 +439,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
+				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-03-01-a.xctoolchain/usr/lib/swift/macosx/";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_MODULE_NAME = SocksCoreExampleServer;
@@ -496,7 +496,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
+				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-03-01-a.xctoolchain/usr/lib/swift/macosx/";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_MODULE_NAME = SocksCoreExampleClient;
@@ -511,7 +511,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx";
+				LD_RUNPATH_SEARCH_PATHS = "/Users/honzadvorsky/Documents/swift-repos/build/Ninja-DebugAssert/usr/lib/swift/macosx /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-03-01-a.xctoolchain/usr/lib/swift/macosx/";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_MODULE_NAME = SocksCoreExampleServer;
