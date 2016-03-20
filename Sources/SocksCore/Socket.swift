@@ -15,6 +15,7 @@
 #endif
 
 protocol Socket {
+    var descriptor: Descriptor { get }
     func send(data: [UInt8]) throws
     func recv(maxBytes: Int) throws -> [UInt8]
     func close() throws
@@ -25,22 +26,36 @@ protocol ClientSocket: Socket {
 }
 
 protocol ServerSocket: Socket {
-    //TODO
+    func bind() throws
+    func listen(queueLimit: Int32) throws
+    func accept() throws -> Socket
 }
 
-class RawSocket {
+class RawSocket : Socket {
     
     let descriptor: Descriptor
+    let protocolFamily: ProtocolFamily
+    let socketType: SocketType
+    let protocolType: Protocol
     
-    init(protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocol prot: Protocol) throws {
+    private init(descriptor: Descriptor, protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocolType: Protocol) throws {
+        
+        self.protocolFamily = protocolFamily
+        self.socketType = socketType
+        self.protocolType = protocolType
+        self.descriptor = descriptor
+    }
+    
+    convenience init(protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocol protocolType: Protocol) throws {
         
         let cProtocolFam = protocolFamily.toCType()
         let cType = socketType.toCType()
-        let cProtocol = prot.toCType()
+        let cProtocol = protocolType.toCType()
         
         let descriptor = socket(cProtocolFam, cType, cProtocol)
         guard descriptor > 0 else { throw Error(.CreateSocketFailed) }
-        self.descriptor = descriptor
+        
+        try self.init(descriptor: descriptor, protocolFamily: protocolFamily, socketType: socketType, protocolType: protocolType)
     }
     
     func close() throws {
@@ -51,6 +66,10 @@ class RawSocket {
     
     deinit {
         _ = try? close()
+    }
+    
+    func copyWithNewDescriptor(descriptor: Descriptor) throws -> RawSocket {
+        return try RawSocket(descriptor: descriptor, protocolFamily: self.protocolFamily, socketType: self.socketType, protocolType: self.protocolType)
     }
 }
 

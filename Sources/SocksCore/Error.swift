@@ -24,6 +24,9 @@ public enum ErrorReason {
     case ConnectFailed
     case SendFailedToSendAllBytes
     case ReadFailed
+    case BindFailed
+    case ListenFailed
+    case AcceptFailed
     
     case Generic(String)
 }
