@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		_LinkFileRef_Corelib /* Corelib.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Corelib" /* Corelib.dylib */; };
+		3AB422891C9ED5A400961E74 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB422871C9ED4BB00961E74 /* XCTestManifests.swift */; };
+		_LinkFileRef_Corelib /* libCorelib.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Corelib" /* libCorelib.dylib */; };
 		"__src_cc_ref_Sources/Corelib/Address+C.swift" /* Address+C.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Sources/Corelib/Address+C.swift" /* Address+C.swift */; };
 		__src_cc_ref_Sources/Corelib/Address.swift /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Address.swift /* Address.swift */; };
 		__src_cc_ref_Sources/Corelib/Bytes.swift /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/Corelib/Bytes.swift /* Bytes.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3AB422871C9ED4BB00961E74 /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		"__PBXFileRef_Sources/Corelib/Address+C.swift" /* Address+C.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Address+C.swift"; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/Corelib/Address.swift /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/Corelib/Bytes.swift /* Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
@@ -39,7 +41,7 @@
 		__PBXFileRef_Sources/Corelib/Types.swift /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionTests.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorelibTests.swift; sourceTree = "<group>"; };
-		"_____Product_Corelib" /* Corelib.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; name = Corelib.dylib; path = libCorelib.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_Corelib" /* libCorelib.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libCorelib.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_CorelibTestSuite" /* CorelibTestSuite.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; name = CorelibTestSuite.xctest; path = Corelib.testsuite.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -55,7 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				_LinkFileRef_Corelib /* Corelib.dylib in Frameworks */,
+				_LinkFileRef_Corelib /* libCorelib.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				TestProducts_ /* Tests */,
-				"_____Product_Corelib" /* Corelib.dylib */,
+				"_____Product_Corelib" /* libCorelib.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,6 +118,7 @@
 			children = (
 				__PBXFileRef_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift */,
 				__PBXFileRef_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift */,
+				3AB422871C9ED4BB00961E74 /* XCTestManifests.swift */,
 			);
 			name = Corelib.testsuite;
 			path = ../Tests/Corelib;
@@ -145,7 +148,7 @@
 			);
 			name = Corelib;
 			productName = Corelib;
-			productReference = "_____Product_Corelib" /* Corelib.dylib */;
+			productReference = "_____Product_Corelib" /* libCorelib.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		"______Target_CorelibTestSuite" /* Corelib.testsuite */ = {
@@ -212,6 +215,7 @@
 			files = (
 				__src_cc_ref_Tests/Corelib/ConversionTests.swift /* ConversionTests.swift in Sources */,
 				__src_cc_ref_Tests/Corelib/CorelibTests.swift /* CorelibTests.swift in Sources */,
+				3AB422891C9ED5A400961E74 /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

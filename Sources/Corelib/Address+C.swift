@@ -6,6 +6,12 @@
 //
 //
 
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
+
 //Pretty types -> C types
 
 extension InternetAddress {

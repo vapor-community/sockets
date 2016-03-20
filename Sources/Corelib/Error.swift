@@ -6,6 +6,12 @@
 //
 //
 
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
+
 public enum ErrorReason {
     case CreateSocketFailed
     case IPAddressValidationFailed

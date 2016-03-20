@@ -6,6 +6,12 @@
 //
 //
 
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
+
 struct RawAddress {
     let family: AddressFamily
     let bytes: Bytes14
