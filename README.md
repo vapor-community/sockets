@@ -14,7 +14,7 @@
 
 | | TCP | UDP |
 | --- | --- | --- |
-| Client | - | - | 
+| Client | ✅ | - | 
 | Server | - | -  |
 
 # Recommended reading
