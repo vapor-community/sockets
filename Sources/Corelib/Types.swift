@@ -56,7 +56,7 @@ extension SocketType: CTypeInt32Convertible {
 extension Protocol: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .TCP: return IPPROTO_TCP
+        case .TCP: return Int32(IPPROTO_TCP) //needs manual casting bc Linux
         }
     }
 }
