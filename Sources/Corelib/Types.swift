@@ -18,10 +18,12 @@ enum ProtocolFamily {
 
 enum SocketType {
     case Stream
+    case Dgram
 }
 
 enum Protocol {
     case TCP
+    case UDP
 }
 
 enum AddressFamily {
@@ -49,6 +51,7 @@ extension SocketType: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
         case .Stream: return Int32(SOCK_STREAM)
+        case .Dgram: return Int32(SOCK_DGRAM)
         }
     }
 }
@@ -57,6 +60,7 @@ extension Protocol: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
         case .TCP: return Int32(IPPROTO_TCP) //needs manual casting bc Linux
+        case .UDP: return Int32(IPPROTO_UDP)
         }
     }
 }
