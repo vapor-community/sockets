@@ -1,7 +1,6 @@
 # Socks
 
-[![Build Status](https://travis-ci.org/czechboy0/Socks.svg?branch=master)](https://travis-ci.org/czechboy0/Jay)
-[![Latest Release](https://img.shields.io/github/release/czechboy0/socks.svg)](https://github.com/czechboy0/jay/releases/latest)
+[![Build Status](https://travis-ci.com/czechboy0/Socks.svg?branch=master)](https://travis-ci.com/czechboy0/Socks)
 ![Platforms](https://img.shields.io/badge/platforms-Linux%20%7C%20OS%20X-blue.svg)
 ![Package Managers](https://img.shields.io/badge/package%20managers-swiftpm-yellow.svg)
 
