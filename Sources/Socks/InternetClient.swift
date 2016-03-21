@@ -15,7 +15,7 @@ public class InternetClient: InternetActor, Client {
         guard let clientSocket = try self.getSocket() as? ClientSocket else {
             fatalError("Usage error: socket should be a ClientSocket")
         }
-        try! clientSocket.connect()
+        try clientSocket.connect()
     }
 }
 
