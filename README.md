@@ -54,5 +54,5 @@ MIT
 
 :alien: Authors
 ------
-Honza Dvorsky - http://honzadvorsky.com, [@czechboy0](http://twitter.com/czechboy0)
+Honza Dvorsky - http://honzadvorsky.com, [@czechboy0](http://twitter.com/czechboy0)  
 Matthias Kreileder - [@matthiaskr1](https://twitter.com/matthiaskr1) 
