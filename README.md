@@ -10,7 +10,9 @@
 
 > Pure-Swift Sockets. Linux & OS X ready.
 
-# Plan
+**Work in progress, APIs might still change ⚠️**
+
+# Supported socket types
 
 | | TCP | UDP |
 | --- | --- | --- |
