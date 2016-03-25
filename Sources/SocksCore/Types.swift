@@ -14,6 +14,7 @@
 
 public enum ProtocolFamily {
     case Inet
+    case Inet6
 }
 
 public enum SocketType {
@@ -26,8 +27,10 @@ public enum Protocol {
     case UDP
 }
 
+// Defining the space to which the address belongs
 public enum AddressFamily {
-    case Inet
+    case Inet   // IPv4
+    case Inet6  // IPv6
 }
 
 public typealias Descriptor = Int32
@@ -43,6 +46,7 @@ extension ProtocolFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
         case .Inet: return PF_INET
+        case .Inet6: return PF_INET6
         }
     }
 }
@@ -80,6 +84,7 @@ extension AddressFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
         case .Inet: return AF_INET
+        case .Inet6: return AF_INET6
         }
     }
 }
