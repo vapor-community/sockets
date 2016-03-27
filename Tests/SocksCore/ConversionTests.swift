@@ -21,4 +21,8 @@ class ConversionTests: XCTestCase {
         eq([1].periodSeparatedString(), "1")
     }
     
+    func testNumberArrayToColonSeparatedString() {
+        eq([0xffff,0xeeee,0xdddd,0xcccc,0xbbbb,0xaaaa,0x9999,0x8888].colonSeparatedString(),"ffff:eeee:dddd:cccc:bbbb:aaaa:9999:8888")
+    }
+    
 }

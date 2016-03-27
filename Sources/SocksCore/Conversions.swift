@@ -12,6 +12,8 @@ func htons(value: CUnsignedShort) -> CUnsignedShort {
     return (value << 8) + (value >> 8)
 }
 
+import Cocoa
+
 extension Array {
     
     func periodSeparatedString() -> String {
@@ -23,6 +25,25 @@ extension Array {
                 str += "."
             }
         }
+        return str
+    }
+    
+    func colonSeparatedString() -> String {
+
+        let count = self.count
+        var iteration = 0
+        var str = ""
+        for hexNumber in self {
+            //TODO: Please review this cast
+            let subStr = NSString(format:"%4X", hexNumber as! CVarArgType) as String
+            str += subStr.lowercaseString
+            
+            if iteration < count - 1 {
+                str += ":"
+            }
+            iteration += 1
+        }
+        
         return str
     }
 }
