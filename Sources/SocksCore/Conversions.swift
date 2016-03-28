@@ -12,7 +12,7 @@ func htons(value: CUnsignedShort) -> CUnsignedShort {
     return (value << 8) + (value >> 8)
 }
 
-import Cocoa
+import Foundation
 
 extension Array {
     
