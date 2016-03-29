@@ -37,7 +37,7 @@ class LiveTests: XCTestCase {
         let str = try! received.toString()
         
         //yay!
-        XCTAssertTrue(received.startsWith("HTTP/1.0 ".toBytes()), "Instead received: \(str)")
+        XCTAssertTrue(received.starts(with: "HTTP/1.0 ".toBytes()), "Instead received: \(str)")
         
         try! socket.close()
         print("successfully sent and received data from google.com")
