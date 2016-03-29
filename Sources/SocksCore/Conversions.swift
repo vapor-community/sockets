@@ -13,11 +13,11 @@ func htons(value: CUnsignedShort) -> CUnsignedShort {
 }
 
 extension Array {
-    
+
     func periodSeparatedString() -> String {
         let count = self.count
         var str = ""
-        for (idx, el) in self.enumerate() {
+        for (idx, el) in self.enumerated() {
             str += "\(el)"
             if idx < count - 1 {
                 str += "."
@@ -28,9 +28,8 @@ extension Array {
 }
 
 extension String {
-    
+
     public func toBytes() -> [UInt8] {
         return Array(self.utf8)
     }
 }
-
