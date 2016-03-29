@@ -32,7 +32,7 @@ public enum ErrorReason {
 }
 
 //see error codes: https://gist.github.com/gabrielfalcao/4216897
-public struct Error: ErrorType, CustomStringConvertible {
+public struct Error: ErrorProtocol, CustomStringConvertible {
     
     public let type: ErrorReason
     public let number: Int32

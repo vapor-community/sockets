@@ -25,7 +25,7 @@ extension Actor {
         let chunkSize = 512
         while true {
             let newData = try self.read(chunkSize)
-            buffer.appendContentsOf(newData)
+            buffer.append(contentsOf: newData)
             if newData.count < chunkSize {
                 break
             }

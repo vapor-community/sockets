@@ -17,7 +17,7 @@ extension Array {
     func periodSeparatedString() -> String {
         let count = self.count
         var str = ""
-        for (idx, el) in self.enumerate() {
+        for (idx, el) in self.enumerated() {
             str += "\(el)"
             if idx < count - 1 {
                 str += "."

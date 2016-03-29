@@ -7,7 +7,7 @@
 //
 
 extension ConversionTests {
-    var allTests : [(String, () throws -> Void)] {
+    static var allTests : [(String, ConversionTests -> () throws -> Void)] {
         return [
                    ("testNumberArrayToPeriodSeparatedString", testNumberArrayToPeriodSeparatedString)
         ]
@@ -15,7 +15,7 @@ extension ConversionTests {
 }
 
 extension LiveTests {
-    var allTests : [(String, () throws -> Void)] {
+    static var allTests : [(String, LiveTests -> () throws -> Void)] {
         return [
                    ("testLive_Connect_Google", testLive_Connect_Google),
                    ("testLive_HTTP_Get_Google", testLive_HTTP_Get_Google)
