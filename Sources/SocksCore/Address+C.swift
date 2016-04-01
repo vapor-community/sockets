@@ -26,7 +26,7 @@ extension InternetAddress {
             addr.sin_addr = try InternetAddress.getAddressFromHostname(hostname)
         case .IPv4(let ipBytes4):
             //we got an IP, validate it
-            let str = ipBytes4.toArray().periodSeparatedString()
+            let str = ipBytes4.toArray().map { String($0) }.joined(separator: ".")
             guard inet_pton(AF_INET, str, &addr.sin_addr) == 1 else {
                 throw Error(ErrorReason.IPAddressValidationFailed)
             }

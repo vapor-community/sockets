@@ -6,14 +6,6 @@
 //
 //
 
-extension ConversionTests {
-    static var allTests : [(String, ConversionTests -> () throws -> Void)] {
-        return [
-                   ("testNumberArrayToPeriodSeparatedString", testNumberArrayToPeriodSeparatedString)
-        ]
-    }
-}
-
 extension LiveTests {
     static var allTests : [(String, LiveTests -> () throws -> Void)] {
         return [
