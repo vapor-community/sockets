@@ -15,15 +15,7 @@ func htons(value: CUnsignedShort) -> CUnsignedShort {
 extension Array {
     
     func periodSeparatedString() -> String {
-        let count = self.count
-        var str = ""
-        for (idx, el) in self.enumerated() {
-            str += "\(el)"
-            if idx < count - 1 {
-                str += "."
-            }
-        }
-        return str
+        return self.map { String($0) }.joined(separator: ".")
     }
 }
 
