@@ -1,7 +1,7 @@
 import XCTest
-@testable import SocksCoretest
+@testable import SocksCoreTestSuite
 
 XCTMain([
-	ConversionTests(),
-	LiveTests()
+	testCase(ConversionTests.allTests),
+	testCase(LiveTests.allTests)
 ])

@@ -36,7 +36,7 @@ extension InternetAddress {
         addr.sin_port = in_port_t(htons(in_port_t(self.port)))
         addr.sin_zero = (0, 0, 0, 0, 0, 0, 0, 0)
         
-        let res = sockaddr_cast(&addr).memory
+        let res = sockaddr_cast(&addr).pointee
         return res
     }
     
@@ -46,7 +46,7 @@ extension InternetAddress {
         guard _hostInfo != nil else {
             throw Error(.FailedToGetIPFromHostname(hostname))
         }
-        let hostInfo = _hostInfo.memory
+        let hostInfo = _hostInfo.pointee
         guard hostInfo.h_addrtype == AF_INET else {
             throw Error(.FailedToGetIPFromHostname("No IPv4 address"))
         }
@@ -54,7 +54,7 @@ extension InternetAddress {
             throw Error(.FailedToGetIPFromHostname("List is empty"))
         }
         
-        let addrStruct = sockadd_list_cast(hostInfo.h_addr_list)[0].memory
+        let addrStruct = sockadd_list_cast(hostInfo.h_addr_list)[0].pointee
         return addrStruct
     }
 }

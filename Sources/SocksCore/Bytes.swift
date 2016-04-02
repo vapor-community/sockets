@@ -86,7 +86,7 @@ class Bytes {
     }
     
     var characters: [CChar] {
-        var data = [CChar](count: self.capacity, repeatedValue: 0)
+        var data = [CChar](repeating: 0, count: self.capacity)
         memcpy(&data, self.rawBytes, data.count)
         return data
     }
@@ -96,18 +96,18 @@ class Bytes {
     }
 }
 
-extension CollectionType where Generator.Element == CChar {
+extension Collection where Iterator.Element == CChar {
     
     public func toString() throws -> String {
         let selfArray = Array(self) + [0]
-        guard let string = String.fromCString(selfArray) else {
+        guard let string = String(validatingUTF8: selfArray) else {
             throw Error(.UnparsableBytes)
         }
         return string
     }
 }
 
-extension CollectionType where Generator.Element == UInt8 {
+extension Collection where Iterator.Element == UInt8 {
     
     public func toString() throws -> String {
         return try self.map { CChar($0) }.toString()
