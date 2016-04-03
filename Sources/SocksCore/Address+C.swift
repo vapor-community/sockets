@@ -30,6 +30,8 @@ extension InternetAddress {
             guard inet_pton(AF_INET, str, &addr.sin_addr) == 1 else {
                 throw Error(ErrorReason.IPAddressValidationFailed)
             }
+        case .IPv6(let dummy):
+            print(dummy)
         }
         
         addr.sin_family = sa_family_t(AF_INET)
@@ -67,4 +69,9 @@ func sockaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockad
 
 func sockadd_list_cast(p: UnsafeMutablePointer<UnsafeMutablePointer<Int8>>) -> UnsafeMutablePointer<UnsafeMutablePointer<in_addr>> {
     return UnsafeMutablePointer<UnsafeMutablePointer<in_addr>>(p)
+}
+
+public func cast_to_double_pointer(address : UnsafeMutablePointer<addrinfo>)
+    -> UnsafeMutablePointer<UnsafeMutablePointer<addrinfo>> {
+        return UnsafeMutablePointer<UnsafeMutablePointer<addrinfo>>(address)
 }
