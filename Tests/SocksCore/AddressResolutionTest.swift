@@ -9,6 +9,7 @@
 import XCTest
 @testable import SocksCore
 
+
 #if os(Linux)
     import Glibc
     private let socket_addrinfo = Glibc.addrinfo
@@ -16,6 +17,7 @@ import XCTest
     import Darwin
     private let socket_addrinfo = Darwin.addrinfo
 #endif
+ 
 
 class AddressResolutionTest: XCTestCase {
 
@@ -39,7 +41,7 @@ class AddressResolutionTest: XCTestCase {
         addressCriteria.ai_socktype = SOCK_STREAM
         addressCriteria.ai_protocol = IPPROTO_TCP
         
-        var servinfo = UnsafeMutablePointer<addrinfo>.init(nil)
+        var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
         
         let getaddrinfoReturnValue = getaddrinfo(hostName, service, &addressCriteria, &servinfo)
         // 0 means address resolution failed

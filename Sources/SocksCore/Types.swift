@@ -42,6 +42,10 @@ protocol CTypeInt32Convertible {
     func toCType() -> Int32
 }
 
+protocol CTypeUnsafePointerOfInt8TypeConvertible {
+    func toCTypeUnsafePointerOfInt8() -> UnsafePointer<Int8>
+}
+
 extension ProtocolFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
@@ -89,6 +93,9 @@ extension AddressFamily: CTypeInt32Convertible {
     }
 }
 
-
-
+//extension Port: CTypeUnsafePointerOfInt8TypeConvertible {
+//    func toCTypeUnsafePointerOfInt8() -> UnsafePointer<Int8> {
+//        let xyz = UnsafePointer<Int8>.init(&self)
+//    }
+//}
 

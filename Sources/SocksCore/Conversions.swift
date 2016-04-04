@@ -27,8 +27,8 @@ extension Array {
         var str = ""
         for hexNumber in self {
             //TODO: Please review this cast
-            let subStr = NSString(format:"%4X", hexNumber as! CVarArgType) as String
-            str += subStr.lowercaseString
+            let subStr = NSString(format:"%4X", hexNumber as! CVarArg) as String
+            str += subStr.lowercased()
             
             if iteration < count - 1 {
                 str += ":"
