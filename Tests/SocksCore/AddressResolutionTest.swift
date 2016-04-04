@@ -28,7 +28,7 @@ class AddressResolutionTest: XCTestCase {
          */
         let hostName = "127.0.0.1"
         // could be service or a string indicating the well-know port e.g "7" for echo service
-        let service = "whois"
+        let service = "echo"
         
         // Narrowing down the results we will get from the getaddrinfo call
         var addressCriteria = socket_addrinfo.init()
@@ -39,13 +39,11 @@ class AddressResolutionTest: XCTestCase {
         addressCriteria.ai_socktype = SOCK_STREAM
         addressCriteria.ai_protocol = IPPROTO_TCP
         
-        // TODO: Please review this code, there is for sure a more elegant solution ...
-        var addressList = addrinfo.init()
-        let addrListDoublePointer = cast_to_double_pointer(&addressList)
+        var servinfo = UnsafeMutablePointer<addrinfo>.init(nil)
         
-        let getaddrinfoReturnValue = getaddrinfo(hostName, service, &addressCriteria, addrListDoublePointer)
+        let getaddrinfoReturnValue = getaddrinfo(hostName, service, &addressCriteria, &servinfo)
         // 0 means address resolution failed
-        XCTAssert(getaddrinfoReturnValue != 0)
+        XCTAssertTrue(getaddrinfoReturnValue != 0)
     }
 
 }
