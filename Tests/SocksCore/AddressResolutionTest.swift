@@ -12,10 +12,10 @@ import XCTest
 
 #if os(Linux)
     import Glibc
-    private let socket_addrinfo = Glibc.addrinfo
+    typealias socket_addrinfo = Glibc.addrinfo
 #else
     import Darwin
-    private let socket_addrinfo = Darwin.addrinfo
+    typealias socket_addrinfo = Darwin.addrinfo
 #endif
  
 
