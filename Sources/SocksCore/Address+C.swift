@@ -71,7 +71,4 @@ func sockadd_list_cast(p: UnsafeMutablePointer<UnsafeMutablePointer<Int8>>) -> U
     return UnsafeMutablePointer<UnsafeMutablePointer<in_addr>>(p)
 }
 
-public func cast_to_double_pointer(address : UnsafeMutablePointer<addrinfo>)
-    -> UnsafeMutablePointer<UnsafeMutablePointer<addrinfo>> {
-        return UnsafeMutablePointer<UnsafeMutablePointer<addrinfo>>(address)
-}
+
