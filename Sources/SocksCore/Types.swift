@@ -29,8 +29,11 @@ public enum Protocol {
 
 // Defining the space to which the address belongs
 public enum AddressFamily {
-    case Inet   // IPv4
-    case Inet6  // IPv6
+    case Inet           // IPv4
+    case Inet6          // IPv6
+    case UNSPECIFIED    // If you do not care if IPv4 or IPv6 - the name
+                        // resolution will dynamically decide if IPv4 or 
+                        // IPv6 is applicable
 }
 
 public typealias Descriptor = Int32
@@ -89,13 +92,9 @@ extension AddressFamily: CTypeInt32Convertible {
         switch self {
         case .Inet: return AF_INET
         case .Inet6: return AF_INET6
+        case .UNSPECIFIED : return AF_UNSPEC
         }
     }
 }
 
-//extension Port: CTypeUnsafePointerOfInt8TypeConvertible {
-//    func toCTypeUnsafePointerOfInt8() -> UnsafePointer<Int8> {
-//        let xyz = UnsafePointer<Int8>.init(&self)
-//    }
-//}
 

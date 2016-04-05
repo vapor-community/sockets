@@ -28,9 +28,9 @@ class AddressResolutionTest: XCTestCase {
         /*
          *  Create arguments to call getaddrinfo
          */
-        let hostName = "127.0.0.1"
+        let hostName = "www.google.com"
         // could be service or a string indicating the well-know port e.g "7" for echo service
-        let service = "echo"
+        let service = "80"
         
         // Narrowing down the results we will get from the getaddrinfo call
         var addressCriteria = socket_addrinfo.init()
@@ -44,8 +44,19 @@ class AddressResolutionTest: XCTestCase {
         var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
         
         let getaddrinfoReturnValue = getaddrinfo(hostName, service, &addressCriteria, &servinfo)
-        // 0 means address resolution failed
-        XCTAssertTrue(getaddrinfoReturnValue != 0)
+        
+        if (servinfo == nil){
+            print("No address was found")
+        }
+        else{
+            // Let's see on how many and which ip addresses this host is reachable
+            while(servinfo != nil){
+                print(servinfo)
+                servinfo = servinfo.pointee.ai_next
+            }
+        }
+        // 0 means address resolution succeeded
+        XCTAssertTrue(getaddrinfoReturnValue == 0)
     }
 
 }

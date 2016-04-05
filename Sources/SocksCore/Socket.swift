@@ -80,7 +80,22 @@ extension RawSocket {
     }
 }
 
-
+/*
+ *  A SocketConfig bundels together the information needed to
+ *  create a socket 
+ */
+public struct SocketConfig {
+    
+    public let addressFamily_ : AddressFamily
+    public let socketType_ : SocketType
+    public let protocolType_ : Protocol
+    
+    public init(addressFamily : AddressFamily, socketType : SocketType, protocolType : Protocol){
+        addressFamily_ = addressFamily
+        socketType_     = socketType
+        protocolType_   = protocolType
+    }
+}
 
 
 
