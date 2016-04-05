@@ -8,8 +8,10 @@
 
 #if os(Linux)
     import Glibc
+    typealias socket_addrinfo = Glibc.addrinfo
 #else
     import Darwin
+    typealias socket_addrinfo = Darwin.addrinfo
 #endif
 
 //Pretty types -> C types
@@ -59,6 +61,28 @@ extension InternetAddress {
         let addrStruct = sockadd_list_cast(hostInfo.h_addr_list)[0].pointee
         return addrStruct
     }
+}
+
+public func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
+                                                   hostname : String,
+                                                   service : String)throws
+                                                    ->  UnsafeMutablePointer<addrinfo>
+{
+    // Narrowing down the results we will get from the getaddrinfo call
+    var addressCriteria = socket_addrinfo.init()
+    // IPv4 or IPv6
+    addressCriteria.ai_family = socketConfig.addressFamily_.toCType()
+    addressCriteria.ai_flags = AI_PASSIVE
+    // Restricting to TCP
+    addressCriteria.ai_socktype = socketConfig.socketType_.toCType()
+    addressCriteria.ai_protocol = socketConfig.protocolType_.toCType()
+    
+    var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
+    
+    let getaddrinfoReturnValue = getaddrinfo(hostname, service, &addressCriteria, &servinfo)
+    guard getaddrinfoReturnValue == 0 else { throw Error(.IPAddressValidationFailed) }
+    
+    return servinfo
 }
 
 //Pointer casting

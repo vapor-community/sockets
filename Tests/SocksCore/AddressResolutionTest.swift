@@ -51,7 +51,7 @@ class AddressResolutionTest: XCTestCase {
         else{
             // Let's see on how many and which ip addresses this host is reachable
             while(servinfo != nil){
-                print(servinfo)
+                print(servinfo.pointee)
                 servinfo = servinfo.pointee.ai_next
             }
         }
