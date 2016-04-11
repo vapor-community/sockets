@@ -31,6 +31,9 @@ public class SocketFactory {
     public func createAndConnectTcpClientSocket(hostName : String, port : Port) throws -> InternetSocket? {
         
         let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
+        // TODO:    This is not beautiful but the port number needs to be string in order to be passed to getaddrinfo()
+        //          Extend the type Port to an enum with two cases (one as a string and one as an integer) and write a
+        //          toString() method which does the conversion if neccessary
         let portnumber = String(port)
         
         var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
@@ -38,13 +41,17 @@ public class SocketFactory {
                                                                hostname : hostName,
                                                                service : portnumber)
         
+        //
         // This is where the magic happens!
+        //
+        
+        // Store head to linked list
         var sInfoPtr = servinfo
 
         while(sInfoPtr != nil){
             // Create a raw socket; try next address in case it doesn't work
             let rawSocket = createRawSocketFromCTypeArguments(sInfoPtr.pointee)
-            //here check property or RawSocket
+
             if (rawSocket.descriptor < 0){
                 // Socket creation failed; try next address
                 sInfoPtr = sInfoPtr.pointee.ai_next
@@ -52,7 +59,6 @@ public class SocketFactory {
             }
             
             
-            // Establish the connection to the echo server
             if (socket_connect(rawSocket.descriptor,sInfoPtr.pointee.ai_addr,sInfoPtr.pointee.ai_addrlen) == 0){
                 // Socket connection succeeded
                 let addr = InternetAddress(address: .Hostname(hostName), port: port)
@@ -72,7 +78,7 @@ public class SocketFactory {
             sInfoPtr = sInfoPtr.pointee.ai_next
         }
         
-        
+        // If we ever reach this line none of the addresses provided by getaddrinfo() worked :(
         return nil
     }
  
