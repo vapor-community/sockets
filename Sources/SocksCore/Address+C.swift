@@ -63,6 +63,32 @@ extension InternetAddress {
     }
 }
 
+/*
+ 
+ public class InternetAddressResolver {
+ 
+    // List of obtained addresses
+    addressList : List<UnsafePointer<addinfo>>
+ 
+    // hostname can be e.g. "www.google.com" or "123.456.123.978" or "FD...."
+    // port can be e.g. "echo" or "7"
+    // addressconfig guides if tcp or udp and if IPv4 or IPv6 or both should be used
+    init (hostname : String, port : String, config : AddressConfig){
+ 
+        call to resolveHostnameAndServiceToIPAddresses(...)
+ 
+        store result in addressList
+    }
+ 
+    public func getAddressList() -> List<UnsafePointer<addinfo>>{
+        ...
+    }
+ 
+ }
+ 
+ 
+ */
+
 // Brief:   Given given a hostname and a service this methods return a list of
 //          IP and Port adresses that where obtained during the name resolution
 //          e.g. "localhost" and "echo" as arguments will result in a list of 
@@ -90,7 +116,6 @@ public func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
     // IPv4 or IPv6
     addressCriteria.ai_family = socketConfig.addressFamily_.toCType()
     addressCriteria.ai_flags = AI_PASSIVE
-    // Restricting to TCP
     addressCriteria.ai_socktype = socketConfig.socketType_.toCType()
     addressCriteria.ai_protocol = socketConfig.protocolType_.toCType()
     

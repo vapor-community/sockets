@@ -25,6 +25,8 @@ extension InternetSocket : ServerSocket {
         var addr = try self.address.toCType()
         let res = socket_bind(self.descriptor, &addr, socklen_t(sizeof(sockaddr)))
         guard res > -1 else { throw Error(.BindFailed) }
+        
+        //socket_bind(self.descriptor, address.ai_addr, address.ai_addrlen)
     }
     
     public func listen(queueLimit: Int32 = 4096) throws {

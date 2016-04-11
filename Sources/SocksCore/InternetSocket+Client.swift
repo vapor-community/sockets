@@ -21,5 +21,7 @@ extension InternetSocket : ClientSocket {
         var addr = try self.address.toCType()
         let res = socket_connect(self.descriptor, &addr, socklen_t(sizeof(sockaddr)))
         guard res > -1 else { throw Error(.ConnectFailed) }
+        
+        //socket_connect(self.descriptor, address.ai_sockadr, address.ai_addrlen)
     }
 }
