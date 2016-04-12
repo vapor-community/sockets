@@ -3,7 +3,7 @@ import SocksCore
 
 let raw = try! RawSocket(protocolFamily: .Inet, socketType: .Stream, protocol: .TCP)
 let addr = InternetAddress(address: .Hostname("localhost"), port: 8080)
-let socket = InternetSocket(rawSocket: raw, address: addr)
+let socket: ServerSocket = InternetSocket(rawSocket: raw, address: addr)
 
 try! socket.bind()
 try! socket.listen()

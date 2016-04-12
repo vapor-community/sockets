@@ -63,7 +63,73 @@ extension InternetAddress {
     }
 }
 
+protocol InternetAddressResolver {
+    func resolve(internetAddress : KclInternetAddress) -> Array<KclResolvedInternetAddress>
+}
+
+public struct Resolver : InternetAddressResolver{
+    private let config : SocketConfig
+    public init(config : SocketConfig){
+        self.config = config
+    }
+    
+    public func resolve(internetAddress : KclInternetAddress) -> Array<KclResolvedInternetAddress>{
+        let resolvedInternetAddressesArray = try!resolveHostnameAndServiceToIPAddresses(self.config, internetAddress: internetAddress)
+        //
+        // TODO: Consider try and catch or other tests (if array contains 0 elements or something like that)
+        //
+        return resolvedInternetAddressesArray
+    }
+    
+    private func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
+                                                        internetAddress : KclInternetAddress) throws
+                                                        ->  Array<KclResolvedInternetAddress>
+    {
+    //
+    // Narrowing down the results we will get from the getaddrinfo call
+    //
+    var addressCriteria = socket_addrinfo.init()
+    // IPv4 or IPv6
+    addressCriteria.ai_family = socketConfig.addressFamily_.toCType()
+    addressCriteria.ai_flags = AI_PASSIVE
+    addressCriteria.ai_socktype = socketConfig.socketType_.toCType()
+    addressCriteria.ai_protocol = socketConfig.protocolType_.toCType()
+    
+    // The list of addresses that correspond to the hostname/service pair.
+    // servinfo is the first node in a linked list of addresses that is empty
+    // at this line
+    var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
+    // perform resolution
+    let getaddrinfoReturnValue = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
+    guard getaddrinfoReturnValue == 0 else { throw Error(.IPAddressValidationFailed) }
+    
+    // Wrap linked list into array of ResolvedInternetAddress
+    
+    // we need to remember the head of the linked list to clean up the consumed memory on the head
+    let head = servinfo
+        
+    var resolvedInternetAddressesArray = Array<KclResolvedInternetAddress>()
+    while(servinfo != nil){
+        let singleAddress = KclResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: servinfo.pointee)
+        resolvedInternetAddressesArray.append(singleAddress)
+        servinfo = servinfo.pointee.ai_next
+    }
+        
+    // Prevent memory leaks: getaddrinfo creates an unmanaged linked list on the heap
+    freeaddrinfo(head)
+        
+    return resolvedInternetAddressesArray
+    }
+
+}
+
 /*
+ 
+ protocol InternetAddressResolver {
+ 
+    public func resolve(InternetAddress) -> List<ResolvedInternetAddress>
+ 
+ }
  
  public class InternetAddressResolver {
  
@@ -104,6 +170,10 @@ extension InternetAddress {
 // hostname     -   e.g. "www.google.com" or "localhost"
 // 
 // service      -   can be a service string e.g. "echo" or a well-know port e.g. "7"
+
+// Return Array of ResolvedInternetAddress
+
+// Resolver guts
 public func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
                                                    hostname : String,
                                                    service : String)throws
@@ -124,6 +194,11 @@ public func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
     
     let getaddrinfoReturnValue = getaddrinfo(hostname, service, &addressCriteria, &servinfo)
     guard getaddrinfoReturnValue == 0 else { throw Error(.IPAddressValidationFailed) }
+    
+    // Wrap linked list into array of ResolvedInternetAddress
+    
+    // Prevent memory leaks: getaddrinfo creates an unmanaged linked list on the heap
+    // freeaddrinfo(servinfo)
     
     return servinfo
 }

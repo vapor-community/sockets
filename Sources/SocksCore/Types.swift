@@ -39,7 +39,21 @@ public enum AddressFamily {
 public typealias Descriptor = Int32
 public typealias Port = UInt16
 
+//
+//  A Port can be specified as an integer or
+//  as a service: e.g. you can assign a 
+//  Port to "echo" or to the number 7
+//
+public enum KclPort {
+    case Servicenameostname(String)
+    case Portnumber(UInt16)
+}
+
 //Extensions
+
+protocol CTypeStringConvertable {
+    func toString() -> String
+}
 
 protocol CTypeInt32Convertible {
     func toCType() -> Int32
@@ -47,6 +61,17 @@ protocol CTypeInt32Convertible {
 
 protocol CTypeUnsafePointerOfInt8TypeConvertible {
     func toCTypeUnsafePointerOfInt8() -> UnsafePointer<Int8>
+}
+
+extension KclPort : CTypeStringConvertable {
+    func toString() -> String {
+        switch self {
+        case .Servicenameostname(let service):
+            return service
+        case .Portnumber(let portNumber):
+            return String(portNumber)
+        }
+    }
 }
 
 extension ProtocolFamily: CTypeInt32Convertible {

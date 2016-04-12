@@ -29,16 +29,78 @@ protocol Address {
 
 typealias RawInternetAddress = Int32
 
+// can later be discarded
 public enum InternetAddressType {
     case Hostname(String)
     case IPv4(Bytes4)
     case IPv6(Bytes16)
 }
 
+/*
+ // from the user, provided by application code
+ InternetAddress
+ {
+    let host : String
+    let port : Port
+ }
+ 
+ */
+
+//
+//  Brief: Specify an internet address
+//
+//  Example of the (assumend) main use case:
+//  assign a string to the hostname e.g. www.google.com
+//  and specify the Port via an integer or a service name
+//
+//  hostname -  can be set to a string that denotes 
+//              a hostname e.g. "localhost" or
+//              an IPv4 address e.g. "127.0.0.1" or
+//              an IPv6 address e.g. "::1"
+//
+//  port    -   see comments for Port enum
+//
+public struct KclInternetAddress {
+    public let hostname : String
+    public let port :KclPort
+    
+    public init(hostname : String, port :KclPort) {
+        self.hostname = hostname
+        self.port = port
+    }
+}
+
+public struct KclResolvedInternetAddress {
+    
+    // The unresoved InternetAddress
+    private let internetAddress : KclInternetAddress
+    public var InternetAddress : KclInternetAddress{
+        return internetAddress
+    }
+    
+    public let resolvedCTypeAddress : addrinfo
+    
+    public init(internetAddress : KclInternetAddress, resolvedCTypeAddress : addrinfo){
+        self.internetAddress = internetAddress
+        self.resolvedCTypeAddress = resolvedCTypeAddress
+    }
+}
+
+// renamed to ResolvedInternetAddress
 public struct InternetAddress: Address {
     
-    public let address: InternetAddressType
+    // getter for InternetAddress which was used for name resolution
+    
+    // addressInfo : addrinfo
+    //public var address: InternetAddressType {
+    //    return addrinfo.
+    //}
+    
+    // later on can be deleted
+    public var address: InternetAddressType
     public let port: Port
+    
+    // get property for
     
     public init(address: InternetAddressType, port: Port) {
         self.address = address

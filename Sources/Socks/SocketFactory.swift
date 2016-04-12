@@ -23,7 +23,7 @@ public class SocketFactory {
     
     /*
  
-     public func createTcpClient(hostName : String, port : Port) throws -> InternetSocket? {
+     public func createTcpClient(hostName : String, port : Port, config) throws -> InternetSocket? {
      
         use InternetAddressResolver to get list of addresses
      

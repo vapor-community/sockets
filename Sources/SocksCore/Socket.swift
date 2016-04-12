@@ -38,6 +38,7 @@ public class RawSocket : Socket {
     let socketType: SocketType
     let protocolType: Protocol
     
+    //TODO: migrate to SocketConfig
     private init(descriptor: Descriptor, protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocolType: Protocol) throws {
         
         self.protocolFamily = protocolFamily
@@ -86,6 +87,7 @@ extension RawSocket {
  */
 public struct SocketConfig {
     
+    // TODO: rename struct member (remove trailing underscore)
     public let addressFamily_ : AddressFamily
     public let socketType_ : SocketType
     public let protocolType_ : Protocol
