@@ -33,4 +33,43 @@ public class InternetSocket: Socket {
     }
 }
 
+public class KclInternetSocket: Socket {
+    
+    public let rawSocket: KclRawSocket
+    public let address: KclResolvedInternetAddress //change to ResolvedInternetAddress
+    
+    public var descriptor: Descriptor {
+        return self.rawSocket.descriptor
+    }
+    
+    public init(rawSocket: KclRawSocket, address: KclResolvedInternetAddress) {
+        self.rawSocket = rawSocket
+        self.address = address
+    }
+    
+    
+    public convenience init(socketConfig: SocketConfig, address: KclInternetAddress) throws {
+
+        let resolver = Resolver(config: socketConfig)
+        
+        let resolvedInternetAddressList = resolver.resolve(address)
+        
+        // Let's observe the addresses
+        for singleResolvedInternetAddress in resolvedInternetAddressList {
+            print(singleResolvedInternetAddress.resolvedCTypeAddress)
+        }
+        
+        guard resolvedInternetAddressList.count != 0 else {throw Error(.IPAddressValidationFailed) }
+        
+        // We made it here => address resolution was successul
+        let raw = try! KclRawSocket(socketConfig: socketConfig, resolvedInternetAddress: resolvedInternetAddressList[0])
+        
+        self.init(rawSocket: raw, address: resolvedInternetAddressList[0])
+     }
+    
+    
+    public func close() throws {
+        try self.rawSocket.close()
+    }
+}
 

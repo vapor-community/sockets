@@ -34,6 +34,23 @@ class AddressResolutionTest: XCTestCase {
             print(singleResolvedInternetAddress.resolvedCTypeAddress)
         }
         
+        ////////////////////////////////////////////////////////
+        
+        let resolvedInternetAddress = resolvedInternetAddressList[0]
+        let cProtocolFam = resolvedInternetAddress.resolvedCTypeAddress.ai_family
+        let cType = socket_Config.socketType.toCType()
+        let cProtocol = socket_Config.protocolType.toCType()
+        
+        let descriptor = socket(cProtocolFam, cType, cProtocol)
+        XCTAssertTrue( descriptor >= 0 )
+        
+        let res = connect(descriptor,
+                          resolvedInternetAddress.resolvedCTypeAddress.ai_addr,
+                          resolvedInternetAddress.resolvedCTypeAddress.ai_addrlen)
+        XCTAssertTrue (res == 0)
+        
+        ////////////////////////////////////////////////////////
+        
         XCTAssertTrue(resolvedInternetAddressList.count != 0)
     }
     
@@ -74,5 +91,5 @@ class AddressResolutionTest: XCTestCase {
         // 0 means address resolution succeeded
         XCTAssertTrue(getaddrinfoReturnValue == 0)
     }
-
+    
 }

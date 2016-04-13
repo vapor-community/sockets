@@ -90,10 +90,12 @@ public struct Resolver : InternetAddressResolver{
     //
     var addressCriteria = socket_addrinfo.init()
     // IPv4 or IPv6
-    addressCriteria.ai_family = socketConfig.addressFamily_.toCType()
+    addressCriteria.ai_family = socketConfig.addressFamily.toCType()
+    //addressCriteria.ai_family = AF_INET6
+    
     addressCriteria.ai_flags = AI_PASSIVE
-    addressCriteria.ai_socktype = socketConfig.socketType_.toCType()
-    addressCriteria.ai_protocol = socketConfig.protocolType_.toCType()
+    addressCriteria.ai_socktype = socketConfig.socketType.toCType()
+    addressCriteria.ai_protocol = socketConfig.protocolType.toCType()
     
     // The list of addresses that correspond to the hostname/service pair.
     // servinfo is the first node in a linked list of addresses that is empty
@@ -116,7 +118,7 @@ public struct Resolver : InternetAddressResolver{
     }
         
     // Prevent memory leaks: getaddrinfo creates an unmanaged linked list on the heap
-    freeaddrinfo(head)
+    //freeaddrinfo(head)
         
     return resolvedInternetAddressesArray
     }
@@ -184,10 +186,10 @@ public func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
     //
     var addressCriteria = socket_addrinfo.init()
     // IPv4 or IPv6
-    addressCriteria.ai_family = socketConfig.addressFamily_.toCType()
+    addressCriteria.ai_family = socketConfig.addressFamily.toCType()
     addressCriteria.ai_flags = AI_PASSIVE
-    addressCriteria.ai_socktype = socketConfig.socketType_.toCType()
-    addressCriteria.ai_protocol = socketConfig.protocolType_.toCType()
+    addressCriteria.ai_socktype = socketConfig.socketType.toCType()
+    addressCriteria.ai_protocol = socketConfig.protocolType.toCType()
     
     // The list of addresses that correspond to the hostname/service pair.
     var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)

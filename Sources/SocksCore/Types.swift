@@ -115,9 +115,9 @@ extension Protocol: CTypeInt32Convertible {
 extension AddressFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Inet: return AF_INET
-        case .Inet6: return AF_INET6
-        case .UNSPECIFIED : return AF_UNSPEC
+        case .Inet: return Int32(AF_INET)
+        case .Inet6: return Int32(AF_INET6)
+        case .UNSPECIFIED : return Int32(AF_UNSPEC)
         }
     }
 }

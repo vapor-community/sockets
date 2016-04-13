@@ -70,6 +70,42 @@ public class RawSocket : Socket {
     }
 }
 
+public class KclRawSocket : Socket {
+    
+    public let descriptor: Descriptor
+    public let socketConfig : SocketConfig
+    
+    private init(descriptor: Descriptor, socketConfig: SocketConfig) throws {
+        
+        self.socketConfig = socketConfig
+        self.descriptor = descriptor
+    }
+    
+    public convenience init(socketConfig : SocketConfig, resolvedInternetAddress : KclResolvedInternetAddress) throws {
+        // NOTE: The family field must be set according to the ResolvedInternetAddress address NOT according to the SocketConfig
+        // Why that? SocketConfig.familiyType can be set to UNSPECIFIED in order to transparently use IPv4 and IPv6
+        // but the socket() function needs a concrete IPv4 or IPv6 argument => we use the family field from the resolved address
+        let cProtocolFam = resolvedInternetAddress.resolvedCTypeAddress.ai_family
+        let cType = socketConfig.socketType.toCType()
+        let cProtocol = socketConfig.protocolType.toCType()
+        
+        let descriptor = socket(cProtocolFam, cType, cProtocol)
+        guard descriptor > 0 else { throw Error(.CreateSocketFailed) }
+        
+        try self.init(descriptor: descriptor, socketConfig: socketConfig)
+    }
+    
+    public func close() throws {
+        if socket_close(self.descriptor) != 0 {
+            throw Error(.CloseSocketFailed)
+        }
+    }
+    
+    func copyWithNewDescriptor(descriptor: Descriptor) throws -> KclRawSocket {
+        return try KclRawSocket(descriptor: descriptor, socketConfig: self.socketConfig)
+    }
+}
+
 extension RawSocket {
     
     public static func TCP() throws -> RawSocket {
@@ -86,16 +122,15 @@ extension RawSocket {
  *  create a socket 
  */
 public struct SocketConfig {
-    
-    // TODO: rename struct member (remove trailing underscore)
-    public let addressFamily_ : AddressFamily
-    public let socketType_ : SocketType
-    public let protocolType_ : Protocol
+
+    public let addressFamily : AddressFamily
+    public let socketType : SocketType
+    public let protocolType : Protocol
     
     public init(addressFamily : AddressFamily, socketType : SocketType, protocolType : Protocol){
-        addressFamily_ = addressFamily
-        socketType_     = socketType
-        protocolType_   = protocolType
+        self.addressFamily = addressFamily
+        self.socketType     = socketType
+        self.protocolType   = protocolType
     }
 }
 
