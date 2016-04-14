@@ -16,7 +16,7 @@ extension Server {
         try socket.bind()
         
         //listen
-        try socket.listen(4096)
+        try socket.listen(queueLimit: 4096)
     }
     
     public func accept() throws -> Actor {
