@@ -7,7 +7,7 @@ let socket = InternetSocket(rawSocket: raw, address: addr)
 try! socket.connect()
 
 //sends a GET / request to google.com at port 80, expects a 302 redirect to HTTPS
-try! socket.send("GET /\r\n\r\n".toBytes())
+try! socket.send(data: "GET /\r\n\r\n".toBytes())
 
 //receiving data
 let received = try! socket.recv()

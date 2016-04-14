@@ -9,7 +9,7 @@
 import XCTest
 @testable import SocksCore
 
-func eq<T: Equatable>(lhs: T, _ rhs: T, file: StaticString = #file, line: UInt = #line) {
+func eq<T: Equatable>(_ lhs: T, _ rhs: T, file: StaticString = #file, line: UInt = #line) {
     XCTAssertEqual(lhs, rhs, file: file, line: line)
 }
 
