@@ -55,9 +55,9 @@ public class KclInternetSocket: Socket {
         let resolvedInternetAddressList = resolver.resolve(address)
         
         // Let's observe the addresses
-        for singleResolvedInternetAddress in resolvedInternetAddressList {
-            print(singleResolvedInternetAddress.resolvedCTypeAddress)
-        }
+        //for singleResolvedInternetAddress in resolvedInternetAddressList {
+        //    print(singleResolvedInternetAddress.resolvedCTypeAddress)
+        //}
         
         guard resolvedInternetAddressList.count != 0 else {throw Error(.IPAddressValidationFailed) }
         

@@ -29,11 +29,6 @@ extension InternetSocket : ClientSocket {
 extension KclInternetSocket : ClientSocket {
     
     public func connect() throws {
-        
-        //var addr = try self.address.toCType()
-        //let res = socket_connect(self.descriptor, &addr, socklen_t(sizeof(sockaddr)))
-        //guard res > -1 else { throw Error(.ConnectFailed) }
-        
         let res = socket_connect(self.descriptor, address.resolvedCTypeAddress.ai_addr, address.resolvedCTypeAddress.ai_addrlen)
         guard res > -1 else { throw Error(.ConnectFailed)}
     }

@@ -77,7 +77,7 @@ public struct KclResolvedInternetAddress {
     public var InternetAddress : KclInternetAddress{
         return internetAddress
     }
-    // make private?
+
     public let resolvedCTypeAddress : addrinfo
     
     public init(internetAddress : KclInternetAddress, resolvedCTypeAddress : addrinfo){

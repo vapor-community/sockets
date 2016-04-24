@@ -48,6 +48,36 @@ extension InternetSocket : ServerSocket {
     }
 }
 
-
-
-
+extension KclInternetSocket : ServerSocket {
+    
+    public func bind() throws {
+        
+        let addr = self.address.resolvedCTypeAddress
+        let res = socket_bind(self.descriptor, addr.ai_addr, addr.ai_addrlen)
+        guard res > -1 else { throw Error(.BindFailed) }
+        
+        //socket_bind(self.descriptor, address.ai_addr, address.ai_addrlen)
+    }
+    
+    public func listen(queueLimit: Int32 = 4096) throws {
+        
+        let res = socket_listen(self.descriptor, queueLimit)
+        guard res > -1 else { throw Error(.ListenFailed) }
+    }
+    
+    public func accept() throws -> Socket {
+        
+        // the type of this variable is big enough to store a IPv6 (and of course a IPv4) address
+        // that's important because we don't know upfront if a IPv6 or a IPv4 client wants to connect
+        var clientAddress = UnsafeMutablePointer<sockaddr_storage>.init(nil)
+        
+        var length = socklen_t(sizeof(sockaddr_storage) )
+        let clientSocketDescriptor = socket_accept(self.descriptor, sockaddr_storage_cast(clientAddress),&length)
+        
+        guard clientSocketDescriptor > -1 else {
+            throw Error(.AcceptFailed)
+        }
+        let clientSocket = try self.rawSocket.copyWithNewDescriptor(clientSocketDescriptor)
+        return clientSocket
+    }
+}

@@ -91,8 +91,6 @@ public struct Resolver : InternetAddressResolver{
     var addressCriteria = socket_addrinfo.init()
     // IPv4 or IPv6
     addressCriteria.ai_family = socketConfig.addressFamily.toCType()
-    //addressCriteria.ai_family = AF_INET6
-    
     addressCriteria.ai_flags = AI_PASSIVE
     addressCriteria.ai_socktype = socketConfig.socketType.toCType()
     addressCriteria.ai_protocol = socketConfig.protocolType.toCType()
@@ -213,6 +211,10 @@ func sockaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockad
 
 func sockadd_list_cast(p: UnsafeMutablePointer<UnsafeMutablePointer<Int8>>) -> UnsafeMutablePointer<UnsafeMutablePointer<in_addr>> {
     return UnsafeMutablePointer<UnsafeMutablePointer<in_addr>>(p)
+}
+
+func sockaddr_storage_cast(p : UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
+    return UnsafeMutablePointer<sockaddr>(p)
 }
 
 

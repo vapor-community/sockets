@@ -35,7 +35,7 @@ class AddressResolutionTest: XCTestCase {
         }
         
         ////////////////////////////////////////////////////////
-        
+        /*
         let resolvedInternetAddress = resolvedInternetAddressList[0]
         let cProtocolFam = resolvedInternetAddress.resolvedCTypeAddress.ai_family
         let cType = socket_Config.socketType.toCType()
@@ -48,16 +48,13 @@ class AddressResolutionTest: XCTestCase {
                           resolvedInternetAddress.resolvedCTypeAddress.ai_addr,
                           resolvedInternetAddress.resolvedCTypeAddress.ai_addrlen)
         XCTAssertTrue (res == 0)
-        
+        */
         ////////////////////////////////////////////////////////
         
         XCTAssertTrue(resolvedInternetAddressList.count != 0)
     }
     
     func testgetaddrinfoCall() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        
         /*
          *  Create arguments to call getaddrinfo
          */
