@@ -19,7 +19,7 @@ extension Array {
     func periodSeparatedString() -> String {
         return self.map { String($0) }.joined(separator: ".")
     }
-    
+    /*
     func colonSeparatedString() -> String {
 
         let count = self.count
@@ -37,7 +37,7 @@ extension Array {
         }
         
         return str
-    }
+    }*/
 }
 
 extension String {

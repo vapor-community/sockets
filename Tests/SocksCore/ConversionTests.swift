@@ -20,9 +20,9 @@ class ConversionTests: XCTestCase {
         eq(lhs: [Int]().periodSeparatedString(), "")
         eq(lhs: [1].periodSeparatedString(), "1")
     }
-    
+    /*
     func testNumberArrayToColonSeparatedString() {
         eq(lhs: [0xffff,0xeeee,0xdddd,0xcccc,0xbbbb,0xaaaa,0x9999,0x8888].colonSeparatedString(),"ffff:eeee:dddd:cccc:bbbb:aaaa:9999:8888")
-    }
+    }*/
     
 }
