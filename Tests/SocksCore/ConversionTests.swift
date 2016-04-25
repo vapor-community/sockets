@@ -9,16 +9,16 @@
 import XCTest
 @testable import SocksCore
 
-func eq<T: Equatable>(lhs: T, _ rhs: T, file: StaticString = #file, line: UInt = #line) {
+func eq<T: Equatable>(_ lhs: T, _ rhs: T, file: StaticString = #file, line: UInt = #line) {
     XCTAssertEqual(lhs, rhs, file: file, line: line)
 }
 
 class ConversionTests: XCTestCase {
 
     func testNumberArrayToPeriodSeparatedString() {
-        eq(lhs: [1,2,3,4].periodSeparatedString(), "1.2.3.4")
-        eq(lhs: [Int]().periodSeparatedString(), "")
-        eq(lhs: [1].periodSeparatedString(), "1")
+        eq([1,2,3,4].periodSeparatedString(), "1.2.3.4")
+        eq([Int]().periodSeparatedString(), "")
+        eq([1].periodSeparatedString(), "1")
     }
     /*
     func testNumberArrayToColonSeparatedString() {
