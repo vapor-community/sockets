@@ -70,7 +70,7 @@ class AddressResolutionTest: XCTestCase {
         // Restricting to TCP
         #if os(Linux)
             addressCriteria.ai_socktype = Int32(SOCK_STREAM.rawValue)
-            addressCriteria.ai_protocol = Int32(IPPROTO_TCP.rawValue)
+            addressCriteria.ai_protocol = Int32(IPPROTO_TCP)
         #else
             addressCriteria.ai_socktype = SOCK_STREAM
             addressCriteria.ai_protocol = IPPROTO_TCP
