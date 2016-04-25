@@ -10,11 +10,11 @@ import SocksCore
 
 public class SynchronousTCPServer: SynchronousServer {
     
-    public init(hostname: String, port: Int) throws {
+    public init(internetAddress : Internet_Address) throws {
         
-        let server = try InternetServer(hostname: hostname, port: port) {
-            return try RawSocket.TCP()
-        }
+        let socketConfig = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
+        
+        let server = try InternetServer(socketConfig : socketConfig, internetAddress: internetAddress)
         super.init(server: server)
     }
 }

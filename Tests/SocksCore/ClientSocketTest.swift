@@ -25,13 +25,13 @@ class ClientSocketTest: XCTestCase {
         
         let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
         
-        let userProvidedInternetAddress = KclInternetAddress(hostname : "google.com", port : .Portnumber(80))
+        let userProvidedInternetAddress = Internet_Address(hostname : "www.google.com", port : .Portnumber(80))
         
-        let socket = try! KclInternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
+        let socket = try! InternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
         try! socket.connect()
         
         //sends a GET / request to google.com at port 80, expects a 302 redirect to HTTPS
-        try! socket.send("GET /\r\n\r\n".toBytes())
+        try! socket.send(data: "GET /\r\n\r\n".toBytes())
         
         //receiving data
         let received = try! socket.recv()

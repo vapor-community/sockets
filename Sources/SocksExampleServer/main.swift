@@ -1,13 +1,14 @@
 
 import Socks
+import SocksCore
 
-let port = 8080
-let server = try! SynchronousTCPServer(hostname: "localhost", port: port)
-print("Listening on port \(port)")
+let internetAddress = Internet_Address(hostname: "localhost", port: .Portnumber(8080))
+let server = try! SynchronousTCPServer(internetAddress : internetAddress)
+print("Listening on port \(internetAddress.port)")
 try! server.startWithHandler { (connection: Actor) in
     //echo
     let data = try connection.readAll()
-    try connection.write(data)
+    try connection.write(data: data)
     try connection.close()
     print("Echoed: \(try data.toString())")
 }

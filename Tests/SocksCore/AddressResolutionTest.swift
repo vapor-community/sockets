@@ -26,8 +26,8 @@ class AddressResolutionTest: XCTestCase {
         let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
         let resolver = Resolver(config: socket_Config)
         
-        let userProvidedInternetAddress = KclInternetAddress(hostname : "google.com", port : .Portnumber(80))
-        let resolvedInternetAddressList = resolver.resolve(userProvidedInternetAddress)
+        let userProvidedInternetAddress = Internet_Address(hostname : "google.com", port : .Portnumber(80))
+        let resolvedInternetAddressList = resolver.resolve(internetAddress: userProvidedInternetAddress)
         
         // Let's observe the addresses
         for singleResolvedInternetAddress in resolvedInternetAddressList {
@@ -81,8 +81,8 @@ class AddressResolutionTest: XCTestCase {
         else{
             // Let's see on how many and which ip addresses this host is reachable
             while(servinfo != nil){
-                print(servinfo.pointee)
-                servinfo = servinfo.pointee.ai_next
+                print(servinfo?.pointee)
+                servinfo = servinfo?.pointee.ai_next
             }
         }
         // 0 means address resolution succeeded

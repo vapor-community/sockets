@@ -25,8 +25,8 @@ class RawSocketTest: XCTestCase {
         let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
         let resolver = Resolver(config: socket_Config)
         
-        let userProvidedInternetAddress = KclInternetAddress(hostname : "google.com", port : .Portnumber(80))
-        let resolvedInternetAddressList = resolver.resolve(userProvidedInternetAddress)
+        let userProvidedInternetAddress = Internet_Address(hostname : "google.com", port : .Portnumber(80))
+        let resolvedInternetAddressList = resolver.resolve(internetAddress: userProvidedInternetAddress)
         
         // Let's observe the addresses
         for singleResolvedInternetAddress in resolvedInternetAddressList {
@@ -38,7 +38,7 @@ class RawSocketTest: XCTestCase {
         //
         // interesting part starts here: did the socket() call succeed?
         //
-        let raw = try! KclRawSocket(socketConfig: socket_Config, resolvedInternetAddress: resolvedInternetAddressList[0])
+        let raw = try! RawSocket(socketConfig: socket_Config, resolvedInternetAddress: resolvedInternetAddressList[0])
         
         XCTAssertTrue(raw.descriptor > 0)
         
