@@ -29,25 +29,6 @@ protocol Address {
 
 typealias RawInternetAddress = Int32
 
-/*
-// can later be discarded
-public enum InternetAddressType {
-    case Hostname(String)
-    case IPv4(Bytes4)
-    case IPv6(Bytes16)
-}
-*/
-
-/*
- // from the user, provided by application code
- InternetAddress
- {
-    let host : String
-    let port : Port
- }
- 
- */
-
 //
 //  Brief: Specify an internet address
 //
@@ -87,27 +68,3 @@ public struct ResolvedInternetAddress {
         self.resolvedCTypeAddress = resolvedCTypeAddress
     }
 }
-
-/*
-// renamed to ResolvedInternetAddress
-public struct InternetAddress: Address {
-    
-    // getter for InternetAddress which was used for name resolution
-    
-    // addressInfo : addrinfo
-    //public var address: InternetAddressType {
-    //    return addrinfo.
-    //}
-    
-    // later on can be deleted
-    public var address: InternetAddressType
-    public let port: Port
-    
-    // get property for
-    
-    public init(address: InternetAddressType, port: Port) {
-        self.address = address
-        self.port = port
-    }
-}
-*/

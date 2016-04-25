@@ -25,7 +25,7 @@ class ClientSocketTest: XCTestCase {
         
         let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
         
-        let userProvidedInternetAddress = Internet_Address(hostname : "www.google.com", port : .Portnumber(80))
+        let userProvidedInternetAddress = Internet_Address(hostname : "google.com", port : .Portnumber(80))
         
         let socket = try! InternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
         try! socket.connect()

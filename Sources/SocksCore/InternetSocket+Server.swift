@@ -17,37 +17,6 @@
     private let socket_listen = Darwin.listen
     private let socket_accept = Darwin.accept
 #endif
-/*
-extension InternetSocket : ServerSocket {
-    
-    public func bind() throws {
-        
-        var addr = try self.address.toCType()
-        let res = socket_bind(self.descriptor, &addr, socklen_t(sizeof(sockaddr)))
-        guard res > -1 else { throw Error(.BindFailed) }
-        
-        //socket_bind(self.descriptor, address.ai_addr, address.ai_addrlen)
-    }
-    
-    public func listen(queueLimit: Int32 = 4096) throws {
-        
-        let res = socket_listen(self.descriptor, queueLimit)
-        guard res > -1 else { throw Error(.ListenFailed) }
-    }
-    
-    public func accept() throws -> Socket {
-        
-        var addr = sockaddr()
-        var len = socklen_t()
-        let clientSocketDescriptor = socket_accept(self.descriptor, &addr, &len)
-        guard clientSocketDescriptor > -1 else {
-            throw Error(.AcceptFailed)
-        }
-        let clientSocket = try self.rawSocket.copyWithNewDescriptor(clientSocketDescriptor)
-        return clientSocket
-    }
-}
-*/
 
 extension InternetSocket : ServerSocket {
     
