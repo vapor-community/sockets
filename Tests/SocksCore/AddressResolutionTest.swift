@@ -68,8 +68,13 @@ class AddressResolutionTest: XCTestCase {
         addressCriteria.ai_family = AF_UNSPEC
         addressCriteria.ai_flags = AI_PASSIVE
         // Restricting to TCP
-        addressCriteria.ai_socktype = SOCK_STREAM
-        addressCriteria.ai_protocol = IPPROTO_TCP
+        #if os(Linux)
+            addressCriteria.ai_socktype = Int32(SOCK_STREAM.rawValue)
+            addressCriteria.ai_protocol = Int32(IPPROTO_TCP.rawValue)
+        #else
+            addressCriteria.ai_socktype = SOCK_STREAM
+            addressCriteria.ai_protocol = IPPROTO_TCP
+        #endif
         
         var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
         
