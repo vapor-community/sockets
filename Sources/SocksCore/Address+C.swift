@@ -84,38 +84,6 @@ public struct Resolver : InternetAddressResolver{
 
 }
 
-/*
- 
- protocol InternetAddressResolver {
- 
-    public func resolve(InternetAddress) -> List<ResolvedInternetAddress>
- 
- }
- 
- public class InternetAddressResolver {
- 
-    // List of obtained addresses
-    addressList : List<UnsafePointer<addinfo>>
- 
-    // hostname can be e.g. "www.google.com" or "123.456.123.978" or "FD...."
-    // port can be e.g. "echo" or "7"
-    // addressconfig guides if tcp or udp and if IPv4 or IPv6 or both should be used
-    init (hostname : String, port : String, config : AddressConfig){
- 
-        call to resolveHostnameAndServiceToIPAddresses(...)
- 
-        store result in addressList
-    }
- 
-    public func getAddressList() -> List<UnsafePointer<addinfo>>{
-        ...
-    }
- 
- }
- 
- 
- */
-
 // Brief:   Given given a hostname and a service this methods return a list of
 //          IP and Port adresses that where obtained during the name resolution
 //          e.g. "localhost" and "echo" as arguments will result in a list of 
@@ -168,10 +136,6 @@ public func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
 
 func sockaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
     return UnsafeMutablePointer<sockaddr>(p)
-}
-
-func sockadd_list_cast(p: UnsafeMutablePointer<UnsafeMutablePointer<Int8>>) -> UnsafeMutablePointer<UnsafeMutablePointer<in_addr>> {
-    return UnsafeMutablePointer<UnsafeMutablePointer<in_addr>>(p)
 }
 
 func sockaddr_storage_cast(p : UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {

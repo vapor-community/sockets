@@ -11,7 +11,7 @@
 #else
     import Darwin
 #endif
-
+/*
 public struct Bytes4 {
     
     public let raw: (UInt8, UInt8, UInt8, UInt8)
@@ -28,8 +28,8 @@ public struct Bytes4 {
     func toArray() -> [UInt8] {
         return [raw.0, raw.1, raw.2, raw.3]
     }
-}
-
+}*/
+/*
 // 16 Bytes of raw storage
 // primary current use case is storing an IPv6 address
 public struct Bytes16 {
@@ -53,9 +53,9 @@ public struct Bytes16 {
                 raw.8, raw.9, raw.10, raw.11,
                 raw.12, raw.13, raw.14, raw.15]
     }
-}
+}*/
 
-
+/*
 struct Bytes14 {
     let raw: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
     
@@ -63,7 +63,7 @@ struct Bytes14 {
         assert(a.count == 14, "Array must have exactly 14 elements")
         return Bytes14(raw: (a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8], a[9], a[10], a[11], a[12], a[13]))
     }
-}
+}*/
 
 let BufferCapacity = 512
 
