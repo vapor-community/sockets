@@ -73,12 +73,12 @@ extension InternetSocket : ServerSocket {
         var clientAddress = UnsafeMutablePointer<sockaddr_storage>.init(nil)
         
         var length = socklen_t(sizeof(sockaddr_storage) )
-        let clientSocketDescriptor = socket_accept(self.descriptor, sockaddr_storage_cast(clientAddress),&length)
+        let clientSocketDescriptor = socket_accept(self.descriptor, sockaddr_storage_cast(p: clientAddress!),&length)
         
         guard clientSocketDescriptor > -1 else {
             throw Error(.AcceptFailed)
         }
-        let clientSocket = try self.rawSocket.copyWithNewDescriptor(clientSocketDescriptor)
+        let clientSocket = try self.rawSocket.copyWithNewDescriptor(descriptor: clientSocketDescriptor)
         return clientSocket
     }
 }

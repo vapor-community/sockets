@@ -13,18 +13,18 @@ extension Actor {
     }
     
     public func read(maxBytes: Int) throws -> [UInt8] {
-        return try self.getSocket().recv(maxBytes)
+        return try self.getSocket().recv(maxBytes: maxBytes)
     }
     
     public func write(data: [UInt8]) throws {
-        try self.getSocket().send(data)
+        try self.getSocket().send(data: data)
     }
     
     public func readAll() throws -> [UInt8] {
         var buffer: [UInt8] = []
         let chunkSize = 512
         while true {
-            let newData = try self.read(chunkSize)
+            let newData = try self.read(maxBytes: chunkSize)
             buffer.append(contentsOf: newData)
             if newData.count < chunkSize {
                 break
@@ -34,6 +34,6 @@ extension Actor {
     }
     
     public func write(data: String) throws {
-        try self.write(data.toBytes())
+        try self.write(data: data.toBytes())
     }
 }

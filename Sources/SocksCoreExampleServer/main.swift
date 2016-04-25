@@ -28,7 +28,7 @@ let userProvidedInternetAddress = Internet_Address(hostname : "localhost", port 
 let socket = try! InternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
 
 try! socket.bind()
-try! socket.listen(4096)
+try! socket.listen(queueLimit: 4096)
 
 print("Listening on \(userProvidedInternetAddress.hostname) port \(userProvidedInternetAddress.port)")
 
@@ -37,7 +37,7 @@ while true {
     
     //read, echo back, close
     let data = try! client.recv()
-    try! client.send(data)
+    try! client.send(data: data)
     try! client.close()
     print("Echoed: \(try! data.toString())")
 }

@@ -19,6 +19,8 @@ import SocksCore
     private let socket_connect = Darwin.connect
 #endif
 
+// DEPRECATED
+/*
 public class SocketFactory {
     
     /*
@@ -191,3 +193,4 @@ public class SocketFactory {
     }
     
 }
+*/

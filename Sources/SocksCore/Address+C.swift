@@ -76,7 +76,7 @@ public struct Resolver : InternetAddressResolver{
     }
     
     public func resolve(internetAddress : Internet_Address) -> Array<ResolvedInternetAddress>{
-        let resolvedInternetAddressesArray = try!resolveHostnameAndServiceToIPAddresses(self.config, internetAddress: internetAddress)
+        let resolvedInternetAddressesArray = try!resolveHostnameAndServiceToIPAddresses(socketConfig: self.config, internetAddress: internetAddress)
         //
         // TODO: Consider try and catch or other tests (if array contains 0 elements or something like that)
         //
@@ -112,9 +112,9 @@ public struct Resolver : InternetAddressResolver{
         
     var resolvedInternetAddressesArray = Array<ResolvedInternetAddress>()
     while(servinfo != nil){
-        let singleAddress = ResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: servinfo.pointee)
+        let singleAddress = ResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: (servinfo?.pointee)!)
         resolvedInternetAddressesArray.append(singleAddress)
-        servinfo = servinfo.pointee.ai_next
+        servinfo = servinfo?.pointee.ai_next
     }
     
     //
@@ -210,7 +210,7 @@ public func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
     // Prevent memory leaks: getaddrinfo creates an unmanaged linked list on the heap
     // freeaddrinfo(servinfo)
     
-    return servinfo
+    return servinfo!
 }
 
 //Pointer casting

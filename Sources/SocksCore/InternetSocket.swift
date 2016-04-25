@@ -54,7 +54,7 @@ public class InternetSocket: Socket {
 
         let resolver = Resolver(config: socketConfig)
         
-        let resolvedInternetAddressList = resolver.resolve(address)
+        let resolvedInternetAddressList = resolver.resolve(internetAddress: address)
         
         // Let's observe the addresses
         //for singleResolvedInternetAddress in resolvedInternetAddressList {
