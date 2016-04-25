@@ -14,6 +14,7 @@
     private let socket_connect = Darwin.connect
 #endif
 
+/*
 extension InternetSocket : ClientSocket {
     
     public func connect() throws {
@@ -25,8 +26,9 @@ extension InternetSocket : ClientSocket {
         //socket_connect(self.descriptor, address.ai_sockadr, address.ai_addrlen)
     }
 }
+*/
 
-extension KclInternetSocket : ClientSocket {
+extension InternetSocket : ClientSocket {
     
     public func connect() throws {
         let res = socket_connect(self.descriptor, address.resolvedCTypeAddress.ai_addr, address.resolvedCTypeAddress.ai_addrlen)

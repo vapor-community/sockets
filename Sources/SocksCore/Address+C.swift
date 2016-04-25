@@ -16,6 +16,7 @@
 
 //Pretty types -> C types
 
+/*
 extension InternetAddress {
     
     func toCType() throws -> sockaddr {
@@ -62,9 +63,10 @@ extension InternetAddress {
         return addrStruct
     }
 }
-
+*/
+ 
 protocol InternetAddressResolver {
-    func resolve(internetAddress : KclInternetAddress) -> Array<KclResolvedInternetAddress>
+    func resolve(internetAddress : Internet_Address) -> Array<ResolvedInternetAddress>
 }
 
 public struct Resolver : InternetAddressResolver{
@@ -73,7 +75,7 @@ public struct Resolver : InternetAddressResolver{
         self.config = config
     }
     
-    public func resolve(internetAddress : KclInternetAddress) -> Array<KclResolvedInternetAddress>{
+    public func resolve(internetAddress : Internet_Address) -> Array<ResolvedInternetAddress>{
         let resolvedInternetAddressesArray = try!resolveHostnameAndServiceToIPAddresses(self.config, internetAddress: internetAddress)
         //
         // TODO: Consider try and catch or other tests (if array contains 0 elements or something like that)
@@ -82,8 +84,8 @@ public struct Resolver : InternetAddressResolver{
     }
     
     private func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
-                                                        internetAddress : KclInternetAddress) throws
-                                                        ->  Array<KclResolvedInternetAddress>
+                                                        internetAddress : Internet_Address) throws
+                                                        ->  Array<ResolvedInternetAddress>
     {
     //
     // Narrowing down the results we will get from the getaddrinfo call
@@ -108,13 +110,21 @@ public struct Resolver : InternetAddressResolver{
     // we need to remember the head of the linked list to clean up the consumed memory on the head
     let head = servinfo
         
-    var resolvedInternetAddressesArray = Array<KclResolvedInternetAddress>()
+    var resolvedInternetAddressesArray = Array<ResolvedInternetAddress>()
     while(servinfo != nil){
-        let singleAddress = KclResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: servinfo.pointee)
+        let singleAddress = ResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: servinfo.pointee)
         resolvedInternetAddressesArray.append(singleAddress)
         servinfo = servinfo.pointee.ai_next
     }
-        
+    
+    //
+    //  FIXME:  The dynamically allocated linked list of socket_addrinfo objects
+    //          should be deleted from the heap in order to prevent memory leaks
+    //          However, when I [Matthias Kreileder] uncomment the line 'freeaddrinfo(head)'
+    //          my code crashes at runtime :(
+    //          In the code above I tried to COPY the socket_addrinfo into an array
+    //          so that I can (in theory) safely free the memory allocated on the heap.
+    //
     // Prevent memory leaks: getaddrinfo creates an unmanaged linked list on the heap
     //freeaddrinfo(head)
         

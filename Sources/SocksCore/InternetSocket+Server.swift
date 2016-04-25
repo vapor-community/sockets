@@ -17,7 +17,7 @@
     private let socket_listen = Darwin.listen
     private let socket_accept = Darwin.accept
 #endif
-
+/*
 extension InternetSocket : ServerSocket {
     
     public func bind() throws {
@@ -47,8 +47,9 @@ extension InternetSocket : ServerSocket {
         return clientSocket
     }
 }
+*/
 
-extension KclInternetSocket : ServerSocket {
+extension InternetSocket : ServerSocket {
     
     public func bind() throws {
         

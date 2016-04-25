@@ -1,6 +1,6 @@
 
 import SocksCore
-
+/*
 let raw = try! RawSocket(protocolFamily: .Inet, socketType: .Stream, protocol: .TCP)
 let addr = InternetAddress(address: .Hostname("google.com"), port: 80)
 let socket: ClientSocket = InternetSocket(rawSocket: raw, address: addr)
@@ -21,3 +21,5 @@ print("Received: \n\(str)")
 try! socket.close()
 
 print("successfully sent and received data from google.com")
+
+ */

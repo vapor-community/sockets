@@ -6,6 +6,7 @@
 //
 //
 
+/*
 public class InternetSocket: Socket {
     
     public let rawSocket: RawSocket
@@ -32,23 +33,24 @@ public class InternetSocket: Socket {
         try self.rawSocket.close()
     }
 }
+*/
 
-public class KclInternetSocket: Socket {
+public class InternetSocket: Socket {
     
-    public let rawSocket: KclRawSocket
-    public let address: KclResolvedInternetAddress //change to ResolvedInternetAddress
+    public let rawSocket: RawSocket
+    public let address: ResolvedInternetAddress 
     
     public var descriptor: Descriptor {
         return self.rawSocket.descriptor
     }
     
-    public init(rawSocket: KclRawSocket, address: KclResolvedInternetAddress) {
+    public init(rawSocket: RawSocket, address: ResolvedInternetAddress) {
         self.rawSocket = rawSocket
         self.address = address
     }
     
     
-    public convenience init(socketConfig: SocketConfig, address: KclInternetAddress) throws {
+    public convenience init(socketConfig: SocketConfig, address: Internet_Address) throws {
 
         let resolver = Resolver(config: socketConfig)
         
@@ -62,7 +64,7 @@ public class KclInternetSocket: Socket {
         guard resolvedInternetAddressList.count != 0 else {throw Error(.IPAddressValidationFailed) }
         
         // We made it here => address resolution was successul
-        let raw = try! KclRawSocket(socketConfig: socketConfig, resolvedInternetAddress: resolvedInternetAddressList[0])
+        let raw = try! RawSocket(socketConfig: socketConfig, resolvedInternetAddress: resolvedInternetAddressList[0])
         
         self.init(rawSocket: raw, address: resolvedInternetAddressList[0])
      }

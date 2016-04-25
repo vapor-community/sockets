@@ -23,9 +23,9 @@ while true {
 
 let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
 
-let userProvidedInternetAddress = KclInternetAddress(hostname : "localhost", port : .Portnumber(8080))
+let userProvidedInternetAddress = Internet_Address(hostname : "localhost", port : .Portnumber(8080))
 
-let socket = try! KclInternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
+let socket = try! InternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
 
 try! socket.bind()
 try! socket.listen(4096)

@@ -29,12 +29,14 @@ protocol Address {
 
 typealias RawInternetAddress = Int32
 
+/*
 // can later be discarded
 public enum InternetAddressType {
     case Hostname(String)
     case IPv4(Bytes4)
     case IPv6(Bytes16)
 }
+*/
 
 /*
  // from the user, provided by application code
@@ -60,32 +62,33 @@ public enum InternetAddressType {
 //
 //  port    -   see comments for Port enum
 //
-public struct KclInternetAddress {
+public struct Internet_Address {
     public let hostname : String
-    public let port :KclPort
+    public let port :Port
     
-    public init(hostname : String, port :KclPort) {
+    public init(hostname : String, port :Port) {
         self.hostname = hostname
         self.port = port
     }
 }
 
-public struct KclResolvedInternetAddress {
+public struct ResolvedInternetAddress {
     
     // The unresoved InternetAddress
-    private let internetAddress : KclInternetAddress
-    public var InternetAddress : KclInternetAddress{
+    private let internetAddress : Internet_Address
+    public var InternetAddress : Internet_Address{
         return internetAddress
     }
 
     public let resolvedCTypeAddress : addrinfo
     
-    public init(internetAddress : KclInternetAddress, resolvedCTypeAddress : addrinfo){
+    public init(internetAddress : Internet_Address, resolvedCTypeAddress : addrinfo){
         self.internetAddress = internetAddress
         self.resolvedCTypeAddress = resolvedCTypeAddress
     }
 }
 
+/*
 // renamed to ResolvedInternetAddress
 public struct InternetAddress: Address {
     
@@ -107,4 +110,4 @@ public struct InternetAddress: Address {
         self.port = port
     }
 }
-
+*/

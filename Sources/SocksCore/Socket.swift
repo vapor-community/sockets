@@ -31,6 +31,7 @@ public protocol ServerSocket: Socket {
     func accept() throws -> Socket
 }
 
+/*
 public class RawSocket : Socket {
     
     public let descriptor: Descriptor
@@ -69,8 +70,9 @@ public class RawSocket : Socket {
         return try RawSocket(descriptor: descriptor, protocolFamily: self.protocolFamily, socketType: self.socketType, protocolType: self.protocolType)
     }
 }
+*/
 
-public class KclRawSocket : Socket {
+public class RawSocket : Socket {
     
     public let descriptor: Descriptor
     public let socketConfig : SocketConfig
@@ -81,7 +83,7 @@ public class KclRawSocket : Socket {
         self.descriptor = descriptor
     }
     
-    public convenience init(socketConfig : SocketConfig, resolvedInternetAddress : KclResolvedInternetAddress) throws {
+    public convenience init(socketConfig : SocketConfig, resolvedInternetAddress : ResolvedInternetAddress) throws {
         // NOTE: The family field must be set according to the ResolvedInternetAddress address NOT according to the SocketConfig
         // Why that? SocketConfig.familiyType can be set to UNSPECIFIED in order to transparently use IPv4 and IPv6
         // but the socket() function needs a concrete IPv4 or IPv6 argument => we use the family field from the resolved address
@@ -101,11 +103,11 @@ public class KclRawSocket : Socket {
         }
     }
     
-    func copyWithNewDescriptor(descriptor: Descriptor) throws -> KclRawSocket {
-        return try KclRawSocket(descriptor: descriptor, socketConfig: self.socketConfig)
+    func copyWithNewDescriptor(descriptor: Descriptor) throws -> RawSocket {
+        return try RawSocket(descriptor: descriptor, socketConfig: self.socketConfig)
     }
 }
-
+/*
 extension RawSocket {
     
     public static func TCP() throws -> RawSocket {
@@ -116,6 +118,7 @@ extension RawSocket {
         return try RawSocket(protocolFamily: .Inet, socketType: .Datagram, protocol: .UDP)
     }
 }
+*/
 
 /*
  *  A SocketConfig bundels together the information needed to
