@@ -10,7 +10,7 @@ import SocksCore
 
 public class TCPClient: InternetClient {
     
-    public init(internetAddress : Internet_Address) throws {
+    public init(internetAddress : InternetAddress) throws {
         
         let socketConfig = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
         

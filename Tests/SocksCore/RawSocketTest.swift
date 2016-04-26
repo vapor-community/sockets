@@ -25,7 +25,7 @@ class RawSocketTest: XCTestCase {
         let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
         let resolver = Resolver(config: socket_Config)
         
-        let userProvidedInternetAddress = Internet_Address(hostname : "google.com", port : .Portnumber(80))
+        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .Portnumber(80))
         let resolvedInternetAddressList = resolver.resolve(internetAddress: userProvidedInternetAddress)
         
         // Let's observe the addresses

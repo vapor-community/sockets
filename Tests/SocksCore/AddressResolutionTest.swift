@@ -26,30 +26,13 @@ class AddressResolutionTest: XCTestCase {
         let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
         let resolver = Resolver(config: socket_Config)
         
-        let userProvidedInternetAddress = Internet_Address(hostname : "google.com", port : .Portnumber(80))
+        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .Portnumber(80))
         let resolvedInternetAddressList = resolver.resolve(internetAddress: userProvidedInternetAddress)
         
         // Let's observe the addresses
         for singleResolvedInternetAddress in resolvedInternetAddressList {
             print(singleResolvedInternetAddress.resolvedCTypeAddress)
         }
-        
-        ////////////////////////////////////////////////////////
-        /*
-        let resolvedInternetAddress = resolvedInternetAddressList[0]
-        let cProtocolFam = resolvedInternetAddress.resolvedCTypeAddress.ai_family
-        let cType = socket_Config.socketType.toCType()
-        let cProtocol = socket_Config.protocolType.toCType()
-        
-        let descriptor = socket(cProtocolFam, cType, cProtocol)
-        XCTAssertTrue( descriptor >= 0 )
-        
-        let res = connect(descriptor,
-                          resolvedInternetAddress.resolvedCTypeAddress.ai_addr,
-                          resolvedInternetAddress.resolvedCTypeAddress.ai_addrlen)
-        XCTAssertTrue (res == 0)
-        */
-        ////////////////////////////////////////////////////////
         
         XCTAssertTrue(resolvedInternetAddressList.count != 0)
     }

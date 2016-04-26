@@ -13,9 +13,9 @@ public class InternetActor: Actor {
     private var socket: InternetSocket? = nil
     
     let config: SocketConfig
-    let address: Internet_Address
+    let address: InternetAddress
     
-    public init(socketConfig : SocketConfig, internetAddress : Internet_Address) throws {
+    public init(socketConfig : SocketConfig, internetAddress : InternetAddress) throws {
         self.config = socketConfig
         self.address = internetAddress
     }

@@ -17,7 +17,7 @@
 //Pretty types -> C types
  
 protocol InternetAddressResolver {
-    func resolve(internetAddress : Internet_Address) -> Array<ResolvedInternetAddress>
+    func resolve(internetAddress : InternetAddress) -> [ResolvedInternetAddress]
 }
 
 public struct Resolver : InternetAddressResolver{
@@ -26,7 +26,7 @@ public struct Resolver : InternetAddressResolver{
         self.config = config
     }
     
-    public func resolve(internetAddress : Internet_Address) -> Array<ResolvedInternetAddress>{
+    public func resolve(internetAddress : InternetAddress) -> [ResolvedInternetAddress]{
         let resolvedInternetAddressesArray = try!resolveHostnameAndServiceToIPAddresses(socketConfig: self.config, internetAddress: internetAddress)
         //
         // TODO: Consider try and catch or other tests (if array contains 0 elements or something like that)
@@ -35,7 +35,7 @@ public struct Resolver : InternetAddressResolver{
     }
     
     private func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
-                                                        internetAddress : Internet_Address) throws
+                                                        internetAddress : InternetAddress) throws
                                                         ->  Array<ResolvedInternetAddress>
     {
     //

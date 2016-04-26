@@ -10,7 +10,7 @@ import SocksCore
 
 public class UDPClient: InternetClient {
     
-    init(internetAddress : Internet_Address) {
+    init(internetAddress : InternetAddress) {
         fatalError("Unimplemented")
 //        super.init(hostname: hostname, port: port) {
             //THIS is where we'll create the UDP client, not implemented yet

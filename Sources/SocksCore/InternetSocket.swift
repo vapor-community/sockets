@@ -21,7 +21,7 @@ public class InternetSocket: Socket {
     }
     
     
-    public convenience init(socketConfig: SocketConfig, address: Internet_Address) throws {
+    public convenience init(socketConfig: SocketConfig, address: InternetAddress) throws {
 
         let resolver = Resolver(config: socketConfig)
         

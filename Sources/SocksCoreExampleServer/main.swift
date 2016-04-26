@@ -3,7 +3,7 @@ import SocksCore
 
 let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
 
-let userProvidedInternetAddress = Internet_Address(hostname : "localhost", port : .Portnumber(8080))
+let userProvidedInternetAddress = InternetAddress(hostname : "localhost", port : .Portnumber(8080))
 
 let socket = try! InternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
 

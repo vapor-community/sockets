@@ -14,7 +14,7 @@ class LiveTests: XCTestCase {
     func testLive_Connect_Google() {
         
         let socketConfig = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
-        let addr = Internet_Address(hostname: "google.com", port: .Portnumber(80))
+        let addr = InternetAddress(hostname: "google.com", port: .Portnumber(80))
         let socket = try! InternetSocket(socketConfig: socketConfig, address: addr)
         try! socket.connect()
         try! socket.close()
@@ -23,7 +23,7 @@ class LiveTests: XCTestCase {
     
     func testLive_HTTP_Get_Google() {
         let socketConfig = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
-        let addr = Internet_Address(hostname: "google.com", port: .Portnumber(80))
+        let addr = InternetAddress(hostname: "google.com", port: .Portnumber(80))
         let socket = try! InternetSocket(socketConfig: socketConfig, address: addr)
         try! socket.connect()
         

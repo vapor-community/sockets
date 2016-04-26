@@ -45,7 +45,7 @@ typealias RawInternetAddress = Int32
 //
 //  port    -   see comments for Port enum
 //
-public struct Internet_Address {
+public struct InternetAddress {
     public let hostname : String
     public let port :Port
     
@@ -58,15 +58,17 @@ public struct Internet_Address {
 public struct ResolvedInternetAddress {
     
     // The unresoved InternetAddress
-    private let internetAddress : Internet_Address
-    public var InternetAddress : Internet_Address{
-        return internetAddress
+    private let internetAddr : InternetAddress
+    public var internetAddress : InternetAddress{
+        get {
+            return internetAddr
+        }
     }
 
     public let resolvedCTypeAddress : addrinfo
     
-    public init(internetAddress : Internet_Address, resolvedCTypeAddress : addrinfo){
-        self.internetAddress = internetAddress
+    public init(internetAddress : InternetAddress, resolvedCTypeAddress : addrinfo){
+        self.internetAddr = internetAddress
         self.resolvedCTypeAddress = resolvedCTypeAddress
     }
 }
