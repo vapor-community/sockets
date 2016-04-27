@@ -79,6 +79,14 @@ public struct SocketConfig {
         self.socketType     = socketType
         self.protocolType   = protocolType
     }
+    
+    public static func TCP() -> SocketConfig {
+        return self.init(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+    }
+    
+    public static func UDP() -> SocketConfig {
+        return self.init(addressFamily: .Unspecified, socketType: .Datagram, protocolType: .UDP)
+    }
 }
 
 

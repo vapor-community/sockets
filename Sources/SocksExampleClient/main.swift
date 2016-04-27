@@ -1,6 +1,6 @@
 
 import Socks
-import SocksCore    // needed for InternetAddress ... 
+import SocksCore    
 
 let internetAddress = InternetAddress(hostname: "google.com", port: .PortNumber(80))
 let client = try! TCPClient(internetAddress : internetAddress)

@@ -1,8 +1,7 @@
 
 import SocksCore
 
-//let raw = try! RawSocket(protocolFamily: .Inet, socketType: .Stream, protocol: .TCP)
-let socketConfig = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+let socketConfig = SocketConfig.TCP()
 let addr = InternetAddress(hostname: "google.com", port: .PortNumber(80))
 let socket: ClientSocket = try! InternetSocket(socketConfig: socketConfig, address: addr)
 try! socket.connect()

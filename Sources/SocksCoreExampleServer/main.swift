@@ -1,7 +1,7 @@
 
 import SocksCore
 
-let socket_Config = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+let socket_Config = SocketConfig.TCP()
 
 let userProvidedInternetAddress = InternetAddress(hostname : "localhost", port : .PortNumber(8080))
 
