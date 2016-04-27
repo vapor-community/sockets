@@ -42,11 +42,8 @@ public class RawSocket : Socket {
         self.descriptor = descriptor
     }
     
-    public convenience init(socketConfig : SocketConfig, resolvedInternetAddress : ResolvedInternetAddress) throws {
-        // NOTE: The family field must be set according to the ResolvedInternetAddress address NOT according to the SocketConfig
-        // Why that? SocketConfig.familiyType can be set to UNSPECIFIED in order to transparently use IPv4 and IPv6
-        // but the socket() function needs a concrete IPv4 or IPv6 argument => we use the family field from the resolved address
-        let cProtocolFam = resolvedInternetAddress.resolvedCTypeAddress.ai_family
+    public convenience init(socketConfig : SocketConfig) throws {
+        let cProtocolFam = socketConfig.addressFamily.toCType()
         let cType = socketConfig.socketType.toCType()
         let cProtocol = socketConfig.protocolType.toCType()
         
@@ -73,7 +70,7 @@ public class RawSocket : Socket {
  */
 public struct SocketConfig {
 
-    public let addressFamily : AddressFamily
+    public var addressFamily : AddressFamily
     public let socketType : SocketType
     public let protocolType : Protocol
     
@@ -83,6 +80,5 @@ public struct SocketConfig {
         self.protocolType   = protocolType
     }
 }
-
 
 

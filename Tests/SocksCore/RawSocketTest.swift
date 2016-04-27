@@ -12,7 +12,7 @@ import XCTest
 class RawSocketTest: XCTestCase {
 
     func testRawSocket(){
-        let socket_Config = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+        let socket_Config = SocketConfig(addressFamily: .Inet6, socketType: .Stream, protocolType: .TCP)
         let resolver = Resolver(config: socket_Config)
         
         let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .PortNumber(80))
@@ -28,7 +28,7 @@ class RawSocketTest: XCTestCase {
         //
         // interesting part starts here: did the socket() call succeed?
         //
-        let raw = try! RawSocket(socketConfig: socket_Config, resolvedInternetAddress: resolvedInternetAddressList[0])
+        let raw = try! RawSocket(socketConfig: socket_Config)
         
         XCTAssertTrue(raw.descriptor > 0)
         
