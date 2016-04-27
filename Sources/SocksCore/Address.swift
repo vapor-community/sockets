@@ -67,7 +67,7 @@ public struct ResolvedInternetAddress {
 
     public let resolvedCTypeAddress : addrinfo
     
-    public init(internetAddress : InternetAddress, resolvedCTypeAddress : addrinfo){
+    public init(internetAddress: InternetAddress, resolvedCTypeAddress: addrinfo){
         self.internetAddr = internetAddress
         self.resolvedCTypeAddress = resolvedCTypeAddress
     }

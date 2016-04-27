@@ -17,7 +17,6 @@
 		3AABD92F1C9F401D000FE30F /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AABD92E1C9F401D000FE30F /* Actor.swift */; };
 		3AABD9311C9F4259000FE30F /* SynchronousServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AABD9301C9F4259000FE30F /* SynchronousServer.swift */; };
 		3AABD9331C9F4350000FE30F /* SynchronousTCPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AABD9321C9F4350000FE30F /* SynchronousTCPServer.swift */; };
-		4C07E0F31CA9719B008F7CF6 /* SocketFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C07E0F21CA9719B008F7CF6 /* SocketFactory.swift */; };
 		4C2E9CAD1CBD45F0003F7CB3 /* RawSocketTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2E9CAC1CBD45F0003F7CB3 /* RawSocketTest.swift */; };
 		4C2E9CAF1CBD6F12003F7CB3 /* ClientSocketTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2E9CAE1CBD6F12003F7CB3 /* ClientSocketTest.swift */; };
 		4CEA97711CB142DC00773120 /* AddressResolutionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEA97701CB142DC00773120 /* AddressResolutionTest.swift */; };
@@ -73,7 +72,6 @@
 		3AABD92E1C9F401D000FE30F /* Actor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
 		3AABD9301C9F4259000FE30F /* SynchronousServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronousServer.swift; sourceTree = "<group>"; };
 		3AABD9321C9F4350000FE30F /* SynchronousTCPServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronousTCPServer.swift; sourceTree = "<group>"; };
-		4C07E0F21CA9719B008F7CF6 /* SocketFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketFactory.swift; sourceTree = "<group>"; };
 		4C2E9CAC1CBD45F0003F7CB3 /* RawSocketTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawSocketTest.swift; sourceTree = "<group>"; };
 		4C2E9CAE1CBD6F12003F7CB3 /* ClientSocketTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientSocketTest.swift; sourceTree = "<group>"; };
 		4CEA97701CB142DC00773120 /* AddressResolutionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressResolutionTest.swift; sourceTree = "<group>"; };
@@ -232,7 +230,6 @@
 				3AABD92C1C9F3F79000FE30F /* ClientConnection.swift */,
 				3AABD9301C9F4259000FE30F /* SynchronousServer.swift */,
 				3AABD9321C9F4350000FE30F /* SynchronousTCPServer.swift */,
-				4C07E0F21CA9719B008F7CF6 /* SocketFactory.swift */,
 			);
 			name = Socks;
 			path = ../Sources/Socks;
@@ -482,7 +479,6 @@
 				3AABD92D1C9F3F79000FE30F /* ClientConnection.swift in Sources */,
 				__src_cc_ref_Sources/Socks/TCPClient.swift /* TCPClient.swift in Sources */,
 				__src_cc_ref_Sources/Socks/UDPClient.swift /* UDPClient.swift in Sources */,
-				4C07E0F31CA9719B008F7CF6 /* SocketFactory.swift in Sources */,
 				3AABD9331C9F4350000FE30F /* SynchronousTCPServer.swift in Sources */,
 				3AABD92F1C9F401D000FE30F /* Actor.swift in Sources */,
 			);

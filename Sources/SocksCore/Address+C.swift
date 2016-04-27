@@ -17,7 +17,7 @@
 //Pretty types -> C types
  
 protocol InternetAddressResolver {
-    func resolve(internetAddress : InternetAddress) throws -> [ResolvedInternetAddress]
+    func resolve(internetAddress: InternetAddress) throws -> [ResolvedInternetAddress]
 }
 
 // Brief:   Given given a hostname and a service this struct returns a list of
@@ -39,13 +39,13 @@ public struct Resolver : InternetAddressResolver{
         self.config = config
     }
     
-    public func resolve(internetAddress : InternetAddress) throws -> [ResolvedInternetAddress] {
+    public func resolve(internetAddress: InternetAddress) throws -> [ResolvedInternetAddress] {
         let resolvedInternetAddressesArray = try resolveHostnameAndServiceToIPAddresses(socketConfig: self.config, internetAddress: internetAddress)
         return resolvedInternetAddressesArray
     }
     
-    private func resolveHostnameAndServiceToIPAddresses(socketConfig : SocketConfig,
-                                                        internetAddress : InternetAddress) throws
+    private func resolveHostnameAndServiceToIPAddresses(socketConfig: SocketConfig,
+                                                        internetAddress: InternetAddress) throws
                                                         ->  Array<ResolvedInternetAddress>
     {
     //

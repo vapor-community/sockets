@@ -12,8 +12,6 @@ func htons(value: CUnsignedShort) -> CUnsignedShort {
     return (value << 8) + (value >> 8)
 }
 
-import Foundation
-
 extension Array {
     
     func periodSeparatedString() -> String {
