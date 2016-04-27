@@ -31,14 +31,12 @@ public enum Protocol {
 public enum AddressFamily {
     case Inet           // IPv4
     case Inet6          // IPv6
-    case UNSPECIFIED    // If you do not care if IPv4 or IPv6 - the name
+    case Unspecified    // If you do not care if IPv4 or IPv6 - the name
                         // resolution will dynamically decide if IPv4 or 
                         // IPv6 is applicable
 }
 
 public typealias Descriptor = Int32
-// DEPRECATED
-//public typealias Port = UInt16
 
 //
 //  A Port can be specified as an integer or
@@ -46,8 +44,8 @@ public typealias Descriptor = Int32
 //  Port to "echo" or to the number 7
 //
 public enum Port {
-    case Servicenameostname(String)
-    case Portnumber(UInt16)
+    case ServiceName(String)
+    case PortNumber(UInt16)
 }
 
 //Extensions
@@ -67,9 +65,9 @@ protocol CTypeUnsafePointerOfInt8TypeConvertible {
 extension Port : CTypeStringConvertable {
     func toString() -> String {
         switch self {
-        case .Servicenameostname(let service):
+        case .ServiceName(let service):
             return service
-        case .Portnumber(let portNumber):
+        case .PortNumber(let portNumber):
             return String(portNumber)
         }
     }
@@ -118,7 +116,7 @@ extension AddressFamily: CTypeInt32Convertible {
         switch self {
         case .Inet: return Int32(AF_INET)
         case .Inet6: return Int32(AF_INET6)
-        case .UNSPECIFIED : return Int32(AF_UNSPEC)
+        case .Unspecified : return Int32(AF_UNSPEC)
         }
     }
 }

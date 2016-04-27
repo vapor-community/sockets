@@ -25,12 +25,12 @@ public class InternetSocket: Socket {
 
         let resolver = Resolver(config: socketConfig)
         
-        let resolvedInternetAddressList = resolver.resolve(internetAddress: address)
+        let resolvedInternetAddressList = try resolver.resolve(internetAddress: address)
         
-        guard resolvedInternetAddressList.count != 0 else {throw Error(.IPAddressValidationFailed) }
+        guard !resolvedInternetAddressList.isEmpty else {throw Error(.IPAddressValidationFailed) }
         
         // We made it here => address resolution was successul
-        let raw = try! RawSocket(socketConfig: socketConfig, resolvedInternetAddress: resolvedInternetAddressList[0])
+        let raw = try RawSocket(socketConfig: socketConfig, resolvedInternetAddress: resolvedInternetAddressList[0])
         
         self.init(rawSocket: raw, address: resolvedInternetAddressList[0])
      }

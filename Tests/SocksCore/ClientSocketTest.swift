@@ -11,21 +11,11 @@ import XCTest
 
 class ClientSocketTest: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-
     func testClientSocket() {
         
-        let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
+        let socket_Config = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
         
-        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .Portnumber(80))
+        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .PortNumber(80))
         
         let socket = try! InternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
         try! socket.connect()
@@ -46,7 +36,5 @@ class ClientSocketTest: XCTestCase {
         
         print("successfully sent and received data from google.com")
     }
-
-
 
 }

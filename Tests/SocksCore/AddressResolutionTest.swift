@@ -23,11 +23,11 @@ class AddressResolutionTest: XCTestCase {
 
     func testResolver() {
         
-        let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
+        let socket_Config = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
         let resolver = Resolver(config: socket_Config)
         
-        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .Portnumber(80))
-        let resolvedInternetAddressList = resolver.resolve(internetAddress: userProvidedInternetAddress)
+        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .PortNumber(80))
+        let resolvedInternetAddressList = try! resolver.resolve(internetAddress: userProvidedInternetAddress)
         
         // Let's observe the addresses
         for singleResolvedInternetAddress in resolvedInternetAddressList {

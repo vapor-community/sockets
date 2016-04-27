@@ -1,14 +1,14 @@
 
 import SocksCore
 
-let socket_Config = SocketConfig(addressFamily: .UNSPECIFIED, socketType: .Stream, protocolType: .TCP)
+let socket_Config = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
 
-let userProvidedInternetAddress = InternetAddress(hostname : "localhost", port : .Portnumber(8080))
+let userProvidedInternetAddress = InternetAddress(hostname : "localhost", port : .PortNumber(8080))
 
 let socket = try! InternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
 
 try! socket.bind()
-try! socket.listen(queueLimit: 4096)
+try! socket.listen()
 
 print("Listening on \(userProvidedInternetAddress.hostname) port \(userProvidedInternetAddress.port)")
 
