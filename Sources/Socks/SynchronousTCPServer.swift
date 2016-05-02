@@ -12,9 +12,7 @@ public class SynchronousTCPServer: SynchronousServer {
     
     public init(internetAddress : InternetAddress) throws {
         
-        let socketConfig = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
-        
-        let server = try InternetServer(socketConfig : socketConfig, internetAddress: internetAddress)
+        let server = try InternetServer(socketConfig: .TCP(), internetAddress: internetAddress)
         super.init(server: server)
     }
 }

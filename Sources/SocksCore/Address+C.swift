@@ -20,13 +20,13 @@ protocol InternetAddressResolver {
     func resolve(internetAddress: InternetAddress) throws -> [ResolvedInternetAddress]
 }
 
-// Brief:   Given given a hostname and a service this struct returns a list of
+// Brief:   Given a hostname and a service this struct returns a list of
 //          IP and Port adresses that where obtained during the name resolution
 //          e.g. "localhost" and "echo" as arguments will result in a list of
 //          IP addresses of the machine that runs the program and port set to 7
 //
-public struct Resolver : InternetAddressResolver{
-    private let config : SocketConfig
+struct Resolver: InternetAddressResolver{
+    private let config: SocketConfig
     
     
     // config       -   the provided SocketConfig object guides the name resolution
@@ -35,19 +35,16 @@ public struct Resolver : InternetAddressResolver{
     //                  E.g. set them to .STREAM .TCP to obtain address for a TCP Stream socket
     //              -   Set the addressFamily field to .UNSPECIFIED if you don't care if the
     //                  name resolution leads to IPv4 or IPv6 addresses.
-    public init(config : SocketConfig){
+    init(config: SocketConfig){
         self.config = config
     }
     
-    public func resolve(internetAddress: InternetAddress) throws -> [ResolvedInternetAddress] {
-        let resolvedInternetAddressesArray = try resolveHostnameAndServiceToIPAddresses(socketConfig: self.config, internetAddress: internetAddress)
+    func resolve(internetAddress: InternetAddress) throws -> [ResolvedInternetAddress] {
+        let resolvedInternetAddressesArray = try Resolver._resolve(socketConfig: self.config, internetAddress: internetAddress)
         return resolvedInternetAddressesArray
     }
     
-    private func resolveHostnameAndServiceToIPAddresses(socketConfig: SocketConfig,
-                                                        internetAddress: InternetAddress) throws
-                                                        ->  Array<ResolvedInternetAddress>
-    {
+    private static func _resolve(socketConfig: SocketConfig, internetAddress: InternetAddress) throws ->  [ResolvedInternetAddress] {
     //
     // Narrowing down the results we will get from the getaddrinfo call
     //
@@ -71,7 +68,7 @@ public struct Resolver : InternetAddressResolver{
     // we need to remember the head of the linked list to clean up the consumed memory on the head
     let head = servinfo
         
-    var resolvedInternetAddressesArray = Array<ResolvedInternetAddress>()
+    var resolvedInternetAddressesArray = [ResolvedInternetAddress]()
     while(servinfo != nil){
         let singleAddress = ResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: (servinfo?.pointee)!)
         resolvedInternetAddressesArray.append(singleAddress)
@@ -100,7 +97,7 @@ func sockaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockad
     return UnsafeMutablePointer<sockaddr>(p)
 }
 
-func sockaddr_storage_cast(p : UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
+func sockaddr_storage_cast(p : UnsafeMutablePointer<Void>?) -> UnsafeMutablePointer<sockaddr>? {
     return UnsafeMutablePointer<sockaddr>(p)
 }
 

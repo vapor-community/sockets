@@ -12,8 +12,6 @@ public class TCPClient: InternetClient {
     
     public init(internetAddress: InternetAddress) throws {
         
-        let socketConfig = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
-        
-        try super.init(socketConfig: socketConfig, internetAddress: internetAddress)
+        try super.init(socketConfig: .TCP(), internetAddress: internetAddress)
     }
 }

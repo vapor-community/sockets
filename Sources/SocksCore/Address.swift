@@ -15,8 +15,8 @@
 //
 //  Brief: Specify an internet address
 //
-//  Example of the (assumend) main use case:
-//  assign a string to the hostname e.g. www.google.com
+//  Example of the (assumed) main use case:
+//  assign a string to the hostname e.g. google.com
 //  and specify the Port via an integer or a service name
 //
 //  hostname -  can be set to a string that denotes 
@@ -27,10 +27,10 @@
 //  port    -   see comments for Port enum
 //
 public struct InternetAddress {
-    public let hostname : String
-    public let port :Port
+    public let hostname: String
+    public let port: Port
     
-    public init(hostname : String, port :Port) {
+    public init(hostname: String, port: Port) {
         self.hostname = hostname
         self.port = port
     }
@@ -38,18 +38,16 @@ public struct InternetAddress {
 
 public struct ResolvedInternetAddress {
     
-    // The unresoved InternetAddress
-    private let internetAddr : InternetAddress
-    public var internetAddress : InternetAddress{
-        get {
-            return internetAddr
-        }
-    }
-
-    public let resolvedCTypeAddress : addrinfo
+    // The unresolved InternetAddress
+    let internetAddress: InternetAddress
+    let resolvedCTypeAddress: addrinfo
     
-    public init(internetAddress: InternetAddress, resolvedCTypeAddress: addrinfo){
-        self.internetAddr = internetAddress
+    func addressFamily() throws -> AddressFamily {
+        return try AddressFamily(fromCType: resolvedCTypeAddress.ai_family)
+    }
+    
+    init(internetAddress: InternetAddress, resolvedCTypeAddress: addrinfo){
+        self.internetAddress = internetAddress
         self.resolvedCTypeAddress = resolvedCTypeAddress
     }
 }

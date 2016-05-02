@@ -37,14 +37,15 @@ extension InternetSocket : ServerSocket {
         
         // the type of this variable is big enough to store a IPv6 (and of course a IPv4) address
         // that's important because we don't know upfront if a IPv6 or a IPv4 client wants to connect
-        var clientAddress = UnsafeMutablePointer<sockaddr_storage>.init(nil)
+        let clientAddress = UnsafeMutablePointer<sockaddr_storage>.init(nil)
         
-        var length = socklen_t(sizeof(sockaddr_storage) )
-        let clientSocketDescriptor = socket_accept(self.descriptor, sockaddr_storage_cast(p: clientAddress!),&length)
+        var length = socklen_t(sizeof(sockaddr_storage))
+        let addr = sockaddr_storage_cast(p: clientAddress)
         
-        guard clientSocketDescriptor > -1 else {
-            throw Error(.AcceptFailed)
-        }
+        let clientSocketDescriptor = socket_accept(self.descriptor, addr, &length)
+        
+        guard clientSocketDescriptor > -1 else { throw Error(.AcceptFailed) }
+        
         let clientSocket = try self.rawSocket.copyWithNewDescriptor(descriptor: clientSocketDescriptor)
         return clientSocket
     }

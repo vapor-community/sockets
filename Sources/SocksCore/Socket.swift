@@ -42,7 +42,7 @@ public class RawSocket : Socket {
         self.descriptor = descriptor
     }
     
-    public convenience init(socketConfig : SocketConfig) throws {
+    public convenience init(socketConfig: SocketConfig) throws {
         let cProtocolFam = socketConfig.addressFamily.toCType()
         let cType = socketConfig.socketType.toCType()
         let cProtocol = socketConfig.protocolType.toCType()
@@ -70,14 +70,14 @@ public class RawSocket : Socket {
  */
 public struct SocketConfig {
 
-    public var addressFamily : AddressFamily
-    public let socketType : SocketType
-    public let protocolType : Protocol
+    public var addressFamily: AddressFamily
+    public let socketType: SocketType
+    public let protocolType: Protocol
     
-    public init(addressFamily : AddressFamily, socketType : SocketType, protocolType : Protocol){
+    public init(addressFamily: AddressFamily, socketType: SocketType, protocolType: Protocol){
         self.addressFamily = addressFamily
-        self.socketType     = socketType
-        self.protocolType   = protocolType
+        self.socketType = socketType
+        self.protocolType = protocolType
     }
     
     public static func TCP() -> SocketConfig {

@@ -1,18 +1,17 @@
 
 import SocksCore
 
-let socket_Config = SocketConfig.TCP()
-
-let userProvidedInternetAddress = InternetAddress(hostname : "localhost", port : .PortNumber(8080))
-
-let socket = try! InternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
+let address = InternetAddress(hostname : "localhost", port : .PortNumber(8080))
+let socket = try! InternetSocket(socketConfig: .TCP(), address: address)
 
 try! socket.bind()
 try! socket.listen()
 
-print("Listening on \(userProvidedInternetAddress.hostname) port \(userProvidedInternetAddress.port)")
+print("Listening on \(address.hostname) port \(address.port)")
 
 while true {
+    
+    //block until a connection is made by a client
     let client = try! socket.accept()
     
     //read, echo back, close

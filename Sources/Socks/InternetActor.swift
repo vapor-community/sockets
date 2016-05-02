@@ -21,10 +21,13 @@ public class InternetActor: Actor {
     }
     
     public func getSocket() throws -> Socket {
-        guard self.socket == nil else { return self.socket! }
+        if let socket = self.socket {
+            return socket
+        }
         
-        self.socket = try InternetSocket(socketConfig: self.config, address: self.address)
-        return self.socket!
+        let socket = try InternetSocket(socketConfig: self.config, address: self.address)
+        self.socket = socket
+        return socket
     }
 }
 

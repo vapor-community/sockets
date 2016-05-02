@@ -50,7 +50,7 @@ public enum Port {
 
 //Extensions
 
-protocol CTypeStringConvertable {
+protocol StringConvertable {
     func toString() -> String
 }
 
@@ -62,7 +62,7 @@ protocol CTypeUnsafePointerOfInt8TypeConvertible {
     func toCTypeUnsafePointerOfInt8() -> UnsafePointer<Int8>
 }
 
-extension Port : CTypeStringConvertable {
+extension Port: StringConvertable {
     func toString() -> String {
         switch self {
         case .ServiceName(let service):
@@ -117,6 +117,19 @@ extension AddressFamily: CTypeInt32Convertible {
         case .Inet: return Int32(AF_INET)
         case .Inet6: return Int32(AF_INET6)
         case .Unspecified : return Int32(AF_UNSPEC)
+        }
+    }
+}
+
+extension AddressFamily {
+    
+    init(fromCType cType: Int32) throws {
+        
+        switch cType {
+        case Int32(AF_INET): self = .Inet
+        case Int32(AF_INET6): self = .Inet6
+        case Int32(AF_UNSPEC): self = .Unspecified
+        default: throw Error(.UnsupportedSocketAddressFamily(cType))
         }
     }
 }
