@@ -10,9 +10,8 @@ import SocksCore
 
 public class TCPClient: InternetClient {
     
-    public init(hostname: String, port: Int) throws {
-        try super.init(hostname: hostname, port: port) {
-            return try RawSocket(protocolFamily: .Inet, socketType: .Stream, protocol: .TCP)
-        }
+    public init(internetAddress: InternetAddress) throws {
+        
+        try super.init(socketConfig: .TCP(), internetAddress: internetAddress)
     }
 }

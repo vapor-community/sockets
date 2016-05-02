@@ -2,7 +2,7 @@
 //  Address.swift
 //  Socks
 //
-//  Created by Honza Dvorsky on 3/20/16.
+//  Created by Matthias Kreileder on 3/20/16.
 //
 //
 
@@ -12,32 +12,42 @@
     import Darwin
 #endif
 
-struct RawAddress {
-    let family: AddressFamily
-    let bytes: Bytes14
-}
-
-protocol Address {
-    func toCType() throws -> sockaddr
-}
-
-// Internet address
-
-typealias RawInternetAddress = Int32
-
-public enum InternetAddressType {
-    case Hostname(String)
-    case IPv4(Bytes4)
-}
-
-public struct InternetAddress: Address {
-    
-    public let address: InternetAddressType
+//
+//  Brief: Specify an internet address
+//
+//  Example of the (assumed) main use case:
+//  assign a string to the hostname e.g. google.com
+//  and specify the Port via an integer or a service name
+//
+//  hostname -  can be set to a string that denotes 
+//              a hostname e.g. "localhost" or
+//              an IPv4 address e.g. "127.0.0.1" or
+//              an IPv6 address e.g. "::1"
+//
+//  port    -   see comments for Port enum
+//
+public struct InternetAddress {
+    public let hostname: String
     public let port: Port
     
-    public init(address: InternetAddressType, port: Port) {
-        self.address = address
+    public init(hostname: String, port: Port) {
+        self.hostname = hostname
         self.port = port
     }
 }
 
+public struct ResolvedInternetAddress {
+    
+    // The unresolved InternetAddress
+    let internetAddress: InternetAddress
+    let resolvedCTypeAddress: addrinfo
+    
+    func addressFamily() throws -> AddressFamily {
+        return try AddressFamily(fromCType: resolvedCTypeAddress.ai_family)
+    }
+    
+    init(internetAddress: InternetAddress, resolvedCTypeAddress: addrinfo){
+        self.internetAddress = internetAddress
+        self.resolvedCTypeAddress = resolvedCTypeAddress
+    }
+}

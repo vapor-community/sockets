@@ -1,16 +1,17 @@
 
 import SocksCore
 
-let raw = try! RawSocket(protocolFamily: .Inet, socketType: .Stream, protocol: .TCP)
-let addr = InternetAddress(address: .Hostname("localhost"), port: 8080)
-let socket = InternetSocket(rawSocket: raw, address: addr)
+let address = InternetAddress(hostname : "localhost", port : .PortNumber(8080))
+let socket = try! InternetSocket(socketConfig: .TCP(), address: address)
 
 try! socket.bind()
 try! socket.listen()
 
-print("Listening on \(addr)")
+print("Listening on \(address.hostname) port \(address.port)")
 
 while true {
+    
+    //block until a connection is made by a client
     let client = try! socket.accept()
     
     //read, echo back, close
@@ -19,4 +20,3 @@ while true {
     try! client.close()
     print("Echoed: \(try! data.toString())")
 }
-

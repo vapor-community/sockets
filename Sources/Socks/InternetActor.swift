@@ -10,26 +10,24 @@ import SocksCore
 
 public class InternetActor: Actor {
     
-    let hostname: String
-    let port: Int
-    let rawSocketProvider: () throws -> RawSocket
-    
     private var socket: InternetSocket? = nil
     
-    public init(hostname: String, port: Int, rawSocketProvider: () throws -> RawSocket) throws {
-        self.hostname = hostname
-        self.port = port
-        self.rawSocketProvider = rawSocketProvider
+    let config: SocketConfig
+    let address: InternetAddress
+    
+    public init(socketConfig: SocketConfig, internetAddress: InternetAddress) throws {
+        self.config = socketConfig
+        self.address = internetAddress
     }
     
     public func getSocket() throws -> Socket {
-        guard self.socket == nil else { return self.socket! }
+        if let socket = self.socket {
+            return socket
+        }
         
-        let raw = try self.rawSocketProvider()
-        let address = InternetAddress(address: .Hostname(self.hostname), port: UInt16(self.port))
-        self.socket = InternetSocket(rawSocket: raw, address: address)
-
-        return self.socket!
+        let socket = try InternetSocket(socketConfig: self.config, address: self.address)
+        self.socket = socket
+        return socket
     }
 }
 

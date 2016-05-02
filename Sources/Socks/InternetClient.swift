@@ -10,8 +10,8 @@ import SocksCore
 
 public class InternetClient: InternetActor, Client {
     
-    override init(hostname: String, port: Int, rawSocketProvider: () throws -> RawSocket) throws {
-        try super.init(hostname: hostname, port: port, rawSocketProvider: rawSocketProvider)
+    override init(socketConfig: SocketConfig, internetAddress: InternetAddress) throws {
+        try super.init(socketConfig : socketConfig, internetAddress :  internetAddress)
         guard let clientSocket = try self.getSocket() as? ClientSocket else {
             fatalError("Usage error: socket should be a ClientSocket")
         }

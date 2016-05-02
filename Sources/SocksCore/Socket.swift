@@ -34,28 +34,23 @@ public protocol ServerSocket: Socket {
 public class RawSocket : Socket {
     
     public let descriptor: Descriptor
-    let protocolFamily: ProtocolFamily
-    let socketType: SocketType
-    let protocolType: Protocol
+    public let socketConfig : SocketConfig
     
-    private init(descriptor: Descriptor, protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocolType: Protocol) throws {
+    private init(descriptor: Descriptor, socketConfig: SocketConfig) throws {
         
-        self.protocolFamily = protocolFamily
-        self.socketType = socketType
-        self.protocolType = protocolType
+        self.socketConfig = socketConfig
         self.descriptor = descriptor
     }
     
-    public convenience init(protocolFamily: ProtocolFamily = .Inet, socketType: SocketType, protocol protocolType: Protocol) throws {
-        
-        let cProtocolFam = protocolFamily.toCType()
-        let cType = socketType.toCType()
-        let cProtocol = protocolType.toCType()
+    public convenience init(socketConfig: SocketConfig) throws {
+        let cProtocolFam = socketConfig.addressFamily.toCType()
+        let cType = socketConfig.socketType.toCType()
+        let cProtocol = socketConfig.protocolType.toCType()
         
         let descriptor = socket(cProtocolFam, cType, cProtocol)
         guard descriptor > 0 else { throw Error(.CreateSocketFailed) }
         
-        try self.init(descriptor: descriptor, protocolFamily: protocolFamily, socketType: socketType, protocolType: protocolType)
+        try self.init(descriptor: descriptor, socketConfig: socketConfig)
     }
     
     public func close() throws {
@@ -65,22 +60,33 @@ public class RawSocket : Socket {
     }
     
     func copyWithNewDescriptor(descriptor: Descriptor) throws -> RawSocket {
-        return try RawSocket(descriptor: descriptor, protocolFamily: self.protocolFamily, socketType: self.socketType, protocolType: self.protocolType)
+        return try RawSocket(descriptor: descriptor, socketConfig: self.socketConfig)
     }
 }
 
-extension RawSocket {
+/*
+ *  A SocketConfig bundels together the information needed to
+ *  create a socket 
+ */
+public struct SocketConfig {
+
+    public var addressFamily: AddressFamily
+    public let socketType: SocketType
+    public let protocolType: Protocol
     
-    public static func TCP() throws -> RawSocket {
-        return try RawSocket(protocolFamily: .Inet, socketType: .Stream, protocol: .TCP)
+    public init(addressFamily: AddressFamily, socketType: SocketType, protocolType: Protocol){
+        self.addressFamily = addressFamily
+        self.socketType = socketType
+        self.protocolType = protocolType
     }
     
-    public static func UDP() throws -> RawSocket {
-        return try RawSocket(protocolFamily: .Inet, socketType: .Datagram, protocol: .UDP)
+    public static func TCP() -> SocketConfig {
+        return self.init(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+    }
+    
+    public static func UDP() -> SocketConfig {
+        return self.init(addressFamily: .Unspecified, socketType: .Datagram, protocolType: .UDP)
     }
 }
-
-
-
 
 

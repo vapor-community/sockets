@@ -14,6 +14,7 @@
 
 public enum ProtocolFamily {
     case Inet
+    case Inet6
 }
 
 public enum SocketType {
@@ -26,23 +27,57 @@ public enum Protocol {
     case UDP
 }
 
+// Defining the space to which the address belongs
 public enum AddressFamily {
-    case Inet
+    case Inet           // IPv4
+    case Inet6          // IPv6
+    case Unspecified    // If you do not care if IPv4 or IPv6 - the name
+                        // resolution will dynamically decide if IPv4 or 
+                        // IPv6 is applicable
 }
 
 public typealias Descriptor = Int32
-public typealias Port = UInt16
+
+//
+//  A Port can be specified as an integer or
+//  as a service: e.g. you can assign a 
+//  Port to "echo" or to the number 7
+//
+public enum Port {
+    case ServiceName(String)
+    case PortNumber(UInt16)
+}
 
 //Extensions
 
+protocol StringConvertable {
+    func toString() -> String
+}
+
 protocol CTypeInt32Convertible {
     func toCType() -> Int32
+}
+
+protocol CTypeUnsafePointerOfInt8TypeConvertible {
+    func toCTypeUnsafePointerOfInt8() -> UnsafePointer<Int8>
+}
+
+extension Port: StringConvertable {
+    func toString() -> String {
+        switch self {
+        case .ServiceName(let service):
+            return service
+        case .PortNumber(let portNumber):
+            return String(portNumber)
+        }
+    }
 }
 
 extension ProtocolFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
         case .Inet: return PF_INET
+        case .Inet6: return PF_INET6
         }
     }
 }
@@ -79,11 +114,24 @@ extension Protocol: CTypeInt32Convertible {
 extension AddressFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Inet: return AF_INET
+        case .Inet: return Int32(AF_INET)
+        case .Inet6: return Int32(AF_INET6)
+        case .Unspecified : return Int32(AF_UNSPEC)
         }
     }
 }
 
-
+extension AddressFamily {
+    
+    init(fromCType cType: Int32) throws {
+        
+        switch cType {
+        case Int32(AF_INET): self = .Inet
+        case Int32(AF_INET6): self = .Inet6
+        case Int32(AF_UNSPEC): self = .Unspecified
+        default: throw Error(.UnsupportedSocketAddressFamily(cType))
+        }
+    }
+}
 
 

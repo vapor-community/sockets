@@ -28,6 +28,9 @@ public enum ErrorReason {
     case ListenFailed
     case AcceptFailed
     
+    case UnsupportedSocketAddressFamily(Int32)
+    case ConcreteSocketAddressFamilyRequired
+    
     case Generic(String)
 }
 

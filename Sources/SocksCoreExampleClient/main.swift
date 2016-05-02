@@ -1,15 +1,15 @@
 
 import SocksCore
 
-let raw = try! RawSocket(protocolFamily: .Inet, socketType: .Stream, protocol: .TCP)
-let addr = InternetAddress(address: .Hostname("google.com"), port: 80)
-let socket = InternetSocket(rawSocket: raw, address: addr)
+let address = InternetAddress(hostname: "google.com", port: .PortNumber(80))
+//let address = InternetAddress(hostname: "localhost", port: .PortNumber(8080))
+let socket: ClientSocket = try! InternetSocket(socketConfig: .TCP(), address: address)
 try! socket.connect()
 
 //sends a GET / request to google.com at port 80, expects a 302 redirect to HTTPS
 try! socket.send(data: "GET /\r\n\r\n".toBytes())
 
-//receiving data
+//receiving a chunk of data (might not be all)
 let received = try! socket.recv()
 
 //converting data to a string
@@ -20,4 +20,5 @@ print("Received: \n\(str)")
 
 try! socket.close()
 
-print("successfully sent and received data from google.com")
+print("successfully sent and received data from \(address.hostname)")
+

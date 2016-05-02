@@ -2,61 +2,93 @@
 //  Address+C.swift
 //  Socks
 //
-//  Created by Honza Dvorsky on 3/20/16.
+//  Created by Matthias Kreileder on 3/20/16.
 //
 //
 
 #if os(Linux)
     import Glibc
+    typealias socket_addrinfo = Glibc.addrinfo
 #else
     import Darwin
+    typealias socket_addrinfo = Darwin.addrinfo
 #endif
 
 //Pretty types -> C types
+ 
+protocol InternetAddressResolver {
+    func resolve(internetAddress: InternetAddress) throws -> [ResolvedInternetAddress]
+}
 
-extension InternetAddress {
+// Brief:   Given a hostname and a service this struct returns a list of
+//          IP and Port adresses that where obtained during the name resolution
+//          e.g. "localhost" and "echo" as arguments will result in a list of
+//          IP addresses of the machine that runs the program and port set to 7
+//
+struct Resolver: InternetAddressResolver{
+    private let config: SocketConfig
     
-    func toCType() throws -> sockaddr {
-        
-        var addr = sockaddr_in()
-        
-        switch self.address {
-        case .Hostname(let hostname):
-            //hostname must be converted to ip
-            addr.sin_addr = try InternetAddress.getAddressFromHostname(hostname: hostname)
-        case .IPv4(let ipBytes4):
-            //we got an IP, validate it
-            let str = ipBytes4.toArray().periodSeparatedString()
-            guard inet_pton(AF_INET, str, &addr.sin_addr) == 1 else {
-                throw Error(ErrorReason.IPAddressValidationFailed)
-            }
-        }
-        
-        addr.sin_family = sa_family_t(AF_INET)
-        addr.sin_port = in_port_t(htons(value: in_port_t(self.port)))
-        addr.sin_zero = (0, 0, 0, 0, 0, 0, 0, 0)
-        
-        let res = sockaddr_cast(p: &addr).pointee
-        return res
+    
+    // config       -   the provided SocketConfig object guides the name resolution
+    //                  the socketType and protocolType fields control which kind
+    //                  kind of socket you want to create.
+    //                  E.g. set them to .STREAM .TCP to obtain address for a TCP Stream socket
+    //              -   Set the addressFamily field to .UNSPECIFIED if you don't care if the
+    //                  name resolution leads to IPv4 or IPv6 addresses.
+    init(config: SocketConfig){
+        self.config = config
     }
     
-    private static func getAddressFromHostname(hostname: String) throws -> in_addr {
-        
-        let _hostInfo = gethostbyname(hostname)
-        guard _hostInfo != nil else {
-            throw Error(.FailedToGetIPFromHostname(hostname))
-        }
-        let hostInfo = _hostInfo.pointee
-        guard hostInfo.h_addrtype == AF_INET else {
-            throw Error(.FailedToGetIPFromHostname("No IPv4 address"))
-        }
-        guard hostInfo.h_addr_list != nil else {
-            throw Error(.FailedToGetIPFromHostname("List is empty"))
-        }
-        
-        let addrStruct = sockadd_list_cast(p: hostInfo.h_addr_list)[0].pointee
-        return addrStruct
+    func resolve(internetAddress: InternetAddress) throws -> [ResolvedInternetAddress] {
+        let resolvedInternetAddressesArray = try Resolver._resolve(socketConfig: self.config, internetAddress: internetAddress)
+        return resolvedInternetAddressesArray
     }
+    
+    private static func _resolve(socketConfig: SocketConfig, internetAddress: InternetAddress) throws ->  [ResolvedInternetAddress] {
+    //
+    // Narrowing down the results we will get from the getaddrinfo call
+    //
+    var addressCriteria = socket_addrinfo.init()
+    // IPv4 or IPv6
+    addressCriteria.ai_family = socketConfig.addressFamily.toCType()
+    addressCriteria.ai_flags = AI_PASSIVE
+    addressCriteria.ai_socktype = socketConfig.socketType.toCType()
+    addressCriteria.ai_protocol = socketConfig.protocolType.toCType()
+    
+    // The list of addresses that correspond to the hostname/service pair.
+    // servinfo is the first node in a linked list of addresses that is empty
+    // at this line
+    var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
+    // perform resolution
+    let getaddrinfoReturnValue = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
+    guard getaddrinfoReturnValue == 0 else { throw Error(.IPAddressValidationFailed) }
+    
+    // Wrap linked list into array of ResolvedInternetAddress
+    
+    // we need to remember the head of the linked list to clean up the consumed memory on the head
+    let head = servinfo
+        
+    var resolvedInternetAddressesArray = [ResolvedInternetAddress]()
+    while(servinfo != nil){
+        let singleAddress = ResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: (servinfo?.pointee)!)
+        resolvedInternetAddressesArray.append(singleAddress)
+        servinfo = servinfo?.pointee.ai_next
+    }
+    
+    //
+    //  FIXME:  The dynamically allocated linked list of socket_addrinfo objects
+    //          should be deleted from the heap in order to prevent memory leaks
+    //          However, when I [Matthias Kreileder] uncomment the line 'freeaddrinfo(head)'
+    //          my code crashes at runtime :(
+    //          In the code above I tried to COPY the socket_addrinfo into an array
+    //          so that I can (in theory) safely free the memory allocated on the heap.
+    //
+    // Prevent memory leaks: getaddrinfo creates an unmanaged linked list on the heap
+    //freeaddrinfo(head)
+        
+    return resolvedInternetAddressesArray
+    }
+
 }
 
 //Pointer casting
@@ -65,6 +97,8 @@ func sockaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockad
     return UnsafeMutablePointer<sockaddr>(p)
 }
 
-func sockadd_list_cast(p: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>) -> UnsafeMutablePointer<UnsafeMutablePointer<in_addr>> {
-    return UnsafeMutablePointer<UnsafeMutablePointer<in_addr>>(p)
+func sockaddr_storage_cast(p : UnsafeMutablePointer<Void>?) -> UnsafeMutablePointer<sockaddr>? {
+    return UnsafeMutablePointer<sockaddr>(p)
 }
+
+

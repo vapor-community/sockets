@@ -13,18 +13,18 @@ class LiveTests: XCTestCase {
 
     func testLive_Connect_Google() {
         
-        let raw = try! RawSocket(protocolFamily: .Inet, socketType: .Stream, protocol: .TCP)
-        let addr = InternetAddress(address: .Hostname("google.com"), port: 80)
-        let socket = InternetSocket(rawSocket: raw, address: addr)
+        let socketConfig = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+        let addr = InternetAddress(hostname: "google.com", port: .PortNumber(80))
+        let socket = try! InternetSocket(socketConfig: socketConfig, address: addr)
         try! socket.connect()
         try! socket.close()
         print("successfully connected and closed")
     }
     
     func testLive_HTTP_Get_Google() {
-        let raw = try! RawSocket(protocolFamily: .Inet, socketType: .Stream, protocol: .TCP)
-        let addr = InternetAddress(address: .Hostname("google.com"), port: 80)
-        let socket = InternetSocket(rawSocket: raw, address: addr)
+        let socketConfig = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+        let addr = InternetAddress(hostname: "google.com", port: .PortNumber(80))
+        let socket = try! InternetSocket(socketConfig: socketConfig, address: addr)
         try! socket.connect()
         
         //sends a GET / request to google.com at port 80, expects a 302 redirect to HTTPS
