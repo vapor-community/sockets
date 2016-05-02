@@ -29,10 +29,12 @@ If you're building a HTTP server, you'll probably want to use the `TCPClient`, w
 :game_die: Examples
 ------------
 There are many working examples in this package which build as separate binaries. 
-- TCP client using SocksCore ([SocksCoreExampleClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleClient/main.swift))
-- TCP server using SocksCore ([SocksCoreExampleServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleServer/main.swift))
-- TCP client using Socks ([SocksExampleClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleClient/main.swift))
-- TCP server using Socks ([SocksExampleServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleServer/main.swift))
+- TCP client using SocksCore ([SocksCoreExampleTCPClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleTCPClient/main.swift))
+- TCP server using SocksCore ([SocksCoreExampleTCPServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleTCPServer/main.swift))
+- TCP client using Socks ([SocksExampleTCPClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleTCPClient/main.swift))
+- TCP server using Socks ([SocksExampleTCPServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleTCPServer/main.swift))
+- UDP client using Socks ([SocksExampleUDPClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleUDPClient/main.swift))
+- UDP server using Socks ([SocksExampleUDPServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleUDPServer/main.swift))
 
 :books: Recommended reading
 ------------

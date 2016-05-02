@@ -42,9 +42,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "______Target_SocksCoreExampleClient"
-               BuildableName = "SocksCoreExampleClient"
-               BlueprintName = "SocksCoreExampleClient"
+               BlueprintIdentifier = "______Target_SocksCoreExampleTCPClient"
+               BuildableName = "SocksCoreExampleTCPClient"
+               BlueprintName = "SocksCoreExampleTCPClient"
                ReferencedContainer = "container:Socks.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -56,9 +56,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "______Target_SocksCoreExampleServer"
-               BuildableName = "SocksCoreExampleServer"
-               BlueprintName = "SocksCoreExampleServer"
+               BlueprintIdentifier = "______Target_SocksCoreExampleTCPServer"
+               BuildableName = "SocksCoreExampleTCPServer"
+               BlueprintName = "SocksCoreExampleTCPServer"
                ReferencedContainer = "container:Socks.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -70,9 +70,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "______Target_SocksExampleClient"
-               BuildableName = "SocksExampleClient"
-               BlueprintName = "SocksExampleClient"
+               BlueprintIdentifier = "______Target_SocksExampleTCPClient"
+               BuildableName = "SocksExampleTCPClient"
+               BlueprintName = "SocksExampleTCPClient"
                ReferencedContainer = "container:Socks.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -84,9 +84,37 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "______Target_SocksExampleServer"
-               BuildableName = "SocksExampleServer"
-               BlueprintName = "SocksExampleServer"
+               BlueprintIdentifier = "______Target_SocksExampleTCPServer"
+               BuildableName = "SocksExampleTCPServer"
+               BlueprintName = "SocksExampleTCPServer"
+               ReferencedContainer = "container:Socks.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "______Target_SocksExampleUDPClient"
+               BuildableName = "SocksExampleUDPClient"
+               BlueprintName = "SocksExampleUDPClient"
+               ReferencedContainer = "container:Socks.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "______Target_SocksExampleUDPServer"
+               BuildableName = "SocksExampleUDPServer"
+               BlueprintName = "SocksExampleUDPServer"
                ReferencedContainer = "container:Socks.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
