@@ -32,8 +32,8 @@ class Bytes {
         free(self.rawBytes)
     }
     
-    var characters: [CChar] {
-        var data = [CChar](repeating: 0, count: self.capacity)
+    var characters: [UInt8] {
+        var data = [UInt8](repeating: 0, count: self.capacity)
         memcpy(&data, self.rawBytes, data.count)
         return data
     }
@@ -43,21 +43,23 @@ class Bytes {
     }
 }
 
-extension Collection where Iterator.Element == CChar {
-    
-    public func toString() throws -> String {
-        let selfArray = Array(self) + [0]
-        guard let string = String(validatingUTF8: selfArray) else {
-            throw Error(.UnparsableBytes)
-        }
-        return string
-    }
-}
-
 extension Collection where Iterator.Element == UInt8 {
     
     public func toString() throws -> String {
-        return try self.map { CChar($0) }.toString()
+
+        var utf = UTF8()
+        var gen = self.makeIterator()
+        var str = String()
+        while true {
+            switch utf.decode(&gen) {
+            case .emptyInput: //we're done
+                return str
+            case .error: //error, can't describe what however
+                throw Error.init(ErrorReason.UnparsableBytes)
+            case .scalarValue(let unicodeScalar):
+                str.append(unicodeScalar)
+            }
+        }
     }
 }
 
