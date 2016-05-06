@@ -15,9 +15,9 @@
 #endif
 
 //Pretty types -> C types
- 
+
 protocol InternetAddressResolver {
-    func resolve(internetAddress: InternetAddress) throws -> [ResolvedInternetAddress]
+    func resolve(internetAddress: InternetAddress) throws -> ResolvedInternetAddress
 }
 
 // Brief:   Given a hostname and a service this struct returns a list of
@@ -39,56 +39,36 @@ struct Resolver: InternetAddressResolver{
         self.config = config
     }
     
-    func resolve(internetAddress: InternetAddress) throws -> [ResolvedInternetAddress] {
-        let resolvedInternetAddressesArray = try Resolver._resolve(socketConfig: self.config, internetAddress: internetAddress)
-        return resolvedInternetAddressesArray
+    func resolve(internetAddress: InternetAddress) throws -> ResolvedInternetAddress {
+        let resolvedInternetAddresses = try Resolver._resolve(socketConfig: self.config, internetAddress: internetAddress)
+        return resolvedInternetAddresses
     }
     
-    private static func _resolve(socketConfig: SocketConfig, internetAddress: InternetAddress) throws ->  [ResolvedInternetAddress] {
-    //
-    // Narrowing down the results we will get from the getaddrinfo call
-    //
-    var addressCriteria = socket_addrinfo.init()
-    // IPv4 or IPv6
-    addressCriteria.ai_family = socketConfig.addressFamily.toCType()
-    addressCriteria.ai_flags = AI_PASSIVE
-    addressCriteria.ai_socktype = socketConfig.socketType.toCType()
-    addressCriteria.ai_protocol = socketConfig.protocolType.toCType()
-    
-    // The list of addresses that correspond to the hostname/service pair.
-    // servinfo is the first node in a linked list of addresses that is empty
-    // at this line
-    var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
-    // perform resolution
-    let getaddrinfoReturnValue = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
-    guard getaddrinfoReturnValue == 0 else { throw Error(.IPAddressValidationFailed) }
-    
-    // Wrap linked list into array of ResolvedInternetAddress
-    
-    // we need to remember the head of the linked list to clean up the consumed memory on the head
-    let head = servinfo
+    private static func _resolve(socketConfig: SocketConfig, internetAddress: InternetAddress) throws ->  ResolvedInternetAddress {
+        //
+        // Narrowing down the results we will get from the getaddrinfo call
+        //
+        var addressCriteria = socket_addrinfo.init()
+        // IPv4 or IPv6
+        addressCriteria.ai_family = socketConfig.addressFamily.toCType()
+        addressCriteria.ai_flags = AI_PASSIVE
+        addressCriteria.ai_socktype = socketConfig.socketType.toCType()
+        addressCriteria.ai_protocol = socketConfig.protocolType.toCType()
         
-    var resolvedInternetAddressesArray = [ResolvedInternetAddress]()
-    while(servinfo != nil){
-        let singleAddress = ResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: (servinfo?.pointee)!)
-        resolvedInternetAddressesArray.append(singleAddress)
-        servinfo = servinfo?.pointee.ai_next
+        // The list of addresses that correspond to the hostname/service pair.
+        // servinfo is the first node in a linked list of addresses that is empty
+        // at this line
+        var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
+        // perform resolution
+        let getaddrinfoReturnValue = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
+        guard getaddrinfoReturnValue == 0 else { throw Error(.IPAddressValidationFailed) }
+        
+        // Wrap linked list into array of ResolvedInternetAddress
+        guard let addr = servinfo else { throw Error(.IPAddressResolutionFailed) }
+        let address = ResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: addr)
+        return address
     }
     
-    //
-    //  FIXME:  The dynamically allocated linked list of socket_addrinfo objects
-    //          should be deleted from the heap in order to prevent memory leaks
-    //          However, when I [Matthias Kreileder] uncomment the line 'freeaddrinfo(head)'
-    //          my code crashes at runtime :(
-    //          In the code above I tried to COPY the socket_addrinfo into an array
-    //          so that I can (in theory) safely free the memory allocated on the heap.
-    //
-    // Prevent memory leaks: getaddrinfo creates an unmanaged linked list on the heap
-    //freeaddrinfo(head)
-        
-    return resolvedInternetAddressesArray
-    }
-
 }
 
 //Pointer casting

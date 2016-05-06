@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "______Target_Socks"
-               BuildableName = "libSocks.dylib"
+               BuildableName = "Socks.dylib"
                BlueprintName = "Socks"
                ReferencedContainer = "container:Socks.xcodeproj">
             </BuildableReference>
@@ -29,7 +29,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "______Target_SocksCore"
-               BuildableName = "libSocksCore.dylib"
+               BuildableName = "SocksCore.dylib"
                BlueprintName = "SocksCore"
                ReferencedContainer = "container:Socks.xcodeproj">
             </BuildableReference>
@@ -103,8 +103,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "______Target_SocksCoreTestSuite"
-               BuildableName = "SocksCore.testsuite.xctest"
-               BlueprintName = "SocksCore.testsuite"
+               BuildableName = "SocksCoreTestSuite.xctest"
+               BlueprintName = "SocksCoreTestSuite"
                ReferencedContainer = "container:Socks.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -126,7 +126,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "______Target_Socks"
-            BuildableName = "libSocks.dylib"
+            BuildableName = "Socks.dylib"
             BlueprintName = "Socks"
             ReferencedContainer = "container:Socks.xcodeproj">
          </BuildableReference>

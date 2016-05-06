@@ -23,18 +23,24 @@ class AddressResolutionTest: XCTestCase {
 
     func testResolver() {
         
-        let socket_Config = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
-        let resolver = Resolver(config: socket_Config)
+        var socketConfig = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
         
+        let resolver = Resolver(config: socketConfig)
         let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .PortNumber(80))
-        let resolvedInternetAddressList = try! resolver.resolve(internetAddress: userProvidedInternetAddress)
+        let resolvedInternetAddress = try! resolver.resolve(internetAddress: userProvidedInternetAddress)
+        socketConfig.addressFamily = try! resolvedInternetAddress.addressFamily()
         
-        // Let's observe the addresses
-        for singleResolvedInternetAddress in resolvedInternetAddressList {
-            print(singleResolvedInternetAddress.resolvedCTypeAddress)
-        }
+        let rawSocket = try! RawSocket(socketConfig: socketConfig)
         
-        XCTAssertTrue(resolvedInternetAddressList.count != 0)
+        let socket = InternetSocket(rawSocket: rawSocket, address: resolvedInternetAddress)
+        try! socket.connect()
+        try! socket.send(data: "GET / HTTP/1.1\r\n\r\n".toBytes())
+        let bytes = try! socket.recv(maxBytes: 1000)
+        let str = try! bytes.toString()
+        let firstLine = str.characters.split(separator: "\n").map(String.init).first!
+        let http11 = firstLine.characters.split(separator: " ").map(String.init).first!
+        XCTAssertEqual(http11, "HTTP/1.1")
+        try! socket.close()
     }
     
     func testgetaddrinfoCall() {
@@ -69,7 +75,6 @@ class AddressResolutionTest: XCTestCase {
         else{
             // Let's see on how many and which ip addresses this host is reachable
             while(servinfo != nil){
-                print(servinfo?.pointee)
                 servinfo = servinfo?.pointee.ai_next
             }
         }

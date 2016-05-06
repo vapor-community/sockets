@@ -17,7 +17,7 @@
 extension InternetSocket : ClientSocket {
     
     public func connect() throws {
-        let res = socket_connect(self.descriptor, address.resolvedCTypeAddress.ai_addr, address.resolvedCTypeAddress.ai_addrlen)
+        let res = socket_connect(self.descriptor, address.resolvedCTypeAddress.pointee.ai_addr, address.resolvedCTypeAddress.pointee.ai_addrlen)
         guard res > -1 else { throw Error(.ConnectFailed) }
     }
 }

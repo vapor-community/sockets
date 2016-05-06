@@ -13,11 +13,11 @@ class ClientSocketTest: XCTestCase {
 
     func testClientSocket() {
         
-        let socket_Config = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+        let socketConfig = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
         
-        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .PortNumber(80))
+        let userProvidedInternetAddress = InternetAddress(hostname: "google.com", port: .PortNumber(80))
         
-        let socket = try! InternetSocket(socketConfig: socket_Config, address: userProvidedInternetAddress)
+        let socket = try! InternetSocket(socketConfig: socketConfig, address: userProvidedInternetAddress)
         try! socket.connect()
         
         //sends a GET / request to google.com at port 80, expects a 302 redirect to HTTPS
