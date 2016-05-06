@@ -31,6 +31,8 @@ public enum ErrorReason {
     case UnsupportedSocketAddressFamily(Int32)
     case ConcreteSocketAddressFamilyRequired
     
+    case IPAddressResolutionFailed
+    
     case Generic(String)
 }
 

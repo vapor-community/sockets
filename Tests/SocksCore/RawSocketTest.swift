@@ -12,28 +12,14 @@ import XCTest
 class RawSocketTest: XCTestCase {
 
     func testRawSocket(){
-        let socket_Config = SocketConfig(addressFamily: .Inet6, socketType: .Stream, protocolType: .TCP)
-        let resolver = Resolver(config: socket_Config)
+        let socketConfig = SocketConfig(addressFamily: .Inet, socketType: .Stream, protocolType: .TCP)
+        let resolver = Resolver(config: socketConfig)
         
         let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .PortNumber(80))
-        let resolvedInternetAddressList = try! resolver.resolve(internetAddress: userProvidedInternetAddress)
+        let _ = try! resolver.resolve(internetAddress: userProvidedInternetAddress)
         
-        // Let's observe the addresses
-        for singleResolvedInternetAddress in resolvedInternetAddressList {
-            print(singleResolvedInternetAddress.resolvedCTypeAddress)
-        }
-        
-        XCTAssertTrue(resolvedInternetAddressList.count != 0)
-        
-        //
-        // interesting part starts here: did the socket() call succeed?
-        //
-        let raw = try! RawSocket(socketConfig: socket_Config)
+        let raw = try! RawSocket(socketConfig: socketConfig)
         
         XCTAssertTrue(raw.descriptor > 0)
-        
     }
-
-
-
 }
