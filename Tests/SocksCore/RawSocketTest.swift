@@ -22,7 +22,4 @@ class RawSocketTest: XCTestCase {
         
         XCTAssertTrue(raw.descriptor > 0)
     }
-
-
-
 }
