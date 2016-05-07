@@ -36,4 +36,8 @@ extension Socket {
         let sentLen = socket_send(self.descriptor, data, len, flags)
         guard sentLen == len else { throw Error(.SendFailedToSendAllBytes) }
     }
+    
+    public func send(sendable: Sendable) throws {
+        try send(data: sendable.serialize())
+    }
 }

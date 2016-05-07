@@ -62,6 +62,30 @@ protocol CTypeUnsafePointerOfInt8TypeConvertible {
     func toCTypeUnsafePointerOfInt8() -> UnsafePointer<Int8>
 }
 
+public protocol Sendable {
+    func serialize() -> [UInt8]
+}
+
+public protocol Receivable {
+    associatedtype TemplateType
+    func deserialize(bytes: [UInt8]) throws -> TemplateType
+    
+    func getSerializedSize() -> Int
+}
+
+extension String: Sendable {
+    public func serialize() -> [UInt8] {
+        return self.toBytes()
+    }
+}
+
+//extension String: Receivable {
+//    typealias TemplateType = String
+//    func deserialize(bytes: [UInt8]) throws -> String {
+//    return try bytes.toString()
+//    }
+//}
+
 extension Port: StringConvertable {
     func toString() -> String {
         switch self {
