@@ -7,7 +7,7 @@
 //
 
 extension ConversionTests {
-    static var allTests : [(String, ConversionTests -> () throws -> Void)] {
+    static var allTests : [(String, (ConversionTests) -> () throws -> Void)] {
         return [
                    ("testNumberArrayToPeriodSeparatedString", testNumberArrayToPeriodSeparatedString)
         ]
@@ -15,7 +15,7 @@ extension ConversionTests {
 }
 
 extension LiveTests {
-    static var allTests : [(String, LiveTests -> () throws -> Void)] {
+    static var allTests : [(String, (LiveTests) -> () throws -> Void)] {
         return [
                    ("testLive_Connect_Google", testLive_Connect_Google),
                    ("testLive_HTTP_Get_Google", testLive_HTTP_Get_Google)
@@ -24,7 +24,7 @@ extension LiveTests {
 }
 
 extension RawSocketTest {
-    static var allTests : [(String, RawSocketTest -> () throws -> Void)] {
+    static var allTests : [(String, (RawSocketTest) -> () throws -> Void)] {
         return [
                    ("testRawSocket", testRawSocket)
         ]
@@ -32,7 +32,7 @@ extension RawSocketTest {
 }
 
 extension AddressResolutionTest {
-    static var allTests : [(String, AddressResolutionTest -> () throws -> Void)] {
+    static var allTests : [(String, (AddressResolutionTest) -> () throws -> Void)] {
         return [
                    ("testResolver", testResolver)
         ]
@@ -40,7 +40,7 @@ extension AddressResolutionTest {
 }
 
 extension ClientSocketTest {
-    static var allTests : [(String, ClientSocketTest -> () throws -> Void)] {
+    static var allTests : [(String, (ClientSocketTest) -> () throws -> Void)] {
         return [
                    ("testClientSocket", testClientSocket)
         ]
