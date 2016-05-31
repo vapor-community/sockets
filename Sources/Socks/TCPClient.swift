@@ -16,7 +16,6 @@ public class TCPClient: InternetClient {
     }
     
     public init(internetAddress: InternetAddress) throws {
-        
         try super.init(socketConfig: .TCP(), internetAddress: internetAddress)
         try tcpSocket().connect()
     }

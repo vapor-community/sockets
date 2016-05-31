@@ -36,7 +36,7 @@ public class InternetSocket: Socket {
         
         // validate it's a concrete family type
         switch addressFamily {
-        case .Inet, .Inet6: break //all good
+        case .inet, .inet6: break //all good
         default: throw Error(ErrorReason.ConcreteSocketAddressFamilyRequired)
         }
         

@@ -13,13 +13,13 @@
 #endif
 
 public enum ProtocolFamily {
-    case Inet
-    case Inet6
+    case inet
+    case inet6
 }
 
 public enum SocketType {
-    case Stream
-    case Datagram
+    case stream
+    case datagram
 }
 
 public enum Protocol {
@@ -29,9 +29,9 @@ public enum Protocol {
 
 // Defining the space to which the address belongs
 public enum AddressFamily {
-    case Inet           // IPv4
-    case Inet6          // IPv6
-    case Unspecified    // If you do not care if IPv4 or IPv6 - the name
+    case inet           // IPv4
+    case inet6          // IPv6
+    case unspecified    // If you do not care if IPv4 or IPv6 - the name
                         // resolution will dynamically decide if IPv4 or 
                         // IPv6 is applicable
 }
@@ -44,8 +44,8 @@ public typealias Descriptor = Int32
 //  Port to "echo" or to the number 7
 //
 public enum Port {
-    case ServiceName(String)
-    case PortNumber(UInt16)
+    case serviceName(String)
+    case portNumber(UInt16)
 }
 
 //Extensions
@@ -65,9 +65,9 @@ protocol CTypeUnsafePointerOfInt8TypeConvertible {
 extension Port: StringConvertable {
     func toString() -> String {
         switch self {
-        case .ServiceName(let service):
+        case .serviceName(let service):
             return service
-        case .PortNumber(let portNumber):
+        case .portNumber(let portNumber):
             return String(portNumber)
         }
     }
@@ -76,8 +76,8 @@ extension Port: StringConvertable {
 extension ProtocolFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Inet: return PF_INET
-        case .Inet6: return PF_INET6
+        case .inet: return PF_INET
+        case .inet6: return PF_INET6
         }
     }
 }
@@ -85,14 +85,14 @@ extension ProtocolFamily: CTypeInt32Convertible {
 extension SocketType: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Stream:
+        case .stream:
         #if os(Linux) 
             return Int32(SOCK_STREAM.rawValue)
         #else
             return SOCK_STREAM
         #endif
         
-        case .Datagram:
+        case .datagram:
         #if os(Linux)
             return Int32(SOCK_DGRAM.rawValue)
         #else
@@ -114,9 +114,9 @@ extension Protocol: CTypeInt32Convertible {
 extension AddressFamily: CTypeInt32Convertible {
     func toCType() -> Int32 {
         switch self {
-        case .Inet: return Int32(AF_INET)
-        case .Inet6: return Int32(AF_INET6)
-        case .Unspecified : return Int32(AF_UNSPEC)
+        case .inet: return Int32(AF_INET)
+        case .inet6: return Int32(AF_INET6)
+        case .unspecified : return Int32(AF_UNSPEC)
         }
     }
 }
@@ -126,9 +126,9 @@ extension AddressFamily {
     init(fromCType cType: Int32) throws {
         
         switch cType {
-        case Int32(AF_INET): self = .Inet
-        case Int32(AF_INET6): self = .Inet6
-        case Int32(AF_UNSPEC): self = .Unspecified
+        case Int32(AF_INET): self = .inet
+        case Int32(AF_INET6): self = .inet6
+        case Int32(AF_UNSPEC): self = .unspecified
         default: throw Error(.UnsupportedSocketAddressFamily(cType))
         }
     }

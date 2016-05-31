@@ -15,7 +15,6 @@ public class SynchronousServer {
     }
     
     @noreturn public func startWithHandler(handler: (connection: Actor) throws -> ()) throws {
-        
         let server = self.server
         try server.setup()
         

@@ -1,8 +1,8 @@
 
 import SocksCore
 
-let address = InternetAddress(hostname: "google.com", port: .PortNumber(80))
-//let address = InternetAddress(hostname: "localhost", port: .PortNumber(8080))
+let address = InternetAddress(hostname: "google.com", port: .portNumber(80))
+//let address = InternetAddress(hostname: "localhost", port: .portNumber(8080))
 let socket: ClientSocket = try! InternetSocket(socketConfig: .TCP(), address: address)
 try! socket.connect()
 

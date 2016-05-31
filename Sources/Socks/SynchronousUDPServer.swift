@@ -11,7 +11,6 @@ import SocksCore
 public class SynchronousUDPServer: SynchronousServer {
     
     public init(internetAddress : InternetAddress) throws {
-        
         let server = try InternetServer(socketConfig: .UDP(), internetAddress: internetAddress)
         super.init(server: server)
     }

@@ -68,7 +68,6 @@ struct Resolver: InternetAddressResolver{
         let address = ResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: addr)
         return address
     }
-    
 }
 
 //Pointer casting

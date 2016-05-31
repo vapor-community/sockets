@@ -1,7 +1,7 @@
 
 import SocksCore
 
-let address = InternetAddress(hostname : "localhost", port : .PortNumber(8080))
+let address = InternetAddress(hostname : "localhost", port : .portNumber(8080))
 let socket = try! InternetSocket(socketConfig: .TCP(), address: address)
 
 try! socket.bind()

@@ -81,11 +81,11 @@ public struct SocketConfig {
     }
     
     public static func TCP() -> SocketConfig {
-        return self.init(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+        return self.init(addressFamily: .unspecified, socketType: .stream, protocolType: .TCP)
     }
     
     public static func UDP() -> SocketConfig {
-        return self.init(addressFamily: .Unspecified, socketType: .Datagram, protocolType: .UDP)
+        return self.init(addressFamily: .unspecified, socketType: .datagram, protocolType: .UDP)
     }
 }
 
