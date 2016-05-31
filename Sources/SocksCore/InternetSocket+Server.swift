@@ -22,7 +22,7 @@ extension InternetSocket : ServerSocket {
     
     public func bind() throws {
         
-        let addr = self.address.resolvedCTypeAddress
+        let addr = self.address.resolvedCTypeAddress.pointee
         let res = socket_bind(self.descriptor, addr.ai_addr, addr.ai_addrlen)
         guard res > -1 else { throw Error(.BindFailed) }
     }

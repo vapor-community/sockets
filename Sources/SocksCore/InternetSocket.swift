@@ -23,12 +23,8 @@ public class InternetSocket: Socket {
     public convenience init(socketConfig: SocketConfig, address: InternetAddress) throws {
         
         let resolver = Resolver(config: socketConfig)
-        let resolvedInternetAddressList = try resolver.resolve(internetAddress: address)
-        guard !resolvedInternetAddressList.isEmpty else { throw Error(.IPAddressValidationFailed) }
-        
-        // We're just taking the first address in the list for now.
-        let resolvedAddress = resolvedInternetAddressList.first!
-        
+        let resolvedAddress = try resolver.resolve(internetAddress: address)
+
         //  NOTE: The family field must be set according to the ResolvedInternetAddress
         //  address NOT according to the SocketConfig
         //  Why that? SocketConfig.familyType can be set to Unspecified in order to

@@ -36,18 +36,23 @@ public struct InternetAddress {
     }
 }
 
-public struct ResolvedInternetAddress {
+public class ResolvedInternetAddress {
     
     // The unresolved InternetAddress
     let internetAddress: InternetAddress
-    let resolvedCTypeAddress: addrinfo
+    
+    let resolvedCTypeAddress: UnsafeMutablePointer<addrinfo>
     
     func addressFamily() throws -> AddressFamily {
-        return try AddressFamily(fromCType: resolvedCTypeAddress.ai_family)
+        return try AddressFamily(fromCType: resolvedCTypeAddress.pointee.ai_family)
     }
     
-    init(internetAddress: InternetAddress, resolvedCTypeAddress: addrinfo){
+    init(internetAddress: InternetAddress, resolvedCTypeAddress: UnsafeMutablePointer<addrinfo>){
         self.internetAddress = internetAddress
         self.resolvedCTypeAddress = resolvedCTypeAddress
+    }
+    
+    deinit {
+        freeaddrinfo(resolvedCTypeAddress)
     }
 }
