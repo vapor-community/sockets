@@ -21,10 +21,10 @@ class AddressResolutionTest: XCTestCase {
 
     func testResolver() {
         
-        var socketConfig = SocketConfig(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+        var socketConfig = SocketConfig(addressFamily: .unspecified, socketType: .stream, protocolType: .TCP)
         
         let resolver = Resolver(config: socketConfig)
-        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .PortNumber(80))
+        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .portNumber(80))
         let resolvedInternetAddress = try! resolver.resolve(internetAddress: userProvidedInternetAddress)
         socketConfig.addressFamily = try! resolvedInternetAddress.addressFamily()
         

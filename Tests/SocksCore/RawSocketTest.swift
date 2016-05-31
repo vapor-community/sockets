@@ -12,10 +12,10 @@ import XCTest
 class RawSocketTest: XCTestCase {
 
     func testRawSocket(){
-        let socketConfig = SocketConfig(addressFamily: .Inet, socketType: .Stream, protocolType: .TCP)
+        let socketConfig = SocketConfig(addressFamily: .inet, socketType: .stream, protocolType: .TCP)
         let resolver = Resolver(config: socketConfig)
         
-        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .PortNumber(80))
+        let userProvidedInternetAddress = InternetAddress(hostname : "google.com", port : .portNumber(80))
         let _ = try! resolver.resolve(internetAddress: userProvidedInternetAddress)
         
         let raw = try! RawSocket(socketConfig: socketConfig)
