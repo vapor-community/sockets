@@ -3,8 +3,5 @@ import XCTest
 
 XCTMain([
 	testCase(ConversionTests.allTests),
-	testCase(LiveTests.allTests),
-	testCase(RawSocketTest.allTests),
-	testCase(AddressResolutionTest.allTests),
-	testCase(ClientSocketTest.allTests)
+	testCase(LiveTests.allTests)
 ])

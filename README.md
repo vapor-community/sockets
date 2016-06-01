@@ -9,14 +9,12 @@
 
 > Pure-Swift Sockets. Linux & OS X ready.
 
-**Work in progress, APIs might still change ⚠️**
-
 # Supported socket types
 
 | | TCP | UDP |
 | --- | --- | --- |
-| Client | ✅ | - | 
-| Server | ✅ | -  |
+| Client | ✅ | ✅ | 
+| Server | ✅ | ✅ |
 
 :wrench: Usage
 ------------
@@ -38,8 +36,11 @@ There are many working examples in this package which build as separate binaries
 
 :books: Recommended reading
 ------------
-- (1) [TCP/IP Sockets in C: Practical Guide for Programmers](http://www.e-reading.club/bookreader.php/136904/TCP%7CIP_Sockets_in_C:_Practical_Guide_for_Programmers.pdf)
+- (1) [TCP/IP Sockets in C: Practical Guide for Programmers](http://www.e-reading.club/bookreader.php/136904/TCP%7CIP_Sockets_in_C:_Practical_Guide_for_Programmers.pdf) (First and Second edition)
 - (2) [Wikipedia: Berkeley Sockets](https://en.wikipedia.org/wiki/Berkeley_sockets)
+
+:wrench: Used by
+- [Redbird](https://github.com/czechboy0/Redbird) *Pure-Swift implementation of a Redis client from the original protocol spec. OS X + Linux compatible.*
 
 :blue_heart: Code of Conduct
 ------------

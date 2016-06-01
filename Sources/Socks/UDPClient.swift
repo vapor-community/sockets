@@ -10,4 +10,33 @@ import SocksCore
 
 public class UDPClient {
     
+    let socket: UDPSocket
+    
+    public init(socket: UDPSocket) throws {
+        self.socket = socket
+    }
+    
+    public convenience init(address: InternetAddress) throws {
+        let socket = try UDPSocket(address: address)
+        try self.init(socket: socket)
+    }
+    
+    public convenience init(address: ResolvedInternetAddress) throws {
+        let config: SocketConfig = .UDP(addressFamily: try address.addressFamily())
+        let socket = try UDPSocket(descriptor: nil, config: config, address: address)
+        try self.init(socket: socket)
+    }
+    
+    public func send(bytes: [UInt8], destination: ResolvedInternetAddress? = nil) throws {
+        let address = destination ?? self.socket.address
+        try self.socket.sendto(data: bytes, address: address)
+    }
+    
+    public func receive(maxBytes: Int = BufferCapacity) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
+        return try self.socket.recvfrom(maxBytes: maxBytes)
+    }
+    
+    public func close() throws {
+        try self.socket.close()
+    }
 }

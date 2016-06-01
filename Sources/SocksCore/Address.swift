@@ -53,7 +53,7 @@ extension InternetAddress {
 
 public class ResolvedInternetAddress {
     
-    public let raw: UnsafeMutablePointer<sockaddr>
+    let raw: UnsafeMutablePointer<sockaddr>
     
     init(raw: sockaddr){
         let ptr = UnsafeMutablePointer<sockaddr>.init(allocatingCapacity: 1)
@@ -65,7 +65,7 @@ public class ResolvedInternetAddress {
         return socklen_t(sizeof(sockaddr))
     }
     
-    func addressFamily() throws -> AddressFamily {
+    public func addressFamily() throws -> AddressFamily {
         return try AddressFamily(fromCType: Int32(raw.pointee.sa_family))
     }
 
