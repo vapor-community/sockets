@@ -2,21 +2,39 @@
 //  TCPClient.swift
 //  Socks
 //
-//  Created by Honza Dvorsky on 3/20/16.
+//  Created by Honza Dvorsky on 1/6/16.
 //
 //
 
 import SocksCore
 
-public class TCPClient: InternetClient {
+public class TCPClient {
     
-    //TODO: needs more thought
-    func tcpSocket() throws -> ClientSocket {
-        return try self.getSocket() as! ClientSocket
+    let socket: TCPSocket
+    
+    public init(socket: TCPSocket) throws {
+        self.socket = socket
+        try self.socket.connect()
     }
     
-    public init(internetAddress: InternetAddress) throws {
-        try super.init(socketConfig: .TCP(), internetAddress: internetAddress)
-        try tcpSocket().connect()
+    public convenience init(address: InternetAddress) throws {
+        let socket = try TCPSocket(address: address)
+        try self.init(socket: socket)
+    }
+    
+    public func send(bytes: [UInt8]) throws {
+        try self.socket.send(data: bytes)
+    }
+    
+    public func receive(maxBytes: Int) throws -> [UInt8] {
+        return try self.socket.recv(maxBytes: maxBytes)
+    }
+    
+    public func receiveAll() throws -> [UInt8] {
+        return try self.socket.recvAll()
+    }
+    
+    public func close() throws {
+        try self.socket.close()
     }
 }

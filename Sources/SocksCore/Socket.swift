@@ -8,59 +8,35 @@
 
 #if os(Linux)
     import Glibc
-    private let socket_close = Glibc.close
+    private let s_close = Glibc.close
+    private let s_socket = Glibc.socket
 #else
     import Darwin
-    private let socket_close = Darwin.close
+    private let s_close = Darwin.close
+    private let s_socket = Darwin.socket
 #endif
 
 public protocol Socket {
     var descriptor: Descriptor { get }
-    func send(data: [UInt8]) throws
-    func recv(maxBytes: Int) throws -> [UInt8]
-    func close() throws
+    var config: SocketConfig { get }
 }
 
-public protocol ClientSocket: Socket {
-    func connect() throws
-}
-
-public protocol ServerSocket: Socket {
-    func bind() throws
-    func listen(queueLimit: Int32) throws
-    func accept() throws -> Socket
-}
-
-public class RawSocket : Socket {
-    
-    public let descriptor: Descriptor
-    public let socketConfig : SocketConfig
-    
-    private init(descriptor: Descriptor, socketConfig: SocketConfig) throws {
-        
-        self.socketConfig = socketConfig
-        self.descriptor = descriptor
-    }
-    
-    public convenience init(socketConfig: SocketConfig) throws {
-        let cProtocolFam = socketConfig.addressFamily.toCType()
-        let cType = socketConfig.socketType.toCType()
-        let cProtocol = socketConfig.protocolType.toCType()
-        
-        let descriptor = socket(cProtocolFam, cType, cProtocol)
-        guard descriptor > 0 else { throw Error(.CreateSocketFailed) }
-        
-        try self.init(descriptor: descriptor, socketConfig: socketConfig)
-    }
+extension Socket {
     
     public func close() throws {
-        if socket_close(self.descriptor) != 0 {
+        if s_close(self.descriptor) != 0 {
             throw Error(.CloseSocketFailed)
         }
     }
     
-    func copyWithNewDescriptor(descriptor: Descriptor) throws -> RawSocket {
-        return try RawSocket(descriptor: descriptor, socketConfig: self.socketConfig)
+    static func createNewSocket(config: SocketConfig) throws -> Descriptor {
+        let cProtocolFam = config.addressFamily.toCType()
+        let cType = config.socketType.toCType()
+        let cProtocol = config.protocolType.toCType()
+        
+        let descriptor = s_socket(cProtocolFam, cType, cProtocol)
+        guard descriptor > 0 else { throw Error(.CreateSocketFailed) }
+        return descriptor
     }
 }
 
@@ -80,12 +56,18 @@ public struct SocketConfig {
         self.protocolType = protocolType
     }
     
-    public static func TCP() -> SocketConfig {
-        return self.init(addressFamily: .unspecified, socketType: .stream, protocolType: .TCP)
+    func adjusted(for resolvedAddress: ResolvedInternetAddress) throws -> SocketConfig {
+        var config = self
+        config.addressFamily = try resolvedAddress.addressFamily()
+        return config
     }
     
-    public static func UDP() -> SocketConfig {
-        return self.init(addressFamily: .unspecified, socketType: .datagram, protocolType: .UDP)
+    public static func TCP(addressFamily: AddressFamily = .unspecified) -> SocketConfig {
+        return self.init(addressFamily: addressFamily, socketType: .stream, protocolType: .TCP)
+    }
+    
+    public static func UDP(addressFamily: AddressFamily = .unspecified) -> SocketConfig {
+        return self.init(addressFamily: addressFamily, socketType: .datagram, protocolType: .UDP)
     }
 }
 

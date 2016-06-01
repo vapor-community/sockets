@@ -3,7 +3,7 @@ import SocksCore
 
 let address = InternetAddress(hostname: "google.com", port: .portNumber(80))
 //let address = InternetAddress(hostname: "localhost", port: .portNumber(8080))
-let socket: ClientSocket = try! InternetSocket(socketConfig: .TCP(), address: address)
+let socket: TCPSocket = try! TCPSocket(address: address)
 try! socket.connect()
 
 //sends a GET / request to google.com at port 80, expects a 302 redirect to HTTPS

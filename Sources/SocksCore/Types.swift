@@ -34,6 +34,13 @@ public enum AddressFamily {
     case unspecified    // If you do not care if IPv4 or IPv6 - the name
                         // resolution will dynamically decide if IPv4 or 
                         // IPv6 is applicable
+    
+    func isConcrete() -> Bool {
+        switch self {
+        case .inet, .inet6: return true
+        case .unspecified: return false
+        }
+    }
 }
 
 public typealias Descriptor = Int32
