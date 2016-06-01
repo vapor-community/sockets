@@ -42,8 +42,9 @@ public class TCPSocket: InternetSocket {
     }
     
     public convenience init(address: InternetAddress) throws {
-        let config: SocketConfig = .TCP(addressFamily: address.addressFamily)
+        var config: SocketConfig = .TCP(addressFamily: address.addressFamily)
         let resolved = try address.resolve(with: config)
+        config = try config.adjusted(for: resolved)
         try self.init(descriptor: nil, config: config, address: resolved)
     }
     
