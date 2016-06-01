@@ -12,8 +12,12 @@ public class TCPClient {
     
     let socket: TCPSocket
     
-    public init(socket: TCPSocket) throws {
-        self.socket = socket
+    public init(alreadyConnectedSocket: TCPSocket) throws {
+        self.socket = alreadyConnectedSocket
+    }
+
+    public convenience init(socket: TCPSocket) throws {
+        try self.init(alreadyConnectedSocket: socket)
         try self.socket.connect()
     }
     

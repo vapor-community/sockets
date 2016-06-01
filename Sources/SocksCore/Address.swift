@@ -68,10 +68,42 @@ public class ResolvedInternetAddress {
     public func addressFamily() throws -> AddressFamily {
         return try AddressFamily(fromCType: Int32(raw.pointee.sa_family))
     }
+    
+    public func ipString() -> String {
+        
+        guard let family = try? addressFamily() else { return "Invalid family" }
+        let cfamily = family.toCType()
+        
+        let maxLen = socklen_t(INET_ADDRSTRLEN)
+        let strData = UnsafeMutablePointer<Int8>.init(allocatingCapacity: Int(maxLen))
+        
+        switch family {
+        case .inet:
+            var ptr = UnsafeMutablePointer<sockaddr_in>(raw).pointee.sin_addr
+            inet_ntop(cfamily, &ptr, strData, maxLen)
+        case .inet6:
+            var ptr = UnsafeMutablePointer<sockaddr_in6>(raw).pointee.sin6_addr
+            inet_ntop(cfamily, &ptr, strData, maxLen)
+        case .unspecified:
+            fatalError("ResolvedInternetAddress should never be unspecified")
+        }
+        
+        guard let str = String(validatingUTF8: strData) else {
+            return "Invalid ip string"
+        }
+        return str
+    }
 
     deinit {
         self.raw.deinitialize(count: 1)
         self.raw.deallocateCapacity(1)
+    }
+}
+
+extension ResolvedInternetAddress: CustomStringConvertible {
+    
+    public var description: String {
+        return "ResolvedInternetAddress: \(self.ipString())"
     }
 }
 

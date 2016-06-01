@@ -24,7 +24,7 @@ public class SynchronousTCPServer {
         
         while true {
             let socket = try server.accept()
-            let client = try TCPClient(socket: socket)
+            let client = try TCPClient(alreadyConnectedSocket: socket)
             try handler(client: client)
         }
     }

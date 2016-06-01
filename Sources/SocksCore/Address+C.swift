@@ -64,8 +64,13 @@ struct Resolver: InternetAddressResolver{
         guard getaddrinfoReturnValue == 0 else { throw Error(.IPAddressValidationFailed) }
         
         guard let addr = servinfo else { throw Error(.IPAddressResolutionFailed) }
+        
+        //this takes the first resolved address, potentially we should
+        //get all of the addresses in the list and allow for iterative
+        //connecting
         let firstSockAddr = addr[0].ai_addr.pointee
         let address = ResolvedInternetAddress(raw: firstSockAddr)
+        freeaddrinfo(addr)
         return address
     }
 }

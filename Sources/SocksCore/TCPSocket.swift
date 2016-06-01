@@ -89,18 +89,17 @@ public class TCPSocket: InternetSocket {
     }
     
     public func accept() throws -> TCPSocket {
-        
-        // the type of this variable is big enough to store a IPv6 (and of course a IPv4) address
-        // that's important because we don't know upfront if a IPv6 or a IPv4 client wants to connect
-        let rawClientAddress = UnsafeMutablePointer<sockaddr_storage>.init(nil)
+
         var length = socklen_t(sizeof(sockaddr_storage))
-        let addr = UnsafeMutablePointer<sockaddr>.init(rawClientAddress)
+        let addr = UnsafeMutablePointer<sockaddr>.init(allocatingCapacity: 1)
         
         let clientSocketDescriptor = socket_accept(self.descriptor, addr, &length)
         
         guard clientSocketDescriptor > -1 else { throw Error(.AcceptFailed) }
         
-        let clientAddress = ResolvedInternetAddress(raw: addr!.pointee)
+        let clientAddress = ResolvedInternetAddress(raw: addr.pointee)
+        addr.deallocateCapacity(1)
+        
         let clientSocket = try TCPSocket(descriptor: clientSocketDescriptor, config: config, address: clientAddress)
         return clientSocket
     }

@@ -1,8 +1,9 @@
 
 import SocksCore
 
-let address = InternetAddress(hostname: "google.com", port: .portNumber(80))
+//let address = InternetAddress(hostname: "google.com", port: .portNumber(80))
 //let address = InternetAddress(hostname: "localhost", port: .portNumber(8080))
+let address = InternetAddress.localhost(port: 8080)
 let socket: TCPSocket = try! TCPSocket(address: address)
 try! socket.connect()
 
