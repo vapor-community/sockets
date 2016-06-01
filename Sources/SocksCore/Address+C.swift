@@ -63,22 +63,14 @@ struct Resolver: InternetAddressResolver{
         let getaddrinfoReturnValue = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
         guard getaddrinfoReturnValue == 0 else { throw Error(.IPAddressValidationFailed) }
         
-        // Wrap linked list into array of ResolvedInternetAddress
         guard let addr = servinfo else { throw Error(.IPAddressResolutionFailed) }
-        let address = ResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: addr)
+        
+        //this takes the first resolved address, potentially we should
+        //get all of the addresses in the list and allow for iterative
+        //connecting
+        let firstSockAddr = addr[0].ai_addr.pointee
+        let address = ResolvedInternetAddress(raw: firstSockAddr)
+        freeaddrinfo(addr)
         return address
     }
-    
 }
-
-//Pointer casting
-
-func sockaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
-    return UnsafeMutablePointer<sockaddr>(p)
-}
-
-func sockaddr_storage_cast(p : UnsafeMutablePointer<Void>?) -> UnsafeMutablePointer<sockaddr>? {
-    return UnsafeMutablePointer<sockaddr>(p)
-}
-
-

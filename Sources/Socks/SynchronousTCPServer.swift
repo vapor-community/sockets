@@ -8,11 +8,24 @@
 
 import SocksCore
 
-public class SynchronousTCPServer: SynchronousServer {
+public class SynchronousTCPServer {
     
-    public init(internetAddress : InternetAddress) throws {
+    public let address: InternetAddress
+    
+    public init(port: UInt16) throws {
+        self.address = .localhost(port: 8080)
+    }
+    
+    @noreturn public func startWithHandler(handler: (client: TCPClient) throws -> ()) throws {
         
-        let server = try InternetServer(socketConfig: .TCP(), internetAddress: internetAddress)
-        super.init(server: server)
+        let server = try TCPSocket(address: address)
+        try server.bind()
+        try server.listen(queueLimit: 4096)
+        
+        while true {
+            let socket = try server.accept()
+            let client = try TCPClient(alreadyConnectedSocket: socket)
+            try handler(client: client)
+        }
     }
 }

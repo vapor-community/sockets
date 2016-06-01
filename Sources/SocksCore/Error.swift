@@ -36,7 +36,7 @@ public enum ErrorReason {
     case Generic(String)
 }
 
-//see error codes: https://gist.github.com/gabrielfalcao/4216897
+//see error codes: https://gist.github.com/czechboy0/517b22041c0eeb33f723bb66933882e4
 public struct Error: ErrorProtocol, CustomStringConvertible {
     
     public let type: ErrorReason

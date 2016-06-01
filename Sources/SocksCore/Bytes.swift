@@ -12,7 +12,7 @@
     import Darwin
 #endif
 
-let BufferCapacity = 512
+public let BufferCapacity = 65_535
 
 class Bytes {
     

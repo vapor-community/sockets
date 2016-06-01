@@ -5,9 +5,11 @@ let package = Package(
     targets: [
     	Target(name: "SocksCore"),
 	Target(name: "Socks", dependencies: [.Target(name: "SocksCore")]),
-    	Target(name: "SocksCoreExampleServer", dependencies: [.Target(name: "SocksCore")]),
-    	Target(name: "SocksCoreExampleClient", dependencies: [.Target(name: "SocksCore")]),
-    	Target(name: "SocksExampleServer", dependencies: [.Target(name: "Socks")]),
-    	Target(name: "SocksExampleClient", dependencies: [.Target(name: "Socks")]),
+    	Target(name: "SocksCoreExampleTCPServer", dependencies: [.Target(name: "SocksCore")]),
+    	Target(name: "SocksCoreExampleTCPClient", dependencies: [.Target(name: "SocksCore")]),
+    	Target(name: "SocksExampleTCPServer", dependencies: [.Target(name: "Socks")]),
+    	Target(name: "SocksExampleTCPClient", dependencies: [.Target(name: "Socks")]),
+    	Target(name: "SocksExampleUDPClient", dependencies: [.Target(name: "Socks")]),
+    	Target(name: "SocksExampleUDPServer", dependencies: [.Target(name: "Socks")]),
     ]
 )
