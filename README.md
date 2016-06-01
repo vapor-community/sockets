@@ -16,6 +16,14 @@
 | Client | ✅ | ✅ | 
 | Server | ✅ | ✅ |
 
+# Installation
+
+## Swift Package Manager
+
+```swift
+.Package(url: "https://github.com/czechboy0/Socks.git", majorVersion: 0, minor: 3)
+```
+
 :wrench: Usage
 ------------
 The package provides two libraries: `SocksCore` and `Socks`.
