@@ -12,6 +12,10 @@ public class TCPClient {
     
     let socket: TCPSocket
     
+    public func ipAddress() -> String {
+        return self.socket.address.ipString()
+    }
+    
     public init(alreadyConnectedSocket: TCPSocket) throws {
         self.socket = alreadyConnectedSocket
     }

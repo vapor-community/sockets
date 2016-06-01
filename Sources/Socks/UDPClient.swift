@@ -12,6 +12,10 @@ public class UDPClient {
     
     let socket: UDPSocket
     
+    public func ipAddress() -> String {
+        return self.socket.address.ipString()
+    }
+    
     public init(socket: UDPSocket) throws {
         self.socket = socket
     }
