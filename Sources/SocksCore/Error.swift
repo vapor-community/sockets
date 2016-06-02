@@ -15,6 +15,7 @@
 public enum ErrorReason {
     
     case CreateSocketFailed
+    case ReuseAddressSetFailed
     case CloseSocketFailed
     
     case IPAddressValidationFailed

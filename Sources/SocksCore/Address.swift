@@ -42,6 +42,10 @@ public struct InternetAddress {
     static public func localhost(port: UInt16) -> InternetAddress {
         return InternetAddress(hostname: "localhost", port: .portNumber(port))
     }
+    
+    static public func any(port: UInt16) -> InternetAddress {
+        return InternetAddress(hostname: "0.0.0.0", port: .portNumber(port))
+    }
 }
 
 extension InternetAddress {
@@ -103,7 +107,13 @@ public class ResolvedInternetAddress {
 extension ResolvedInternetAddress: CustomStringConvertible {
     
     public var description: String {
-        return "ResolvedInternetAddress: \(self.ipString())"
+        let family: String
+        if let fam = try? self.addressFamily() {
+            family = String(fam)
+        } else {
+            family = "UNRECOGNIZED FAMILY"
+        }
+        return "ResolvedInternetAddress: \(self.ipString()) on \(family)"
     }
 }
 
