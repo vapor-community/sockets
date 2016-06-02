@@ -130,6 +130,14 @@ public class ResolvedInternetAddress {
         }
         return str
     }
+    
+    public func asData() -> [UInt8] {
+        let data = UnsafeMutablePointer<UInt8>(_raw)
+        let maxLen = Int(self.rawLen)
+        let buffer = UnsafeBufferPointer(start: data, count: maxLen)
+        let out = Array(buffer)
+        return out
+    }
 
     deinit {
         self.raw.deinitialize(count: 1)
