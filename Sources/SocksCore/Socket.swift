@@ -65,10 +65,8 @@ public struct SocketConfig {
         self.protocolType = protocolType
     }
     
-    func adjusted(for resolvedAddress: ResolvedInternetAddress) throws -> SocketConfig {
-        var config = self
-        config.addressFamily = try resolvedAddress.addressFamily()
-        return config
+    mutating func adjust(for resolvedAddress: ResolvedInternetAddress) throws {
+        self.addressFamily = try resolvedAddress.addressFamily()
     }
     
     public static func TCP(addressFamily: AddressFamily = .unspecified) -> SocketConfig {

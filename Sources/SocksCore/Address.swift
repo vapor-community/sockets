@@ -39,12 +39,32 @@ public struct InternetAddress {
         self.addressFamily = addressFamily
     }
     
-    static public func localhost(port: UInt16) -> InternetAddress {
-        return InternetAddress(hostname: "localhost", port: .portNumber(port))
+    static public func localhost(port: UInt16, ipVersion: AddressFamily = .inet) -> InternetAddress {
+        let hostname: String
+        let ipV: AddressFamily
+        switch ipVersion {
+        case .inet6:
+            hostname = "::1"
+            ipV = .inet6
+        default:
+            hostname = "127.0.0.1"
+            ipV = .inet
+        }
+        return InternetAddress(hostname: hostname, port: .portNumber(port), addressFamily: ipV)
     }
     
-    static public func any(port: UInt16) -> InternetAddress {
-        return InternetAddress(hostname: "0.0.0.0", port: .portNumber(port))
+    static public func any(port: UInt16, ipVersion: AddressFamily = .inet) -> InternetAddress {
+        let hostname: String
+        let ipV: AddressFamily
+        switch ipVersion {
+        case .inet6:
+            hostname = "::"
+            ipV = .inet6
+        default:
+            hostname = "0.0.0.0"
+            ipV = .inet
+        }
+        return InternetAddress(hostname: hostname, port: .portNumber(port), addressFamily: ipV)
     }
 }
 
@@ -57,42 +77,51 @@ extension InternetAddress {
 
 public class ResolvedInternetAddress {
     
-    let raw: UnsafeMutablePointer<sockaddr>
+    let _raw: UnsafeMutablePointer<sockaddr_storage>
+    var raw: UnsafeMutablePointer<sockaddr> {
+        return UnsafeMutablePointer<sockaddr>(_raw)
+    }
     
-    init(raw: sockaddr){
-        let ptr = UnsafeMutablePointer<sockaddr>.init(allocatingCapacity: 1)
+    init(raw: sockaddr_storage){
+        let ptr = UnsafeMutablePointer<sockaddr_storage>.init(allocatingCapacity: 1)
         ptr.initialize(with: raw)
-        self.raw = ptr
+        self._raw = ptr
     }
 
     var rawLen: socklen_t {
-        return socklen_t(sizeof(sockaddr))
+        return socklen_t(_raw.pointee.ss_len)
     }
     
     public func addressFamily() throws -> AddressFamily {
-        return try AddressFamily(fromCType: Int32(raw.pointee.sa_family))
+        return try AddressFamily(fromCType: Int32(_raw.pointee.ss_family))
     }
     
     public func ipString() -> String {
         
         guard let family = try? addressFamily() else { return "Invalid family" }
         let cfamily = family.toCType()
-        
-        let maxLen = socklen_t(INET_ADDRSTRLEN)
-        let strData = UnsafeMutablePointer<Int8>.init(allocatingCapacity: Int(maxLen))
+        let strData: UnsafeMutablePointer<Int8>
+        let maxLen: socklen_t
         
         switch family {
         case .inet:
+            maxLen = socklen_t(INET_ADDRSTRLEN)
+            strData = UnsafeMutablePointer<Int8>.init(allocatingCapacity: Int(maxLen))
             var ptr = UnsafeMutablePointer<sockaddr_in>(raw).pointee.sin_addr
             inet_ntop(cfamily, &ptr, strData, maxLen)
         case .inet6:
+            maxLen = socklen_t(INET6_ADDRSTRLEN)
+            strData = UnsafeMutablePointer<Int8>.init(allocatingCapacity: Int(maxLen))
             var ptr = UnsafeMutablePointer<sockaddr_in6>(raw).pointee.sin6_addr
             inet_ntop(cfamily, &ptr, strData, maxLen)
         case .unspecified:
             fatalError("ResolvedInternetAddress should never be unspecified")
         }
         
-        guard let str = String(validatingUTF8: strData) else {
+        let maybeStr = String(validatingUTF8: strData)
+        strData.deallocateCapacity(Int(maxLen))
+        
+        guard let str = maybeStr else {
             return "Invalid ip string"
         }
         return str

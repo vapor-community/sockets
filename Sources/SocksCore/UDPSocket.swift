@@ -34,10 +34,10 @@ public class UDPSocket: InternetSocket {
     }
     
     public convenience init(address: InternetAddress) throws {
-        var config: SocketConfig = .UDP(addressFamily: address.addressFamily)
-        let resolved = try address.resolve(with: config)
-        config = try config.adjusted(for: resolved)
-        try self.init(descriptor: nil, config: config, address: resolved)
+        var conf: SocketConfig = .UDP(addressFamily: address.addressFamily)
+        let resolved = try address.resolve(with: conf)
+        try conf.adjust(for: resolved)
+        try self.init(descriptor: nil, config: conf, address: resolved)
     }
     
     public func recvfrom(maxBytes: Int = BufferCapacity) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
@@ -45,14 +45,15 @@ public class UDPSocket: InternetSocket {
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
         
         var length = socklen_t(sizeof(sockaddr_storage))
-        let addr = UnsafeMutablePointer<sockaddr>.init(allocatingCapacity: 1)
+        let addr = UnsafeMutablePointer<sockaddr_storage>.init(allocatingCapacity: 1)
+        let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
         
         let receivedBytes = socket_recvfrom(
             self.descriptor,
             data.rawBytes,
             data.capacity,
             flags,
-            addr,
+            addrSockAddr,
             &length
         )
         guard receivedBytes > -1 else { throw Error(.ReadFailed) }

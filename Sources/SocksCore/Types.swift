@@ -131,7 +131,6 @@ extension AddressFamily: CTypeInt32Convertible {
 extension AddressFamily {
     
     init(fromCType cType: Int32) throws {
-        
         switch cType {
         case Int32(AF_INET): self = .inet
         case Int32(AF_INET6): self = .inet6

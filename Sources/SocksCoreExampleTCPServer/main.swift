@@ -1,13 +1,14 @@
 
 import SocksCore
 
-let address = InternetAddress(hostname : "0.0.0.0", port : .portNumber(8080), addressFamily: .inet)
+//let address = InternetAddress.any(port: 8080, ipVersion: .inet6)
+let address = InternetAddress.any(port: 8080)
 let socket = try! TCPSocket(address: address)
 
 try! socket.bind()
 try! socket.listen()
 
-print("Listening on \(address.hostname) port \(address.port)")
+print("Listening on \"\(address.hostname)\" (\(address.addressFamily)) \(address.port)")
 
 while true {
     

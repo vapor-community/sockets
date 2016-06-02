@@ -42,10 +42,10 @@ public class TCPSocket: InternetSocket {
     }
     
     public convenience init(address: InternetAddress) throws {
-        var config: SocketConfig = .TCP(addressFamily: address.addressFamily)
-        let resolved = try address.resolve(with: config)
-        config = try config.adjusted(for: resolved)
-        try self.init(descriptor: nil, config: config, address: resolved)
+        var conf: SocketConfig = .TCP(addressFamily: address.addressFamily)
+        let resolved = try address.resolve(with: conf)
+        try conf.adjust(for: resolved)
+        try self.init(descriptor: nil, config: conf, address: resolved)
     }
     
     public func recv(maxBytes: Int = BufferCapacity) throws -> [UInt8] {
@@ -91,9 +91,10 @@ public class TCPSocket: InternetSocket {
     public func accept() throws -> TCPSocket {
 
         var length = socklen_t(sizeof(sockaddr_storage))
-        let addr = UnsafeMutablePointer<sockaddr>.init(allocatingCapacity: 1)
+        let addr = UnsafeMutablePointer<sockaddr_storage>.init(allocatingCapacity: 1)
+        let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
         
-        let clientSocketDescriptor = socket_accept(self.descriptor, addr, &length)
+        let clientSocketDescriptor = socket_accept(self.descriptor, addrSockAddr, &length)
         
         guard clientSocketDescriptor > -1 else { throw Error(.AcceptFailed) }
         

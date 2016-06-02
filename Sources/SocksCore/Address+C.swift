@@ -45,6 +45,7 @@ struct Resolver: InternetAddressResolver{
     }
     
     private static func _resolve(socketConfig: SocketConfig, internetAddress: InternetAddress) throws ->  ResolvedInternetAddress {
+        
         //
         // Narrowing down the results we will get from the getaddrinfo call
         //
@@ -68,7 +69,8 @@ struct Resolver: InternetAddressResolver{
         //this takes the first resolved address, potentially we should
         //get all of the addresses in the list and allow for iterative
         //connecting
-        let firstSockAddr = addr[0].ai_addr.pointee
+        let firstSockAddrInfo = addr[0].ai_addr
+        let firstSockAddr = UnsafeMutablePointer<sockaddr_storage>(firstSockAddrInfo)!.pointee
         let address = ResolvedInternetAddress(raw: firstSockAddr)
         freeaddrinfo(addr)
         return address
