@@ -89,7 +89,11 @@ public class ResolvedInternetAddress {
     }
 
     var rawLen: socklen_t {
-        return socklen_t(_raw.pointee.ss_len)
+        switch try! addressFamily() {
+        case .inet: return socklen_t(sizeof(sockaddr_in))
+        case .inet6: return socklen_t(sizeof(sockaddr_in6))
+        default: return 0
+        }
     }
     
     public func addressFamily() throws -> AddressFamily {
