@@ -12,8 +12,13 @@ public class SynchronousUDPServer {
     
     public let address: InternetAddress
     
-    public init(port: UInt16) throws {
-        self.address = .localhost(port: 8080)
+    public init(address: InternetAddress) throws {
+        self.address = address
+    }
+    
+    public convenience init(port: UInt16, bindLocalhost: Bool = false) throws {
+        let address: InternetAddress = bindLocalhost ? .localhost(port: port) : .any(port: port)
+        try self.init(address: address)
     }
     
     @noreturn public func startWithHandler(handler: (received: [UInt8], client: UDPClient) throws -> ()) throws {

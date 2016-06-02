@@ -1,7 +1,7 @@
 
 import SocksCore
 
-let address = InternetAddress(hostname : "localhost", port : .portNumber(8080))
+let address = InternetAddress(hostname : "0.0.0.0", port : .portNumber(8080), addressFamily: .inet)
 let socket = try! TCPSocket(address: address)
 
 try! socket.bind()
