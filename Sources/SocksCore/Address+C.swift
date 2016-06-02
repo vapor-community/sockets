@@ -61,18 +61,18 @@ struct Resolver: InternetAddressResolver{
         // at this line
         var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
         // perform resolution
-        let getaddrinfoReturnValue = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
-        guard getaddrinfoReturnValue == 0 else { throw Error(.IPAddressValidationFailed) }
+        let ret = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
+        guard ret == 0 else { throw Error(.IPAddressValidationFailed) }
         
-        guard let addr = servinfo else { throw Error(.IPAddressResolutionFailed) }
+        guard let addrList = servinfo else { throw Error(.IPAddressResolutionFailed) }
         
         //this takes the first resolved address, potentially we should
         //get all of the addresses in the list and allow for iterative
         //connecting
-        let firstSockAddrInfo = addr[0].ai_addr
-        let firstSockAddr = UnsafeMutablePointer<sockaddr_storage>(firstSockAddrInfo)!.pointee
+        let addrInfo = addrList.pointee.ai_addr
+        let firstSockAddr = UnsafeMutablePointer<sockaddr_storage>(addrInfo)!
         let address = ResolvedInternetAddress(raw: firstSockAddr)
-        freeaddrinfo(addr)
+        freeaddrinfo(addrList)
         return address
     }
 }

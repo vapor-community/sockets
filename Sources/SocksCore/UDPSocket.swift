@@ -58,7 +58,7 @@ public class UDPSocket: InternetSocket {
         )
         guard receivedBytes > -1 else { throw Error(.ReadFailed) }
         
-        let clientAddress = ResolvedInternetAddress(raw: addr.pointee)
+        let clientAddress = ResolvedInternetAddress(raw: addr)
         addr.deallocateCapacity(1)
         
         let finalBytes = data.characters[0..<receivedBytes]
