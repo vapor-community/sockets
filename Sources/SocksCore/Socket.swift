@@ -16,14 +16,16 @@
     private let s_socket = Darwin.socket
 #endif
 
-public protocol Socket {
+public protocol Socket: class {
+    var isClosed: Bool { get set }
     var descriptor: Descriptor { get }
     var config: SocketConfig { get }
 }
 
 extension Socket {
-    
+
     public func close() throws {
+        isClosed = true
         if s_close(self.descriptor) != 0 {
             throw Error(.CloseSocketFailed)
         }

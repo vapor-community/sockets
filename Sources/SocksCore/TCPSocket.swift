@@ -29,6 +29,7 @@ public class TCPSocket: InternetSocket {
     public let descriptor: Descriptor
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
+    public var isClosed: Bool
 
     public required init(descriptor: Descriptor?, config: SocketConfig, address: ResolvedInternetAddress) throws {
         
@@ -39,6 +40,7 @@ public class TCPSocket: InternetSocket {
         }
         self.config = config
         self.address = address
+        self.isClosed = false
     }
     
     public convenience init(address: InternetAddress) throws {
