@@ -32,7 +32,7 @@ public class TCPSocket: InternetSocket {
     public let descriptor: Descriptor
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
-    public var isClosed: Bool
+    public var closed: Bool
 
     public required init(descriptor: Descriptor?, config: SocketConfig, address: ResolvedInternetAddress) throws {
         if let descriptor = descriptor {
@@ -42,7 +42,7 @@ public class TCPSocket: InternetSocket {
         }
         self.config = config
         self.address = address
-        self.isClosed = false
+        self.closed = false
     }
     
     public convenience init(address: InternetAddress) throws {
@@ -111,7 +111,7 @@ public class TCPSocket: InternetSocket {
 
 
     public func close() throws {
-        isClosed = true
+        closed = true
         if socket_close(self.descriptor) != 0 {
             throw Error(.CloseSocketFailed)
         }
