@@ -14,7 +14,7 @@
     private let socket_accept = Glibc.accept
     private let socket_recv = Glibc.recv
     private let socket_send = Glibc.send
-    private let s_close = Glibc.close
+    private let socket_close = Glibc.close
 #else
     import Darwin
     private let socket_connect = Darwin.connect
@@ -23,7 +23,7 @@
     private let socket_accept = Darwin.accept
     private let socket_recv = Darwin.recv
     private let socket_send = Darwin.send
-    private let s_close = Darwin.close
+    private let socket_close = Darwin.close
 #endif
 
 public class TCPSocket: InternetSocket {
@@ -111,7 +111,7 @@ public class TCPSocket: InternetSocket {
 
     public func close() throws {
         isClosed = true
-        if s_close(self.descriptor) != 0 {
+        if socket_close(self.descriptor) != 0 {
             throw Error(.CloseSocketFailed)
         }
     }
