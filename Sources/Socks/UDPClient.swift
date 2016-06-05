@@ -10,7 +10,7 @@ import SocksCore
 
 public class UDPClient {
     
-    let socket: UDPSocket
+    public let socket: UDPSocket
     
     public func ipAddress() -> String {
         return self.socket.address.ipString()
@@ -38,9 +38,5 @@ public class UDPClient {
     
     public func receive(maxBytes: Int = BufferCapacity) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
         return try self.socket.recvfrom(maxBytes: maxBytes)
-    }
-    
-    public func close() throws {
-        try self.socket.close()
     }
 }

@@ -21,7 +21,6 @@ public class UDPSocket: InternetSocket {
     public let descriptor: Descriptor
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
-    public var isClosed: Bool
 
     public required init(descriptor: Descriptor?, config: SocketConfig, address: ResolvedInternetAddress) throws {
         
@@ -32,7 +31,6 @@ public class UDPSocket: InternetSocket {
         }
         self.config = config
         self.address = address
-        self.isClosed = true
     }
     
     public convenience init(address: InternetAddress) throws {
