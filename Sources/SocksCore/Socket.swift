@@ -9,14 +9,25 @@
 #if os(Linux)
     import Glibc
     private let s_socket = Glibc.socket
+    private let s_close = Glibc.close
 #else
     import Darwin
     private let s_socket = Darwin.socket
+    private let s_close = Darwin.close
 #endif
 
 public protocol Socket: class {
     var descriptor: Descriptor { get }
     var config: SocketConfig { get }
+    func close() throws
+}
+
+extension Socket {
+    public func close() throws {
+        if s_close(self.descriptor) != 0 {
+            throw Error(.CloseSocketFailed)
+        }
+    }
 }
 
 extension Socket {

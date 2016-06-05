@@ -39,4 +39,8 @@ public class UDPClient {
     public func receive(maxBytes: Int = BufferCapacity) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
         return try self.socket.recvfrom(maxBytes: maxBytes)
     }
+
+    public func close() throws {
+        try socket.close()
+    }
 }
