@@ -16,7 +16,7 @@
     private let s_close = Darwin.close
 #endif
 
-public protocol Socket: class {
+public protocol Socket {
     var descriptor: Descriptor { get }
     var config: SocketConfig { get }
     func close() throws
