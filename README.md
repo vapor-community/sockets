@@ -49,6 +49,7 @@ There are many working examples in this package which build as separate binaries
 
 :wrench: Used by
 - [Redbird](https://github.com/czechboy0/Redbird) *Pure-Swift implementation of a Redis client from the original protocol spec. OS X + Linux compatible.*
+- [Vapor](https://github.com/qutheory/vapor) *A web framework and server for Swift that works on OS X and Ubuntu.*
 
 :blue_heart: Code of Conduct
 ------------
