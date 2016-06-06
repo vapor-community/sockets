@@ -14,6 +14,7 @@
     private let socket_accept = Glibc.accept
     private let socket_recv = Glibc.recv
     private let socket_send = Glibc.send
+    private let socket_close = Glibc.close
 #else
     import Darwin
     private let socket_connect = Darwin.connect
@@ -22,16 +23,18 @@
     private let socket_accept = Darwin.accept
     private let socket_recv = Darwin.recv
     private let socket_send = Darwin.send
+    private let socket_close = Darwin.close
 #endif
+
 
 public class TCPSocket: InternetSocket {
 
     public let descriptor: Descriptor
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
+    public var closed: Bool
 
     public required init(descriptor: Descriptor?, config: SocketConfig, address: ResolvedInternetAddress) throws {
-        
         if let descriptor = descriptor {
             self.descriptor = descriptor
         } else {
@@ -39,6 +42,7 @@ public class TCPSocket: InternetSocket {
         }
         self.config = config
         self.address = address
+        self.closed = false
     }
     
     public convenience init(address: InternetAddress) throws {
@@ -103,5 +107,13 @@ public class TCPSocket: InternetSocket {
         
         let clientSocket = try TCPSocket(descriptor: clientSocketDescriptor, config: config, address: clientAddress)
         return clientSocket
+    }
+
+
+    public func close() throws {
+        closed = true
+        if socket_close(self.descriptor) != 0 {
+            throw Error(.CloseSocketFailed)
+        }
     }
 }

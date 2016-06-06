@@ -21,7 +21,7 @@ public class UDPSocket: InternetSocket {
     public let descriptor: Descriptor
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
-    
+
     public required init(descriptor: Descriptor?, config: SocketConfig, address: ResolvedInternetAddress) throws {
         
         if let descriptor = descriptor {

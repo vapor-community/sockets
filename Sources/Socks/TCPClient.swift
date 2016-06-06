@@ -10,7 +10,7 @@ import SocksCore
 
 public class TCPClient {
     
-    let socket: TCPSocket
+    public let socket: TCPSocket
     
     public func ipAddress() -> String {
         return self.socket.address.ipString()
