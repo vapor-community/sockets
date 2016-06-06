@@ -86,6 +86,7 @@ public class ResolvedInternetAddress {
     /// will make sure of deallocating it later.
     init(raw: UnsafeMutablePointer<sockaddr_storage>) {
         self._raw = raw
+        precondition((try! addressFamily()).isConcrete(), "Cannot create ResolvedInternetAddress with a unspecified address family")
     }
 
     var rawLen: socklen_t {
@@ -93,6 +94,14 @@ public class ResolvedInternetAddress {
         case .inet: return socklen_t(sizeof(sockaddr_in))
         case .inet6: return socklen_t(sizeof(sockaddr_in6))
         default: return 0
+        }
+    }
+    
+    var port: UInt16 {
+        switch try! addressFamily() {
+        case .inet: return UnsafePointer<sockaddr_in>(_raw).pointee.sin_port
+        case .inet6: return UnsafePointer<sockaddr_in6>(_raw).pointee.sin6_port
+        default: fatalError()
         }
     }
     
@@ -154,7 +163,7 @@ extension ResolvedInternetAddress: CustomStringConvertible {
         } else {
             family = "UNRECOGNIZED FAMILY"
         }
-        return "ResolvedInternetAddress: \(self.ipString()) on \(family)"
+        return "Resolved: \(ipString()):\(port) \(family)"
     }
 }
 

@@ -44,7 +44,7 @@ struct Resolver: InternetAddressResolver{
         return resolvedInternetAddresses
     }
     
-    private static func _resolve(socketConfig: SocketConfig, internetAddress: InternetAddress) throws ->  ResolvedInternetAddress {
+    private static func _resolve(socketConfig: SocketConfig, internetAddress: InternetAddress) throws -> ResolvedInternetAddress {
         
         //
         // Narrowing down the results we will get from the getaddrinfo call

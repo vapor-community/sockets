@@ -19,5 +19,5 @@ while true {
     let data = try! client.recv()
     try! client.send(data: data)
     try! client.close()
-    print("Echoed: \(try! data.toString())")
+    print("Client: \(client.address), Echoed: \(try! data.toString())")
 }
