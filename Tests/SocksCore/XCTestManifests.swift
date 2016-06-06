@@ -6,6 +6,14 @@
 //
 //
 
+extension AddressResolutionTests {
+    static var allTests : [(String, (AddressResolutionTests) -> () throws -> Void)] {
+        return [
+            ("testResolutionCrashFixed", testResolutionCrashFixed)
+        ]
+    }
+}
+
 extension ConversionTests {
     static var allTests : [(String, (ConversionTests) -> () throws -> Void)] {
         return [

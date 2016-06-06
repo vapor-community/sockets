@@ -103,7 +103,6 @@ public class TCPSocket: InternetSocket {
         guard clientSocketDescriptor > -1 else { throw Error(.AcceptFailed) }
         
         let clientAddress = ResolvedInternetAddress(raw: addr)
-        addr.deallocateCapacity(1)
         
         let clientSocket = try TCPSocket(descriptor: clientSocketDescriptor, config: config, address: clientAddress)
         return clientSocket

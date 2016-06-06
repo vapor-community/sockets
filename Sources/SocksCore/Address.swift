@@ -82,10 +82,10 @@ public class ResolvedInternetAddress {
         return UnsafeMutablePointer<sockaddr>(_raw)
     }
     
+    /// WARNING: this pointer MUST be +1 allocated, ResolvedInternetAddress
+    /// will make sure of deallocating it later.
     init(raw: UnsafeMutablePointer<sockaddr_storage>) {
-        let ptr = UnsafeMutablePointer<sockaddr_storage>.init(allocatingCapacity: 1)
-        ptr.initializeFrom(raw, count: 1)
-        self._raw = ptr
+        self._raw = raw
     }
 
     var rawLen: socklen_t {
@@ -140,8 +140,8 @@ public class ResolvedInternetAddress {
     }
 
     deinit {
-        self.raw.deinitialize(count: 1)
-        self.raw.deallocateCapacity(1)
+        self._raw.deinitialize(count: 1)
+        self._raw.deallocateCapacity(1)
     }
 }
 
