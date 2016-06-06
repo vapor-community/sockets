@@ -83,9 +83,7 @@ public class ResolvedInternetAddress {
     }
     
     init(raw: UnsafeMutablePointer<sockaddr_storage>) {
-        let ptr = UnsafeMutablePointer<sockaddr_storage>.init(allocatingCapacity: 1)
-        ptr.initialize(with: raw.pointee)
-        self._raw = ptr
+        self._raw = raw
     }
 
     var rawLen: socklen_t {
