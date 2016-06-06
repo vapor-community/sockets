@@ -53,7 +53,14 @@ public struct Error: ErrorProtocol, CustomStringConvertible {
         self.number = -1
     }
     
+    func getReason() -> String {
+        guard number >= 0 else { return "?" }
+        guard let reasonString = gai_strerror(number) else { return "?" }
+        let reason = String(validatingUTF8: reasonString) ?? "?"
+        return reason
+    }
+    
     public var description: String {
-        return "Socket failed with code \(self.number) [\(self.type)]"
+        return "Socket failed with code \(self.number) [\(self.type)] \"\(getReason())\""
     }
 }
