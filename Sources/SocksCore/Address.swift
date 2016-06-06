@@ -82,6 +82,8 @@ public class ResolvedInternetAddress {
         return UnsafeMutablePointer<sockaddr>(_raw)
     }
     
+    /// WARNING: this pointer MUST be +1 allocated, ResolvedInternetAddress
+    /// will make sure of deallocating it later.
     init(raw: UnsafeMutablePointer<sockaddr_storage>) {
         self._raw = raw
     }
@@ -138,8 +140,8 @@ public class ResolvedInternetAddress {
     }
 
     deinit {
-        self.raw.deinitialize(count: 1)
-        self.raw.deallocateCapacity(1)
+        self._raw.deinitialize(count: 1)
+        self._raw.deallocateCapacity(1)
     }
 }
 
