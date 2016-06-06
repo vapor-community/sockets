@@ -2,7 +2,7 @@
 import Socks
 
 //let address = InternetAddress(hostname: "google.com", port: .portNumber(80))
-let address = InternetAddress(hostname: "localhost", port: .portNumber(8080))
+let address = InternetAddress.localhost(port: 8080)
 let client = try! UDPClient(address: address)
 try! client.send(bytes: "Hello Socks world!\n\r".toBytes())
 let (data, sender) = try! client.receive()

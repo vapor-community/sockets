@@ -13,7 +13,8 @@ class LiveTests: XCTestCase {
 
     func testLive_HTTP_Get_Google_ipV4() throws {
         
-        let addr = InternetAddress(hostname: "google.com", port: .portNumber(80))
+        let addr = InternetAddress(hostname: "google.com",
+                                   port: .portNumber(80))
         let socket = try TCPSocket(address: addr)
         
         try socket.connect()
