@@ -70,8 +70,25 @@ struct Resolver: InternetAddressResolver{
         //get all of the addresses in the list and allow for iterative
         //connecting
         let addrInfo = addrList.pointee.ai_addr
-        let firstSockAddr = UnsafeMutablePointer<sockaddr_storage>(addrInfo)!
-        let address = ResolvedInternetAddress(raw: firstSockAddr)
+        let family = try AddressFamily(fromCType: Int32(addrInfo.pointee.sa_family))
+        
+        let ptr = UnsafeMutablePointer<sockaddr_storage>(allocatingCapacity: 1)
+        ptr.initialize(with: sockaddr_storage())
+        
+        switch family {
+        case .inet:
+            let addr = UnsafeMutablePointer<sockaddr_in>(addrInfo)!
+            let specPtr = UnsafeMutablePointer<sockaddr_in>(ptr)
+            specPtr.assignFrom(addr, count: 1)
+        case .inet6:
+            let addr = UnsafeMutablePointer<sockaddr_in6>(addrInfo)!
+            let specPtr = UnsafeMutablePointer<sockaddr_in6>(ptr)
+            specPtr.assignFrom(addr, count: 1)
+        default:
+            throw Error.init(ErrorReason.ConcreteSocketAddressFamilyRequired)
+        }
+        
+        let address = ResolvedInternetAddress(raw: ptr)
         freeaddrinfo(addrList)
         return address
     }
