@@ -12,7 +12,8 @@
     import Darwin
 #endif
 
-public let BufferCapacity = 65_535
+// Buffer capacity is the same as the maximum UDP packet size
+public let BufferCapacity = 65_507
 
 class Bytes {
     
