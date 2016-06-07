@@ -31,6 +31,8 @@ public class UDPSocket: InternetSocket {
         }
         self.config = config
         self.address = address
+        
+        self.reuseAddress = true
     }
     
     public convenience init(address: InternetAddress) throws {
