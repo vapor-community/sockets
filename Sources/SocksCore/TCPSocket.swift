@@ -15,6 +15,7 @@
     private let socket_recv = Glibc.recv
     private let socket_send = Glibc.send
     private let socket_close = Glibc.close
+    private let SOCKET_NOSIGNAL = Glibc.MSG_NOSIGNAL
 #else
     import Darwin
     private let socket_connect = Darwin.connect
@@ -24,6 +25,7 @@
     private let socket_recv = Darwin.recv
     private let socket_send = Darwin.send
     private let socket_close = Darwin.close
+    private let SOCKET_NOSIGNAL = Darwin.SO_NOSIGPIPE
 #endif
 
 
@@ -79,7 +81,7 @@ public class TCPSocket: InternetSocket {
     
     public func send(data: [UInt8]) throws {
         let len = data.count
-        let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
+        let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
         let sentLen = socket_send(self.descriptor, data, len, flags)
         guard sentLen == len else { throw Error(.SendFailedToSendAllBytes) }
     }

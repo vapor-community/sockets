@@ -42,7 +42,10 @@ extension Socket {
         if config.reuseAddress {
             try setOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_REUSEADDR, value: 1)
         }
-        
+
+        // prevents SIGPIPE from killing process
+        try setOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_NOSIGPIPE, value: 1)
+
         return descriptor
     }
 }
