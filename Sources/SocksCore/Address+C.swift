@@ -69,7 +69,7 @@ struct Resolver: InternetAddressResolver{
         //this takes the first resolved address, potentially we should
         //get all of the addresses in the list and allow for iterative
         //connecting
-        let addrInfo = addrList.pointee.ai_addr
+        guard let addrInfo = addrList.pointee.ai_addr else { throw Error(.IPAddressResolutionFailed) }
         let family = try AddressFamily(fromCType: Int32(addrInfo.pointee.sa_family))
         
         let ptr = UnsafeMutablePointer<sockaddr_storage>(allocatingCapacity: 1)
