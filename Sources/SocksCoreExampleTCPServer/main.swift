@@ -3,10 +3,10 @@ import SocksCore
 do {
     //let address = InternetAddress.any(port: 8080, ipVersion: .inet6)
     let address = InternetAddress.any(port: 8080)
-    let socket = try! TCPSocket(address: address)
+    let socket = try TCPSocket(address: address)
     
-    try! socket.bind()
-    try! socket.listen()
+    try socket.bind()
+    try socket.listen()
     
     print("Listening on \"\(address.hostname)\" (\(address.addressFamily)) \(address.port)")
 

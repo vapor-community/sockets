@@ -15,7 +15,8 @@
 public enum ErrorReason {
     
     case CreateSocketFailed
-    case ReuseAddressSetFailed
+    case OptionSetFailed(level: Int32, name: Int32, value: String)
+    case OptionGetFailed(level: Int32, name: Int32, type: String)
     case CloseSocketFailed
     
     case IPAddressValidationFailed

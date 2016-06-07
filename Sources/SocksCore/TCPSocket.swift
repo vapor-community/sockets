@@ -43,6 +43,8 @@ public class TCPSocket: InternetSocket {
         self.config = config
         self.address = address
         self.closed = false
+        
+        self.reuseAddress = true
     }
     
     public convenience init(address: InternetAddress) throws {
