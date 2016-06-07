@@ -40,10 +40,7 @@ extension Socket {
         guard descriptor > 0 else { throw Error(.CreateSocketFailed) }
         
         if config.reuseAddress {
-            var value: Int32 = 1
-            guard setsockopt(descriptor, SOL_SOCKET, SO_REUSEADDR, &value, socklen_t(sizeof(Int32))) != -1 else {
-                throw Error(.ReuseAddressSetFailed)
-            }
+            try setOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_REUSEADDR, value: 1)
         }
         
         return descriptor
