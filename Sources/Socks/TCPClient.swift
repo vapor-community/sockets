@@ -46,3 +46,10 @@ public class TCPClient {
         try self.socket.close()
     }
 }
+
+extension TCPClient: CustomStringConvertible {
+
+    public var description: String {
+        return socket.address.description
+    }
+}
