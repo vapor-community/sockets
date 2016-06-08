@@ -64,7 +64,7 @@ extension TCPWriteableSocket {
     
     public func send(data: [UInt8]) throws {
         let len = data.count
-        let flags = Int32(SO_NOSIGPIPE) //FIXME: allow setting flags with a Swift enum
+        let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
         let sentLen = socket_send(self.descriptor, data, len, flags)
         guard sentLen == len else { throw Error(.sendFailedToSendAllBytes) }
     }

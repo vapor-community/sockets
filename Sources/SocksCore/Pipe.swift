@@ -14,7 +14,8 @@ extension TCPEstablishedSocket: Pipeable {
     
     public static func pipe() throws -> (read: TCPReadableSocket, write: TCPWriteableSocket) {
         var descriptors: [Descriptor] = [0, 0]
-        guard socket_socketpair(AF_LOCAL, SOCK_STREAM, 0, &descriptors) != -1 else {
+        let socketType = SocketType.stream.toCType()
+        guard socket_socketpair(AF_LOCAL, socketType, 0, &descriptors) != -1 else {
             throw Error(.pipeCreationFailed)
         }
         try descriptors.forEach {
