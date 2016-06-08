@@ -37,7 +37,7 @@ If you're building a HTTP server, you'll probably want to use the `TCPClient`, w
 There are many working examples in this package which build as separate binaries. 
 - TCP client using SocksCore ([SocksCoreExampleTCPClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleTCPClient/main.swift))
 - TCP server using SocksCore ([SocksCoreExampleTCPServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleTCPServer/main.swift))
-- TCP server using SocksCore ([SocksCoreExampleTCPKeepAliveServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleTCPKeepAliveServer/main.swift))
+- TCP server that keeps client connections alive using SocksCore ([SocksCoreExampleTCPKeepAliveServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleTCPKeepAliveServer/main.swift))
 - TCP client using Socks ([SocksExampleTCPClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleTCPClient/main.swift))
 - TCP server using Socks ([SocksExampleTCPServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleTCPServer/main.swift))
 - UDP client using Socks ([SocksExampleUDPClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleUDPClient/main.swift))
