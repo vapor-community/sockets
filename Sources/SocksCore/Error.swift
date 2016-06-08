@@ -21,6 +21,8 @@ public enum ErrorReason {
     
     case pipeCreationFailed
     
+    case selectFailed(reads: [Descriptor], writes: [Descriptor], errors: [Descriptor])
+    
     case ipAddressResolutionFailed
     case ipAddressValidationFailed
     case failedToGetIPFromHostname(String)
