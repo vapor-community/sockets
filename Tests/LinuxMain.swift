@@ -4,5 +4,6 @@ import XCTest
 XCTMain([
 	testCase(AddressResolutionTests.allTests),
 	testCase(ConversionTests.allTests),
-	testCase(LiveTests.allTests)
+	testCase(LiveTests.allTests),
+	testCase(PipeTests.allTests)
 ])

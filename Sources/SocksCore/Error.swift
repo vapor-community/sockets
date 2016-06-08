@@ -14,28 +14,29 @@
 
 public enum ErrorReason {
     
-    case CreateSocketFailed
-    case OptionSetFailed(level: Int32, name: Int32, value: String)
-    case OptionGetFailed(level: Int32, name: Int32, type: String)
-    case CloseSocketFailed
+    case createSocketFailed
+    case optionSetFailed(level: Int32, name: Int32, value: String)
+    case optionGetFailed(level: Int32, name: Int32, type: String)
+    case closeSocketFailed
     
-    case IPAddressValidationFailed
-    case FailedToGetIPFromHostname(String)
-    case UnparsableBytes
+    case pipeCreationFailed
     
-    case ConnectFailed
-    case SendFailedToSendAllBytes
-    case ReadFailed
-    case BindFailed
-    case ListenFailed
-    case AcceptFailed
+    case ipAddressResolutionFailed
+    case ipAddressValidationFailed
+    case failedToGetIPFromHostname(String)
+    case unparsableBytes
     
-    case UnsupportedSocketAddressFamily(Int32)
-    case ConcreteSocketAddressFamilyRequired
+    case connectFailed
+    case sendFailedToSendAllBytes
+    case readFailed
+    case bindFailed
+    case listenFailed
+    case acceptFailed
     
-    case IPAddressResolutionFailed
+    case unsupportedSocketAddressFamily(Int32)
+    case concreteSocketAddressFamilyRequired
     
-    case Generic(String)
+    case generic(String)
 }
 
 //see error codes: https://gist.github.com/czechboy0/517b22041c0eeb33f723bb66933882e4
@@ -50,7 +51,7 @@ public struct Error: ErrorProtocol, CustomStringConvertible {
     }
     
     init(_ message: String) {
-        self.type = .Generic(message)
+        self.type = .generic(message)
         self.number = -1
     }
     

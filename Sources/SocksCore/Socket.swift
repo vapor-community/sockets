@@ -16,16 +16,19 @@
     private let s_close = Darwin.close
 #endif
 
-public protocol Socket {
+public protocol RawSocket {
     var descriptor: Descriptor { get }
-    var config: SocketConfig { get }
     func close() throws
 }
 
-extension Socket {
+public protocol Socket: RawSocket {
+    var config: SocketConfig { get }
+}
+
+extension RawSocket {
     public func close() throws {
         if s_close(self.descriptor) != 0 {
-            throw Error(.CloseSocketFailed)
+            throw Error(.closeSocketFailed)
         }
     }
 }
@@ -37,11 +40,13 @@ extension Socket {
         let cProtocol = config.protocolType.toCType()
         
         let descriptor = s_socket(cProtocolFam, cType, cProtocol)
-        guard descriptor > 0 else { throw Error(.CreateSocketFailed) }
+        guard descriptor > 0 else { throw Error(.createSocketFailed) }
         
         if config.reuseAddress {
             try setOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_REUSEADDR, value: 1)
         }
+        
+        try disableSIGPIPE(descriptor: descriptor)
         
         return descriptor
     }

@@ -15,7 +15,7 @@ class LiveTests: XCTestCase {
         
         let addr = InternetAddress(hostname: "google.com",
                                    port: .portNumber(80))
-        let socket = try TCPSocket(address: addr)
+        let socket = try TCPInternetSocket(address: addr)
         
         try socket.connect()
         

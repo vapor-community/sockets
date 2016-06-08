@@ -10,24 +10,24 @@ import SocksCore
 
 public class UDPClient {
     
-    public let socket: UDPSocket
+    public let socket: UDPInternetSocket
     
     public func ipAddress() -> String {
         return self.socket.address.ipString()
     }
     
-    public init(socket: UDPSocket) throws {
+    public init(socket: UDPInternetSocket) throws {
         self.socket = socket
     }
     
     public convenience init(address: InternetAddress) throws {
-        let socket = try UDPSocket(address: address)
+        let socket = try UDPInternetSocket(address: address)
         try self.init(socket: socket)
     }
     
     public convenience init(address: ResolvedInternetAddress) throws {
         let config: SocketConfig = .UDP(addressFamily: try address.addressFamily())
-        let socket = try UDPSocket(descriptor: nil, config: config, address: address)
+        let socket = try UDPInternetSocket(descriptor: nil, config: config, address: address)
         try self.init(socket: socket)
     }
     

@@ -24,6 +24,6 @@ extension InternetSocket {
     
     public func bind() throws {
         let res = socket_bind(self.descriptor, address.raw, address.rawLen)
-        guard res > -1 else { throw Error(.BindFailed) }
+        guard res > -1 else { throw Error(.bindFailed) }
     }
 }
