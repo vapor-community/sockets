@@ -9,3 +9,4 @@
 @_exported import struct SocksCore.InternetAddress
 @_exported import enum SocksCore.Port
 @_exported import enum SocksCore.AddressFamily
+@_exported import typealias SocksCore.Descriptor

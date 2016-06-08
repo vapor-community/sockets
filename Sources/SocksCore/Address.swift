@@ -163,7 +163,7 @@ extension ResolvedInternetAddress: CustomStringConvertible {
         } else {
             family = "UNRECOGNIZED FAMILY"
         }
-        return "Resolved: \(ipString()):\(port) \(family)"
+        return "\(ipString()):\(port) \(family)"
     }
 }
 
