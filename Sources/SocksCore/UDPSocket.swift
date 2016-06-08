@@ -16,7 +16,7 @@
     private let socket_sendto = Darwin.sendto
 #endif
 
-public class UDPSocket: InternetSocket {
+public class UDPInternetSocket: InternetSocket {
     
     public let descriptor: Descriptor
     public let config: SocketConfig
@@ -27,7 +27,7 @@ public class UDPSocket: InternetSocket {
         if let descriptor = descriptor {
             self.descriptor = descriptor
         } else {
-            self.descriptor = try UDPSocket.createNewSocket(config: config)
+            self.descriptor = try UDPInternetSocket.createNewSocket(config: config)
         }
         self.config = config
         self.address = address
@@ -58,7 +58,7 @@ public class UDPSocket: InternetSocket {
             addrSockAddr,
             &length
         )
-        guard receivedBytes > -1 else { throw Error(.ReadFailed) }
+        guard receivedBytes > -1 else { throw Error(.readFailed) }
         
         let clientAddress = ResolvedInternetAddress(raw: addr)
         
@@ -80,6 +80,6 @@ public class UDPSocket: InternetSocket {
             destination.raw,
             destination.rawLen
         )
-        guard sentLen == len else { throw Error(.SendFailedToSendAllBytes) }
+        guard sentLen == len else { throw Error(.sendFailedToSendAllBytes) }
     }
 }

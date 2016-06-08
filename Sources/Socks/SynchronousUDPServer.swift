@@ -23,7 +23,7 @@ public class SynchronousUDPServer {
     
     @noreturn public func startWithHandler(handler: (received: [UInt8], client: UDPClient) throws -> ()) throws {
         
-        let server = try UDPSocket(address: address)
+        let server = try UDPInternetSocket(address: address)
         try server.bind()
         
         while true {

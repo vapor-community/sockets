@@ -10,23 +10,23 @@ import SocksCore
 
 public class TCPClient {
     
-    public let socket: TCPSocket
+    public let socket: TCPInternetSocket
     
     public func ipAddress() -> String {
         return self.socket.address.ipString()
     }
     
-    public init(alreadyConnectedSocket: TCPSocket) throws {
+    public init(alreadyConnectedSocket: TCPInternetSocket) throws {
         self.socket = alreadyConnectedSocket
     }
 
-    public convenience init(socket: TCPSocket) throws {
+    public convenience init(socket: TCPInternetSocket) throws {
         try self.init(alreadyConnectedSocket: socket)
         try self.socket.connect()
     }
     
     public convenience init(address: InternetAddress) throws {
-        let socket = try TCPSocket(address: address)
+        let socket = try TCPInternetSocket(address: address)
         try self.init(socket: socket)
     }
     

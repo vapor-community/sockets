@@ -7,7 +7,7 @@ let address = InternetAddress(hostname: "google.com", port: .portNumber(80))
 //let address = InternetAddress(hostname: "216.58.214.206", port: .portNumber(80))
 
 do {
-    let socket: TCPSocket = try TCPSocket(address: address)
+    let socket = try TCPInternetSocket(address: address)
     try socket.connect()
     
     //sends a GET / request to google.com at port 80, expects a 302 redirect to HTTPS

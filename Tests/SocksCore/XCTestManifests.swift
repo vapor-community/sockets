@@ -30,3 +30,13 @@ extension LiveTests {
     }
 }
 
+extension PipeTests {
+    static var allTests : [(String, (PipeTests) -> () throws -> Void)] {
+        return [
+            ("testSendAndReceive", testSendAndReceive),
+            ("testNoData", testNoData),
+            ("testNoSIGPIPE", testNoSIGPIPE)
+        ]
+    }
+}
+

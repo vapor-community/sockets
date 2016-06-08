@@ -51,7 +51,15 @@ extension Socket {
     }
 }
 
-extension Socket {
+extension RawSocket {
+    
+    static func disableSIGPIPE(descriptor: Descriptor) throws {
+        // prevents SIGPIPE from killing process
+        // only works on OS X
+        #if !os(Linux)
+        try setOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_NOSIGPIPE, value: 1)
+        #endif
+    }
     
     static func setBoolOption(descriptor: Int32, level: Int32, name: Int32, value: Bool) throws {
         let val = value ? 1 : 0
@@ -65,7 +73,7 @@ extension Socket {
     static func setOption<T>(descriptor: Int32, level: Int32, name: Int32, value: T) throws {
         var val = value
         guard setsockopt(descriptor, level, name, &val, socklen_t(sizeof(T))) != -1 else {
-            throw Error(.OptionSetFailed(level: level, name: name, value: String(value)))
+            throw Error(.optionSetFailed(level: level, name: name, value: String(value)))
         }
     }
     
@@ -77,7 +85,7 @@ extension Socket {
             val.deallocateCapacity(1)
         }
         guard getsockopt(descriptor, level, name, val, &length) != -1 else {
-            throw Error(.OptionGetFailed(level: level, name: name, type: String(T)))
+            throw Error(.optionGetFailed(level: level, name: name, type: String(T)))
         }
         return val.pointee
     }

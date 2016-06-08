@@ -23,7 +23,7 @@ public class SynchronousTCPServer {
     
     @noreturn public func startWithHandler(handler: (client: TCPClient) throws -> ()) throws {
         
-        let server = try TCPSocket(address: address)
+        let server = try TCPInternetSocket(address: address)
         try server.bind()
         try server.listen(queueLimit: 4096)
         
