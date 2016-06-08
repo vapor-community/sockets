@@ -5,5 +5,6 @@ XCTMain([
 	testCase(AddressResolutionTests.allTests),
 	testCase(ConversionTests.allTests),
 	testCase(LiveTests.allTests),
-	testCase(PipeTests.allTests)
+	testCase(PipeTests.allTests),
+	testCase(SelectTests.allTests)
 ])

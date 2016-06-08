@@ -40,3 +40,15 @@ extension PipeTests {
     }
 }
 
+extension SelectTests {
+    static var allTests : [(String, (SelectTests) -> () throws -> Void)] {
+        return [
+            ("testEmpties", testEmpties),
+            ("testOnePipeReadyToWrite", testOnePipeReadyToWrite),
+            ("testOnePipeReadyToReadOneToWrite", testOnePipeReadyToReadOneToWrite),
+            ("testTwoPipesReadyToRead", testTwoPipesReadyToRead)
+        ]
+    }
+}
+
+
