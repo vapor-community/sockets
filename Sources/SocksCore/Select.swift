@@ -24,11 +24,15 @@
 
 #if os(Linux)
     import Glibc
+    @_exported import struct Glibc.timeval
     private let system_select = Glibc.select
 #else
     import Darwin
+    @_exported import struct Darwin.timeval
     private let system_select = Darwin.select
 #endif
+
+
 
 extension timeval {
     public init(seconds: Int) {
