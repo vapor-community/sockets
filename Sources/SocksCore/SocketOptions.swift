@@ -49,6 +49,36 @@ extension Socket {
                                            name: SO_REUSEADDR)
         }
     }
+    
+    /// Specify the receiving timeout until reporting an error
+    public var receivingTimeout: timeval {
+        nonmutating set {
+            try! Self.setOption(descriptor: self.descriptor,
+                                level: SOL_SOCKET,
+                                name: SO_RCVTIMEO,
+                                value: newValue)
+        }
+        get {
+            return try! Self.getOption(descriptor: self.descriptor,
+                                       level: SOL_SOCKET,
+                                       name: SO_RCVTIMEO)
+        }
+    }
+    
+    /// Specify the sending timeout until reporting an error
+    public var sendingTimeout: timeval {
+        nonmutating set {
+            try! Self.setOption(descriptor: self.descriptor,
+                                level: SOL_SOCKET,
+                                name: SO_SNDTIMEO,
+                                value: newValue)
+        }
+        get {
+            return try! Self.getOption(descriptor: self.descriptor,
+                                       level: SOL_SOCKET,
+                                       name: SO_SNDTIMEO)
+        }
+    }
 }
 
 extension RawSocket {
