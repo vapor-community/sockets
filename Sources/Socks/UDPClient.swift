@@ -44,3 +44,10 @@ public class UDPClient {
         try socket.close()
     }
 }
+
+extension UDPClient: CustomStringConvertible {
+    public var description: String {
+        return "UDP on \(socket.address.description)"
+    }
+}
+

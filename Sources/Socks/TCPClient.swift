@@ -48,8 +48,7 @@ public class TCPClient {
 }
 
 extension TCPClient: CustomStringConvertible {
-
     public var description: String {
-        return socket.address.description
+        return "TCP on \(socket.address.description)"
     }
 }
