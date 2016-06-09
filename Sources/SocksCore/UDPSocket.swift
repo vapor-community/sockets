@@ -58,7 +58,10 @@ public class UDPInternetSocket: InternetSocket {
             addrSockAddr,
             &length
         )
-        guard receivedBytes > -1 else { throw Error(.readFailed) }
+        guard receivedBytes > -1 else {
+            addr.deallocateCapacity(1)
+            throw Error(.readFailed)
+        }
         
         let clientAddress = ResolvedInternetAddress(raw: addr)
         

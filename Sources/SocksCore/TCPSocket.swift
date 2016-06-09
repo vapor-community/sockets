@@ -112,7 +112,10 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         let addr = UnsafeMutablePointer<sockaddr_storage>.init(allocatingCapacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
         let clientSocketDescriptor = socket_accept(self.descriptor, addrSockAddr, &length)
-        guard clientSocketDescriptor > -1 else { throw Error(.acceptFailed) }
+        guard clientSocketDescriptor > -1 else {
+            addr.deallocateCapacity(1)
+            throw Error(.acceptFailed)
+        }
         let clientAddress = ResolvedInternetAddress(raw: addr)
         let clientSocket = try TCPInternetSocket(descriptor: clientSocketDescriptor,
                                                  config: config,

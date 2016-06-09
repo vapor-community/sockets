@@ -1,10 +1,10 @@
 
 import Socks
 
-let address = InternetAddress(hostname: "google.com", port: .portNumber(80))
-//let address = InternetAddress(hostname: "216.58.208.46", port: .portNumber(80))
+let address = InternetAddress(hostname: "google.com", port: 80)
+//let address = InternetAddress(hostname: "216.58.208.46", port: 80)
 // let address = InternetAddress.localhost(port: 8080)
-//let address = InternetAddress(hostname: "192.168.1.170", port: .portNumber(2425))
+//let address = InternetAddress(hostname: "192.168.1.170", port: 2425)
 
 do {
     let client = try TCPClient(address: address)

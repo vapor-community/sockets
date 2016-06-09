@@ -8,7 +8,7 @@
 
 //convert little-endian to big-endian for network transfer
 //aka Host TO Network Short
-func htons(value: CUnsignedShort) -> CUnsignedShort {
+func htons(_ value: CUnsignedShort) -> CUnsignedShort {
     return (value << 8) + (value >> 8)
 }
 

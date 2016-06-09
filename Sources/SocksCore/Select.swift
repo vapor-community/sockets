@@ -84,3 +84,14 @@ public func select(reads: [Descriptor] = [],
     }
     throw Error(.selectFailed(reads: reads, writes: writes, errors: errors))
 }
+
+extension RawSocket {
+    
+    /// Allows user to wait for the socket to have readable bytes for
+    /// up to the specified timeout. Nil timeout means wait forever.
+    /// Returns true if data is ready to be read, false if timed out.
+    public func waitForReadableData(timeout: timeval?) throws -> Bool {
+        let (readables, _, _) = try select(reads: [descriptor], timeout: timeout)
+        return !readables.isEmpty
+    }
+}

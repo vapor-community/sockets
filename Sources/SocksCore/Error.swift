@@ -23,6 +23,8 @@ public enum ErrorReason {
     
     case selectFailed(reads: [Descriptor], writes: [Descriptor], errors: [Descriptor])
     
+    case localAddressResolutionFailed
+    case remoteAddressResolutionFailed
     case ipAddressResolutionFailed
     case ipAddressValidationFailed
     case failedToGetIPFromHostname(String)
