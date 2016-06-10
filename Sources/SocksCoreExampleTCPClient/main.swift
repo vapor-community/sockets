@@ -1,10 +1,10 @@
 
 import SocksCore
 
-let address = InternetAddress(hostname: "google.com", port: .portNumber(80))
+let address = InternetAddress(hostname: "google.com", port: 80)
 // let address = InternetAddress.localhost(port: 8080)
 //let address = InternetAddress.localhost(port: 8080, ipVersion: .inet6)
-//let address = InternetAddress(hostname: "216.58.214.206", port: .portNumber(80))
+//let address = InternetAddress(hostname: "216.58.214.206", port: 80)
 
 do {
     let socket = try TCPInternetSocket(address: address)

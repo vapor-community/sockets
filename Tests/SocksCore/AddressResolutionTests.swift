@@ -20,7 +20,7 @@ class AddressResolutionTests: XCTestCase {
             let resolver = Resolver(config: .TCP())
             let family: AddressFamily = i < 500 ? .inet : .inet6
             let address = InternetAddress(hostname: "google.com",
-                                          port: .portNumber(80),
+                                          port: 80,
                                           addressFamily: family)
             _ = try resolver.resolve(internetAddress: address)
 //            print(resolved.ipString())

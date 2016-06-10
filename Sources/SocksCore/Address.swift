@@ -50,7 +50,7 @@ public struct InternetAddress {
             hostname = "127.0.0.1"
             ipV = .inet
         }
-        return InternetAddress(hostname: hostname, port: .portNumber(port), addressFamily: ipV)
+        return InternetAddress(hostname: hostname, port: port, addressFamily: ipV)
     }
     
     static public func any(port: UInt16, ipVersion: AddressFamily = .inet) -> InternetAddress {
@@ -64,7 +64,7 @@ public struct InternetAddress {
             hostname = "0.0.0.0"
             ipV = .inet
         }
-        return InternetAddress(hostname: hostname, port: .portNumber(port), addressFamily: ipV)
+        return InternetAddress(hostname: hostname, port: port, addressFamily: ipV)
     }
 }
 
@@ -97,12 +97,14 @@ public class ResolvedInternetAddress {
         }
     }
     
-    var port: UInt16 {
+    public var port: UInt16 {
+        let val: UInt16
         switch try! addressFamily() {
-        case .inet: return UnsafePointer<sockaddr_in>(_raw).pointee.sin_port
-        case .inet6: return UnsafePointer<sockaddr_in6>(_raw).pointee.sin6_port
+        case .inet: val = UnsafePointer<sockaddr_in>(_raw).pointee.sin_port
+        case .inet6: val = UnsafePointer<sockaddr_in6>(_raw).pointee.sin6_port
         default: fatalError()
         }
+        return htons(val)
     }
     
     public func addressFamily() throws -> AddressFamily {
@@ -164,6 +166,35 @@ extension ResolvedInternetAddress: CustomStringConvertible {
             family = "UNRECOGNIZED FAMILY"
         }
         return "\(ipString()):\(port) \(family)"
+    }
+}
+
+extension Socket {
+    
+    public func remoteAddress() throws -> ResolvedInternetAddress {
+        var length = socklen_t(sizeof(sockaddr_storage))
+        let addr = UnsafeMutablePointer<sockaddr_storage>.init(allocatingCapacity: 1)
+        let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
+        let res = getpeername(descriptor, addrSockAddr, &length)
+        guard res > -1 else {
+            addr.deallocateCapacity(1)
+            throw Error(.remoteAddressResolutionFailed)
+        }
+        let clientAddress = ResolvedInternetAddress(raw: addr)
+        return clientAddress
+    }
+    
+    public func localAddress() throws -> ResolvedInternetAddress {
+        var length = socklen_t(sizeof(sockaddr_storage))
+        let addr = UnsafeMutablePointer<sockaddr_storage>.init(allocatingCapacity: 1)
+        let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
+        let res = getsockname(descriptor, addrSockAddr, &length)
+        guard res > -1 else {
+            addr.deallocateCapacity(1)
+            throw Error(.localAddressResolutionFailed)
+        }
+        let clientAddress = ResolvedInternetAddress(raw: addr)
+        return clientAddress
     }
 }
 

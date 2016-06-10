@@ -44,16 +44,7 @@ public enum AddressFamily {
 }
 
 public typealias Descriptor = Int32
-
-//
-//  A Port can be specified as an integer or
-//  as a service: e.g. you can assign a 
-//  Port to "echo" or to the number 7
-//
-public enum Port {
-    case serviceName(String)
-    case portNumber(UInt16)
-}
+public typealias Port = UInt16
 
 //Extensions
 
@@ -71,12 +62,7 @@ protocol CTypeUnsafePointerOfInt8TypeConvertible {
 
 extension Port: StringConvertable {
     func toString() -> String {
-        switch self {
-        case .serviceName(let service):
-            return service
-        case .portNumber(let portNumber):
-            return String(portNumber)
-        }
+        return String(self)
     }
 }
 
