@@ -14,29 +14,36 @@
 
 public enum ErrorReason {
     
-    case CreateSocketFailed
-    case CloseSocketFailed
+    case createSocketFailed
+    case optionSetFailed(level: Int32, name: Int32, value: String)
+    case optionGetFailed(level: Int32, name: Int32, type: String)
+    case closeSocketFailed
     
-    case IPAddressValidationFailed
-    case FailedToGetIPFromHostname(String)
-    case UnparsableBytes
+    case pipeCreationFailed
     
-    case ConnectFailed
-    case SendFailedToSendAllBytes
-    case ReadFailed
-    case BindFailed
-    case ListenFailed
-    case AcceptFailed
+    case selectFailed(reads: [Descriptor], writes: [Descriptor], errors: [Descriptor])
     
-    case UnsupportedSocketAddressFamily(Int32)
-    case ConcreteSocketAddressFamilyRequired
+    case localAddressResolutionFailed
+    case remoteAddressResolutionFailed
+    case ipAddressResolutionFailed
+    case ipAddressValidationFailed
+    case failedToGetIPFromHostname(String)
+    case unparsableBytes
     
-    case IPAddressResolutionFailed
+    case connectFailed
+    case sendFailedToSendAllBytes
+    case readFailed
+    case bindFailed
+    case listenFailed
+    case acceptFailed
     
-    case Generic(String)
+    case unsupportedSocketAddressFamily(Int32)
+    case concreteSocketAddressFamilyRequired
+    
+    case generic(String)
 }
 
-//see error codes: https://gist.github.com/gabrielfalcao/4216897
+//see error codes: https://gist.github.com/czechboy0/517b22041c0eeb33f723bb66933882e4
 public struct Error: ErrorProtocol, CustomStringConvertible {
     
     public let type: ErrorReason
@@ -48,11 +55,18 @@ public struct Error: ErrorProtocol, CustomStringConvertible {
     }
     
     init(_ message: String) {
-        self.type = .Generic(message)
+        self.type = .generic(message)
         self.number = -1
     }
     
+    func getReason() -> String {
+        guard number >= 0 else { return "?" }
+        guard let reasonString = gai_strerror(number) else { return "?" }
+        let reason = String(validatingUTF8: reasonString) ?? "?"
+        return reason
+    }
+    
     public var description: String {
-        return "Socket failed with code \(self.number) [\(self.type)]"
+        return "Socket failed with code \(self.number) [\(self.type)] \"\(getReason())\""
     }
 }

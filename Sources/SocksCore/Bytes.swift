@@ -12,7 +12,8 @@
     import Darwin
 #endif
 
-let BufferCapacity = 512
+// Buffer capacity is the same as the maximum UDP packet size
+public let BufferCapacity = 65_507
 
 class Bytes {
     
@@ -55,7 +56,7 @@ extension Collection where Iterator.Element == UInt8 {
             case .emptyInput: //we're done
                 return str
             case .error: //error, can't describe what however
-                throw Error.init(ErrorReason.UnparsableBytes)
+                throw Error(.unparsableBytes)
             case .scalarValue(let unicodeScalar):
                 str.append(unicodeScalar)
             }

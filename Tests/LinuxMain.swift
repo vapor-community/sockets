@@ -2,9 +2,9 @@ import XCTest
 @testable import SocksCoreTestSuite
 
 XCTMain([
+	testCase(AddressResolutionTests.allTests),
 	testCase(ConversionTests.allTests),
 	testCase(LiveTests.allTests),
-	testCase(RawSocketTest.allTests),
-	testCase(AddressResolutionTest.allTests),
-	testCase(ClientSocketTest.allTests)
+	testCase(PipeTests.allTests),
+	testCase(SelectTests.allTests)
 ])

@@ -1,14 +1,14 @@
 //
-//  SynchronousTCPServer.swift
+//  SynchronousUDPServer.swift
 //  Socks
 //
-//  Created by Honza Dvorsky on 3/20/16.
+//  Created by Honza Dvorsky on 6/1/16.
 //
 //
 
 import SocksCore
 
-public class SynchronousTCPServer {
+public class SynchronousUDPServer {
     
     public let address: InternetAddress
     
@@ -21,16 +21,15 @@ public class SynchronousTCPServer {
         try self.init(address: address)
     }
     
-    @noreturn public func startWithHandler(handler: (client: TCPClient) throws -> ()) throws {
+    @noreturn public func startWithHandler(handler: (received: [UInt8], client: UDPClient) throws -> ()) throws {
         
-        let server = try TCPInternetSocket(address: address)
+        let server = try UDPInternetSocket(address: address)
         try server.bind()
-        try server.listen(queueLimit: 4096)
         
         while true {
-            let socket = try server.accept()
-            let client = try TCPClient(alreadyConnectedSocket: socket)
-            try handler(client: client)
+            let (data, sender) = try server.recvfrom()
+            let client = try UDPClient(address: sender)
+            try handler(received: data, client: client)
         }
     }
 }

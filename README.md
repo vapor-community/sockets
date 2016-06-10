@@ -9,14 +9,20 @@
 
 > Pure-Swift Sockets. Linux & OS X ready.
 
-**Work in progress, APIs might still change ⚠️**
-
 # Supported socket types
 
 | | TCP | UDP |
 | --- | --- | --- |
-| Client | ✅ | - | 
-| Server | ✅ | -  |
+| Client | ✅ | ✅ | 
+| Server | ✅ | ✅ |
+
+# Installation
+
+## Swift Package Manager
+
+```swift
+.Package(url: "https://github.com/czechboy0/Socks.git", majorVersion: 0, minor: 5)
+```
 
 :wrench: Usage
 ------------
@@ -29,15 +35,22 @@ If you're building a HTTP server, you'll probably want to use the `TCPClient`, w
 :game_die: Examples
 ------------
 There are many working examples in this package which build as separate binaries. 
-- TCP client using SocksCore ([SocksCoreExampleClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleClient/main.swift))
-- TCP server using SocksCore ([SocksCoreExampleServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleServer/main.swift))
-- TCP client using Socks ([SocksExampleClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleClient/main.swift))
-- TCP server using Socks ([SocksExampleServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleServer/main.swift))
+- TCP client using SocksCore ([SocksCoreExampleTCPClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleTCPClient/main.swift))
+- TCP server using SocksCore ([SocksCoreExampleTCPServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleTCPServer/main.swift))
+- TCP server that keeps client connections alive using SocksCore ([SocksCoreExampleTCPKeepAliveServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksCoreExampleTCPKeepAliveServer/main.swift))
+- TCP client using Socks ([SocksExampleTCPClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleTCPClient/main.swift))
+- TCP server using Socks ([SocksExampleTCPServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleTCPServer/main.swift))
+- UDP client using Socks ([SocksExampleUDPClient](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleUDPClient/main.swift))
+- UDP server using Socks ([SocksExampleUDPServer](https://github.com/czechboy0/Socks/blob/master/Sources/SocksExampleUDPServer/main.swift))
 
 :books: Recommended reading
 ------------
-- (1) [TCP/IP Sockets in C: Practical Guide for Programmers](http://www.e-reading.club/bookreader.php/136904/TCP%7CIP_Sockets_in_C:_Practical_Guide_for_Programmers.pdf)
+- (1) [TCP/IP Sockets in C: Practical Guide for Programmers](http://www.e-reading.club/bookreader.php/136904/TCP%7CIP_Sockets_in_C:_Practical_Guide_for_Programmers.pdf) (First and Second edition)
 - (2) [Wikipedia: Berkeley Sockets](https://en.wikipedia.org/wiki/Berkeley_sockets)
+
+:wrench: Used by
+- [Redbird](https://github.com/czechboy0/Redbird) *Pure-Swift implementation of a Redis client from the original protocol spec. OS X + Linux compatible.*
+- [Vapor](https://github.com/qutheory/vapor) *A web framework and server for Swift that works on OS X and Ubuntu.*
 
 :blue_heart: Code of Conduct
 ------------

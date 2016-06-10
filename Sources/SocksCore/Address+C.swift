@@ -44,7 +44,8 @@ struct Resolver: InternetAddressResolver{
         return resolvedInternetAddresses
     }
     
-    private static func _resolve(socketConfig: SocketConfig, internetAddress: InternetAddress) throws ->  ResolvedInternetAddress {
+    private static func _resolve(socketConfig: SocketConfig, internetAddress: InternetAddress) throws -> ResolvedInternetAddress {
+        
         //
         // Narrowing down the results we will get from the getaddrinfo call
         //
@@ -60,25 +61,35 @@ struct Resolver: InternetAddressResolver{
         // at this line
         var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
         // perform resolution
-        let getaddrinfoReturnValue = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
-        guard getaddrinfoReturnValue == 0 else { throw Error(.IPAddressValidationFailed) }
+        let ret = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
+        guard ret == 0 else { throw Error(.ipAddressValidationFailed) }
         
-        // Wrap linked list into array of ResolvedInternetAddress
-        guard let addr = servinfo else { throw Error(.IPAddressResolutionFailed) }
-        let address = ResolvedInternetAddress(internetAddress: internetAddress, resolvedCTypeAddress: addr)
+        guard let addrList = servinfo else { throw Error(.ipAddressResolutionFailed) }
+        
+        //this takes the first resolved address, potentially we should
+        //get all of the addresses in the list and allow for iterative
+        //connecting
+        guard let addrInfo = addrList.pointee.ai_addr else { throw Error(.ipAddressResolutionFailed) }
+        let family = try AddressFamily(fromCType: Int32(addrInfo.pointee.sa_family))
+        
+        let ptr = UnsafeMutablePointer<sockaddr_storage>(allocatingCapacity: 1)
+        ptr.initialize(with: sockaddr_storage())
+        
+        switch family {
+        case .inet:
+            let addr = UnsafeMutablePointer<sockaddr_in>(addrInfo)!
+            let specPtr = UnsafeMutablePointer<sockaddr_in>(ptr)
+            specPtr.assignFrom(addr, count: 1)
+        case .inet6:
+            let addr = UnsafeMutablePointer<sockaddr_in6>(addrInfo)!
+            let specPtr = UnsafeMutablePointer<sockaddr_in6>(ptr)
+            specPtr.assignFrom(addr, count: 1)
+        default:
+            throw Error(.concreteSocketAddressFamilyRequired)
+        }
+        
+        let address = ResolvedInternetAddress(raw: ptr)
+        freeaddrinfo(addrList)
         return address
     }
-    
 }
-
-//Pointer casting
-
-func sockaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
-    return UnsafeMutablePointer<sockaddr>(p)
-}
-
-func sockaddr_storage_cast(p : UnsafeMutablePointer<Void>?) -> UnsafeMutablePointer<sockaddr>? {
-    return UnsafeMutablePointer<sockaddr>(p)
-}
-
-

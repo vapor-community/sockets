@@ -6,43 +6,47 @@
 //
 //
 
-extension ConversionTests {
-    static var allTests : [(String, ConversionTests -> () throws -> Void)] {
+extension AddressResolutionTests {
+    static var allTests : [(String, (AddressResolutionTests) -> () throws -> Void)] {
         return [
-                   ("testNumberArrayToPeriodSeparatedString", testNumberArrayToPeriodSeparatedString)
+            ("testResolutionCrashFixed", testResolutionCrashFixed)
+        ]
+    }
+}
+
+extension ConversionTests {
+    static var allTests : [(String, (ConversionTests) -> () throws -> Void)] {
+        return [
+            ("testNumberArrayToPeriodSeparatedString", testNumberArrayToPeriodSeparatedString)
         ]
     }
 }
 
 extension LiveTests {
-    static var allTests : [(String, LiveTests -> () throws -> Void)] {
+    static var allTests : [(String, (LiveTests) -> () throws -> Void)] {
         return [
-                   ("testLive_Connect_Google", testLive_Connect_Google),
-                   ("testLive_HTTP_Get_Google", testLive_HTTP_Get_Google)
+            ("testLive_HTTP_Get_Google_ipV4", testLive_HTTP_Get_Google_ipV4)
         ]
     }
 }
 
-extension RawSocketTest {
-    static var allTests : [(String, RawSocketTest -> () throws -> Void)] {
+extension PipeTests {
+    static var allTests : [(String, (PipeTests) -> () throws -> Void)] {
         return [
-                   ("testRawSocket", testRawSocket)
+            ("testSendAndReceive", testSendAndReceive),
+            ("testNoData", testNoData),
+            ("testNoSIGPIPE", testNoSIGPIPE)
         ]
     }
 }
 
-extension AddressResolutionTest {
-    static var allTests : [(String, AddressResolutionTest -> () throws -> Void)] {
+extension SelectTests {
+    static var allTests : [(String, (SelectTests) -> () throws -> Void)] {
         return [
-                   ("testResolver", testResolver)
-        ]
-    }
-}
-
-extension ClientSocketTest {
-    static var allTests : [(String, ClientSocketTest -> () throws -> Void)] {
-        return [
-                   ("testClientSocket", testClientSocket)
+            ("testEmpties", testEmpties),
+            ("testOnePipeReadyToWrite", testOnePipeReadyToWrite),
+            ("testOnePipeReadyToReadOneToWrite", testOnePipeReadyToReadOneToWrite),
+            ("testTwoPipesReadyToRead", testTwoPipesReadyToRead)
         ]
     }
 }

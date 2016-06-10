@@ -8,59 +8,47 @@
 
 #if os(Linux)
     import Glibc
-    private let socket_close = Glibc.close
+    private let s_socket = Glibc.socket
+    private let s_close = Glibc.close
 #else
     import Darwin
-    private let socket_close = Darwin.close
+    private let s_socket = Darwin.socket
+    private let s_close = Darwin.close
 #endif
 
-public protocol Socket {
+public protocol RawSocket {
     var descriptor: Descriptor { get }
-    func send(data: [UInt8]) throws
-    func recv(maxBytes: Int) throws -> [UInt8]
     func close() throws
 }
 
-public protocol ClientSocket: Socket {
-    func connect() throws
+public protocol Socket: RawSocket {
+    var config: SocketConfig { get }
 }
 
-public protocol ServerSocket: Socket {
-    func bind() throws
-    func listen(queueLimit: Int32) throws
-    func accept() throws -> Socket
-}
-
-public class RawSocket : Socket {
-    
-    public let descriptor: Descriptor
-    public let socketConfig : SocketConfig
-    
-    private init(descriptor: Descriptor, socketConfig: SocketConfig) throws {
-        
-        self.socketConfig = socketConfig
-        self.descriptor = descriptor
-    }
-    
-    public convenience init(socketConfig: SocketConfig) throws {
-        let cProtocolFam = socketConfig.addressFamily.toCType()
-        let cType = socketConfig.socketType.toCType()
-        let cProtocol = socketConfig.protocolType.toCType()
-        
-        let descriptor = socket(cProtocolFam, cType, cProtocol)
-        guard descriptor > 0 else { throw Error(.CreateSocketFailed) }
-        
-        try self.init(descriptor: descriptor, socketConfig: socketConfig)
-    }
-    
+extension RawSocket {
     public func close() throws {
-        if socket_close(self.descriptor) != 0 {
-            throw Error(.CloseSocketFailed)
+        if s_close(self.descriptor) != 0 {
+            throw Error(.closeSocketFailed)
         }
     }
-    
-    func copyWithNewDescriptor(descriptor: Descriptor) throws -> RawSocket {
-        return try RawSocket(descriptor: descriptor, socketConfig: self.socketConfig)
+}
+
+extension Socket {
+    static func createNewSocket(config: SocketConfig) throws -> Descriptor {
+        let cProtocolFam = config.addressFamily.toCType()
+        let cType = config.socketType.toCType()
+        let cProtocol = config.protocolType.toCType()
+        
+        let descriptor = s_socket(cProtocolFam, cType, cProtocol)
+        guard descriptor > 0 else { throw Error(.createSocketFailed) }
+        
+        if config.reuseAddress {
+            try setOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_REUSEADDR, value: 1)
+        }
+        
+        try disableSIGPIPE(descriptor: descriptor)
+        
+        return descriptor
     }
 }
 
@@ -73,6 +61,7 @@ public struct SocketConfig {
     public var addressFamily: AddressFamily
     public let socketType: SocketType
     public let protocolType: Protocol
+    public var reuseAddress: Bool = true
     
     public init(addressFamily: AddressFamily, socketType: SocketType, protocolType: Protocol){
         self.addressFamily = addressFamily
@@ -80,12 +69,16 @@ public struct SocketConfig {
         self.protocolType = protocolType
     }
     
-    public static func TCP() -> SocketConfig {
-        return self.init(addressFamily: .Unspecified, socketType: .Stream, protocolType: .TCP)
+    mutating func adjust(for resolvedAddress: ResolvedInternetAddress) throws {
+        self.addressFamily = try resolvedAddress.addressFamily()
     }
     
-    public static func UDP() -> SocketConfig {
-        return self.init(addressFamily: .Unspecified, socketType: .Datagram, protocolType: .UDP)
+    public static func TCP(addressFamily: AddressFamily = .unspecified) -> SocketConfig {
+        return self.init(addressFamily: addressFamily, socketType: .stream, protocolType: .TCP)
+    }
+    
+    public static func UDP(addressFamily: AddressFamily = .unspecified) -> SocketConfig {
+        return self.init(addressFamily: addressFamily, socketType: .datagram, protocolType: .UDP)
     }
 }
 
