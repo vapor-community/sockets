@@ -19,6 +19,12 @@ class TimeoutTests: XCTestCase {
         return duration
     }
     
+    func testDefaults() throws {
+        let (read, write) = try TCPEstablishedSocket.pipe()
+        XCTAssertEqual(read.receivingTimeout, timeval(seconds: 0))
+        XCTAssertEqual(write.sendingTimeout, timeval(seconds: 0))
+    }
+    
     func testReceiveTimeoutSmall() throws {
         let (read, write) = try TCPEstablishedSocket.pipe()
         defer { try! read.close(); try! write.close() }
