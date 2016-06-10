@@ -33,7 +33,11 @@ class TimeoutTests: XCTestCase {
                     XCTFail()
                     return
                 }
-                XCTAssertEqual(err.number, 35)
+                #if os(Linux)
+                    XCTAssertEqual(err.number, 11)
+                #else
+                    XCTAssertEqual(err.number, 35)
+                #endif
             }
         }
         XCTAssertEqualWithAccuracy(duration, 1.0, accuracy: 0.1)
