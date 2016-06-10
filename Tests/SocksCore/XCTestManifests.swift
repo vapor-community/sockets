@@ -51,4 +51,15 @@ extension SelectTests {
     }
 }
 
+extension TimeoutTests {
+    static var allTests : [(String, (TimeoutTests) -> () throws -> Void)] {
+        return [
+            ("testReceiveTimeoutSmall", testReceiveTimeoutSmall),
+            ("testSendTimeoutSmall", testSendTimeoutSmall),
+            ("testReceiveDeliverAfterHalf", testReceiveDeliverAfterHalf)
+        ]
+    }
+}
+
+
 

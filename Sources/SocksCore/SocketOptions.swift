@@ -16,7 +16,7 @@
     private let s_close = Darwin.close
 #endif
 
-extension Socket {
+extension RawSocket {
     
     //When we have throwing property setters, remove the bangs below
     
@@ -51,6 +51,7 @@ extension Socket {
     }
     
     /// Specify the receiving timeout until reporting an error
+    /// Zero timeval means wait forever
     public var receivingTimeout: timeval {
         nonmutating set {
             try! Self.setOption(descriptor: self.descriptor,
@@ -66,6 +67,7 @@ extension Socket {
     }
     
     /// Specify the sending timeout until reporting an error
+    /// Zero timeval means wait forever
     public var sendingTimeout: timeval {
         nonmutating set {
             try! Self.setOption(descriptor: self.descriptor,
@@ -102,13 +104,13 @@ extension RawSocket {
 
     static func setOption<T>(descriptor: Int32, level: Int32, name: Int32, value: T) throws {
         var val = value
-        guard setsockopt(descriptor, level, name, &val, socklen_t(sizeof(T))) != -1 else {
+        guard setsockopt(descriptor, level, name, &val, socklen_t(strideof(T))) != -1 else {
             throw Error(.optionSetFailed(level: level, name: name, value: String(value)))
         }
     }
     
     static func getOption<T>(descriptor: Int32, level: Int32, name: Int32) throws -> T {
-        var length = socklen_t(sizeof(T))
+        var length = socklen_t(strideof(T))
         var val = UnsafeMutablePointer<T>.init(allocatingCapacity: 1)
         defer {
             val.deinitialize()
@@ -120,3 +122,9 @@ extension RawSocket {
         return val.pointee
     }
 }
+
+extension timeval: Equatable { }
+public func ==(lhs: timeval, rhs: timeval) -> Bool {
+    return lhs.tv_sec == rhs.tv_sec && lhs.tv_usec == rhs.tv_usec
+}
+
