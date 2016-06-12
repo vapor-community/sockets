@@ -26,3 +26,49 @@ extension String {
     }
 }
 
+// Sendable
+public protocol Sendable {
+    func serialize() -> [UInt8]
+}
+
+extension String: Sendable {
+    public func serialize() -> [UInt8] {
+        return self.toBytes()
+    }
+}
+
+
+// Receivable
+protocol Receivable {
+    static func deserialize(reader: (maxBytes: Int) throws -> [UInt8]) throws -> Self
+}
+
+
+extension String: Receivable {
+    
+    static func deserialize(reader: (maxBytes: Int) throws -> [UInt8]) throws -> String {
+        var allBytes: [UInt8] = []
+        while true {
+            let newBytes = try reader(maxBytes: 1024)
+            allBytes += newBytes
+            if newBytes.count < 1024 || newBytes.last! == UInt8(0) {
+                return try toString(bytes:allBytes)
+            }
+        }
+    }
+}
+
+func toString(bytes: [UInt8]) throws -> String {
+    
+    var utf = UTF8()
+    var gen = bytes.makeIterator()
+    var str = String()
+    while true {
+        switch utf.decode(&gen) {
+        case .emptyInput: return str
+        case .error: throw Error("unparsableBytes")
+        case .scalarValue(let unicodeScalar): str.append(unicodeScalar)
+        }
+    }
+}
+
