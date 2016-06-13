@@ -20,16 +20,12 @@ extension Array {
 }
 
 extension String {
-    
     public func toBytes() -> [UInt8] {
         return Array(self.utf8)
     }
 }
 
-// Sendable
-public protocol Sendable {
-    func serialize() -> [UInt8]
-}
+// Sendable and Receivable implementations
 
 extension String: Sendable {
     public func serialize() -> [UInt8] {
@@ -37,37 +33,16 @@ extension String: Sendable {
     }
 }
 
-
-// Receivable
-protocol Receivable {
-    static func deserialize(reader: (maxBytes: Int) throws -> [UInt8]) throws -> Self
-}
-
-
 extension String: Receivable {
-    
     static func deserialize(reader: (maxBytes: Int) throws -> [UInt8]) throws -> String {
         var allBytes: [UInt8] = []
+        let chunkSize = 1024
         while true {
-            let newBytes = try reader(maxBytes: 1024)
+            let newBytes = try reader(maxBytes: chunkSize)
             allBytes += newBytes
-            if newBytes.count < 1024 || newBytes.last! == UInt8(0) {
-                return try toString(bytes:allBytes)
+            if newBytes.count < chunkSize {
+                return try allBytes.toString()
             }
-        }
-    }
-}
-
-func toString(bytes: [UInt8]) throws -> String {
-    
-    var utf = UTF8()
-    var gen = bytes.makeIterator()
-    var str = String()
-    while true {
-        switch utf.decode(&gen) {
-        case .emptyInput: return str
-        case .error: throw Error("unparsableBytes")
-        case .scalarValue(let unicodeScalar): str.append(unicodeScalar)
         }
     }
 }
