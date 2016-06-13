@@ -70,8 +70,8 @@ public struct InternetAddress {
 
 extension InternetAddress {
     
-    func resolve(with config: SocketConfig) throws -> ResolvedInternetAddress {
-        return try Resolver(config: config).resolve(internetAddress: self)
+    func resolve(with config: inout SocketConfig) throws -> ResolvedInternetAddress {
+        return try Resolver().resolve(self, with: &config)
     }
 }
 

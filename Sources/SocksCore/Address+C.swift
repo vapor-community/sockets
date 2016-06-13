@@ -17,7 +17,7 @@
 //Pretty types -> C types
 
 protocol InternetAddressResolver {
-    func resolve(internetAddress: InternetAddress) throws -> ResolvedInternetAddress
+    func resolve(_ internetAddress: InternetAddress, with config: inout SocketConfig) throws -> ResolvedInternetAddress
 }
 
 // Brief:   Given a hostname and a service this struct returns a list of
@@ -26,35 +26,24 @@ protocol InternetAddressResolver {
 //          IP addresses of the machine that runs the program and port set to 7
 //
 struct Resolver: InternetAddressResolver{
-    private let config: SocketConfig
-    
-    
+
     // config       -   the provided SocketConfig object guides the name resolution
     //                  the socketType and protocolType fields control which kind
     //                  kind of socket you want to create.
     //                  E.g. set them to .STREAM .TCP to obtain address for a TCP Stream socket
     //              -   Set the addressFamily field to .UNSPECIFIED if you don't care if the
     //                  name resolution leads to IPv4 or IPv6 addresses.
-    init(config: SocketConfig){
-        self.config = config
-    }
-    
-    func resolve(internetAddress: InternetAddress) throws -> ResolvedInternetAddress {
-        let resolvedInternetAddresses = try Resolver._resolve(socketConfig: self.config, internetAddress: internetAddress)
-        return resolvedInternetAddresses
-    }
-    
-    private static func _resolve(socketConfig: SocketConfig, internetAddress: InternetAddress) throws -> ResolvedInternetAddress {
-        
-        //
+    func resolve(_ internetAddress: InternetAddress, with config: inout SocketConfig) throws -> ResolvedInternetAddress {
+
+                //
         // Narrowing down the results we will get from the getaddrinfo call
         //
         var addressCriteria = socket_addrinfo.init()
         // IPv4 or IPv6
-        addressCriteria.ai_family = socketConfig.addressFamily.toCType()
+        addressCriteria.ai_family = config.addressFamily.toCType()
         addressCriteria.ai_flags = AI_PASSIVE
-        addressCriteria.ai_socktype = socketConfig.socketType.toCType()
-        addressCriteria.ai_protocol = socketConfig.protocolType.toCType()
+        addressCriteria.ai_socktype = config.socketType.toCType()
+        addressCriteria.ai_protocol = config.protocolType.toCType()
         
         // The list of addresses that correspond to the hostname/service pair.
         // servinfo is the first node in a linked list of addresses that is empty
@@ -90,6 +79,10 @@ struct Resolver: InternetAddressResolver{
         
         let address = ResolvedInternetAddress(raw: ptr)
         freeaddrinfo(addrList)
+        
+        // Adjust SocketConfig with the resolved address family
+        config.addressFamily = try address.addressFamily()
+        
         return address
     }
 }

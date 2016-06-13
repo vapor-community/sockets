@@ -92,8 +92,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     
     public convenience init(address: InternetAddress) throws {
         var conf: SocketConfig = .TCP(addressFamily: address.addressFamily)
-        let resolved = try address.resolve(with: conf)
-        try conf.adjust(for: resolved)
+        let resolved = try address.resolve(with: &conf)
         try self.init(descriptor: nil, config: conf, address: resolved)
     }
     

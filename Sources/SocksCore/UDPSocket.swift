@@ -37,8 +37,7 @@ public class UDPInternetSocket: InternetSocket {
     
     public convenience init(address: InternetAddress) throws {
         var conf: SocketConfig = .UDP(addressFamily: address.addressFamily)
-        let resolved = try address.resolve(with: conf)
-        try conf.adjust(for: resolved)
+        let resolved = try address.resolve(with: &conf)
         try self.init(descriptor: nil, config: conf, address: resolved)
     }
     
