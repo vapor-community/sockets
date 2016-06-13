@@ -10,3 +10,4 @@
 @_exported import typealias SocksCore.Port
 @_exported import enum SocksCore.AddressFamily
 @_exported import typealias SocksCore.Descriptor
+@_exported import struct SocksCore.timeval

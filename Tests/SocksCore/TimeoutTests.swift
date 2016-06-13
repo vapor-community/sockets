@@ -25,6 +25,30 @@ class TimeoutTests: XCTestCase {
         XCTAssertEqual(write.sendingTimeout, timeval(seconds: 0))
     }
     
+    func testReceiveTimeoutTiny() throws {
+        let (read, write) = try TCPEstablishedSocket.pipe()
+        defer { try! read.close(); try! write.close() }
+        read.receivingTimeout = timeval(seconds: 0.5)
+        XCTAssertEqual(read.receivingTimeout, timeval(seconds: 0.5))
+        let duration = time {
+            do {
+                _ = try read.recv()
+                XCTFail()
+            } catch {
+                guard let err = error as? SocksCore.Error, case .readFailed = err.type else {
+                    XCTFail()
+                    return
+                }
+                #if os(Linux)
+                    XCTAssertEqual(err.number, 11)
+                #else
+                    XCTAssertEqual(err.number, 35)
+                #endif
+            }
+        }
+        XCTAssertEqualWithAccuracy(duration, 0.5, accuracy: 0.1)
+    }
+    
     func testReceiveTimeoutSmall() throws {
         let (read, write) = try TCPEstablishedSocket.pipe()
         defer { try! read.close(); try! write.close() }

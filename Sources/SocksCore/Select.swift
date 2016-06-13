@@ -32,11 +32,15 @@
     private let system_select = Darwin.select
 #endif
 
-
-
 extension timeval {
     public init(seconds: Int) {
         self = timeval(tv_sec: seconds, tv_usec: 0)
+    }
+    
+    public init(seconds: Double) {
+        let sec = Int(seconds)
+        let microsec = Int32((seconds - Double(sec)) * pow(10.0, 6))
+        self = timeval(tv_sec: sec, tv_usec: microsec)
     }
 }
 
