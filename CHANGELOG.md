@@ -1,5 +1,19 @@
 # Change Log
 
+## [Unreleased](https://github.com/czechboy0/Socks/tree/HEAD)
+
+[Full Changelog](https://github.com/czechboy0/Socks/compare/0.7.0...HEAD)
+
+**Closed issues:**
+
+- Add timeout to connect [\#56](https://github.com/czechboy0/Socks/issues/56)
+- Add more informative Socket error descriptions [\#47](https://github.com/czechboy0/Socks/issues/47)
+
+**Merged pull requests:**
+
+- TCP connect timeout [\#57](https://github.com/czechboy0/Socks/pull/57) ([czechboy0](https://github.com/czechboy0))
+- Implementing a struct called ErrorCodes which serves as a static Dict… [\#54](https://github.com/czechboy0/Socks/pull/54) ([MatthiasKreileder](https://github.com/MatthiasKreileder))
+
 ## [0.7.0](https://github.com/czechboy0/Socks/tree/0.7.0) (2016-06-13)
 [Full Changelog](https://github.com/czechboy0/Socks/compare/0.6.0...0.7.0)
 
