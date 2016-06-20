@@ -67,20 +67,15 @@ public struct Error: ErrorProtocol, CustomStringConvertible {
     }
     
     public var description: String {
-        return "Socket failed with code \(self.number) [\(self.type)] \"\(getReason())\""
+        return "Socket failed with code \(self.number) (\"\(ErrorLookUpTable.getCorrespondingErrorString(errorCode: Int(self.number)))\") [\(self.type)] \"\(getReason())\""
     }
 }
 
-public struct ErrorLookUpTabel{
+public struct ErrorLookUpTable {
     
     public static func getCorrespondingErrorString(errorCode: Int) -> String {
-        // Dictionary indexed from zero
-        if(errorCode > errorDescriptions.count - 1 || errorCode < 0){
-            return "?"
-        }
-        else{
-            return errorDescriptions[errorCode]!
-        }
+        guard let description = errorDescriptions[errorCode] else { return "?" }
+        return description
     }
     
     static let errorDescriptions = [
