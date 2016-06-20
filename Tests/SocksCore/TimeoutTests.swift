@@ -100,8 +100,8 @@ class TimeoutTests: XCTestCase {
     
     func testConnectTimeoutSmall() throws {
 
-        let addr = InternetAddress(hostname: "localhost",
-                                   port: 2426)
+        let addr = InternetAddress(hostname: "192.168.0.102",
+                                   port: 2424)
         let socket = try TCPInternetSocket(address: addr)
         defer { try! socket.close() }
 

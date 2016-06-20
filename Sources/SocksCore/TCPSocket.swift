@@ -108,6 +108,16 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         //set back to blocking at the end
         defer { self.blocking = true }
         
+        //call connect
+        do {
+            try connect()
+        } catch {
+            //only allow error "in progress"
+            guard let err = error as? Error where err.number == EINPROGRESS else {
+                throw error
+            }
+        }
+        
         //wait for writeable socket or timeout
         let (_, writes, _) = try select(writes: [descriptor], timeout: timeval(seconds: timeout))
         guard !writes.isEmpty else {
