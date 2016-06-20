@@ -50,7 +50,7 @@ extension SelectTests {
         ]
     }
 }
-/*
+
 extension TimeoutTests {
     static var allTests : [(String, (TimeoutTests) -> () throws -> Void)] {
         return [
@@ -61,7 +61,13 @@ extension TimeoutTests {
             ("testReceiveDeliverAfterHalf", testReceiveDeliverAfterHalf)
         ]
     }
-}*/
+}
 
-
+extension ErrorCodesTests {
+    static var allTests : [(String, (ErrorCodesTests) -> () throws -> Void)] {
+        return [
+            ("testCornerCases", testCornerCases)
+        ]
+    }
+}
 
