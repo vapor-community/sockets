@@ -100,6 +100,35 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         let res = socket_connect(self.descriptor, address.raw, address.rawLen)
         guard res > -1 else { throw Error(.connectFailed) }
     }
+    
+    public func connect(withTimeout timeout: Double) throws {
+        //set to nonblocking
+        self.blocking = false
+        
+        //set back to blocking at the end
+        defer { self.blocking = true }
+        
+        //call connect
+        do {
+            try connect()
+        } catch {
+            //only allow error "in progress"
+            guard let err = error as? Error where err.number == EINPROGRESS else {
+                throw error
+            }
+        }
+        
+        //wait for writeable socket or timeout
+        let (_, writes, _) = try select(writes: [descriptor], timeout: timeval(seconds: timeout))
+        guard !writes.isEmpty else {
+            throw Error(.connectTimedOut)
+        }
+        
+        //ensure no error was encountered
+        guard self.errorCode == 0 else {
+            throw Error(.connectFailed)
+        }
+    }
 
     public func listen(queueLimit: Int32 = 4096) throws {
         let res = socket_listen(self.descriptor, queueLimit)

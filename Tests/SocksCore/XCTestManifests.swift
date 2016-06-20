@@ -25,7 +25,8 @@ extension ConversionTests {
 extension LiveTests {
     static var allTests : [(String, (LiveTests) -> () throws -> Void)] {
         return [
-            ("testLive_HTTP_Get_Google_ipV4", testLive_HTTP_Get_Google_ipV4)
+            ("testLive_HTTP_Get_Google_ipV4", testLive_HTTP_Get_Google_ipV4),
+            ("testLive_HTTP_Get_Google_ipV4_withTimeout", testLive_HTTP_Get_Google_ipV4_withTimeout)
         ]
     }
 }
@@ -58,7 +59,8 @@ extension TimeoutTests {
             ("testReceiveTimeoutTiny", testReceiveTimeoutTiny),
             ("testReceiveTimeoutSmall", testReceiveTimeoutSmall),
             ("testSendTimeoutSmall", testSendTimeoutSmall),
-            ("testReceiveDeliverAfterHalf", testReceiveDeliverAfterHalf)
+            ("testReceiveDeliverAfterHalf", testReceiveDeliverAfterHalf),
+            ("testConnectTimeoutSmall", testConnectTimeoutSmall)
         ]
     }
 }

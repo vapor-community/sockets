@@ -18,18 +18,43 @@
 
 extension RawSocket {
     
+    /// Control whether the socket calls are blocking or nonblocking
+    public var blocking: Bool {
+        get {
+            let flags = fcntl(descriptor, F_GETFL, 0)
+            return flags & O_NONBLOCK == 0
+        }
+        nonmutating set {
+            let flags = fcntl(descriptor, F_GETFL, 0)
+            let newFlags: Int32
+            if newValue {
+                newFlags = flags & ~O_NONBLOCK
+            } else {
+                newFlags = flags | O_NONBLOCK
+            }
+            _ = fcntl(descriptor, F_SETFL, newFlags)
+        }
+    }
+    
+    /// Returns the current error code of the socket (0 if no error) 
+    public var errorCode: Int {
+        return try! Self.getOption(descriptor: descriptor,
+                                   level: SOL_SOCKET,
+                                   name: SO_ERROR)
+    }
+    
     //When we have throwing property setters, remove the bangs below
     
     /// Keepalive messages enabled (if implemented by protocol)
     public var keepAlive: Bool {
         nonmutating set {
-            try! Self.setBoolOption(descriptor: self.descriptor,
+            try! Self.setBoolOption(descriptor: descriptor,
                                     level: SOL_SOCKET,
                                     name: SO_KEEPALIVE,
                                     value: newValue)
         }
         get {
-            return try! Self.getBoolOption(descriptor: self.descriptor,
+            return try! Self.getBoolOption(descriptor: descriptor,
                                            level: SOL_SOCKET,
                                            name: SO_KEEPALIVE)
         }
@@ -38,13 +63,13 @@ extension RawSocket {
     /// Binding allowed (under certain conditions) to an address or port already in use
     public var reuseAddress: Bool {
         nonmutating set {
-            try! Self.setBoolOption(descriptor: self.descriptor,
+            try! Self.setBoolOption(descriptor: descriptor,
                                     level: SOL_SOCKET,
                                     name: SO_REUSEADDR,
                                     value: newValue)
         }
         get {
-            return try! Self.getBoolOption(descriptor: self.descriptor,
+            return try! Self.getBoolOption(descriptor: descriptor,
                                            level: SOL_SOCKET,
                                            name: SO_REUSEADDR)
         }
@@ -54,13 +79,13 @@ extension RawSocket {
     /// Zero timeval means wait forever
     public var receivingTimeout: timeval {
         nonmutating set {
-            try! Self.setOption(descriptor: self.descriptor,
+            try! Self.setOption(descriptor: descriptor,
                                 level: SOL_SOCKET,
                                 name: SO_RCVTIMEO,
                                 value: newValue)
         }
         get {
-            return try! Self.getOption(descriptor: self.descriptor,
+            return try! Self.getOption(descriptor: descriptor,
                                        level: SOL_SOCKET,
                                        name: SO_RCVTIMEO)
         }
@@ -70,13 +95,13 @@ extension RawSocket {
     /// Zero timeval means wait forever
     public var sendingTimeout: timeval {
         nonmutating set {
-            try! Self.setOption(descriptor: self.descriptor,
+            try! Self.setOption(descriptor: descriptor,
                                 level: SOL_SOCKET,
                                 name: SO_SNDTIMEO,
                                 value: newValue)
         }
         get {
-            return try! Self.getOption(descriptor: self.descriptor,
+            return try! Self.getOption(descriptor: descriptor,
                                        level: SOL_SOCKET,
                                        name: SO_SNDTIMEO)
         }
