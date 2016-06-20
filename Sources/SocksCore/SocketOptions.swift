@@ -37,7 +37,7 @@ extension RawSocket {
     }
     
     /// Returns the current error code of the socket (0 if no error) 
-    public var errorCode: Int {
+    public var errorCode: Int32 {
         return try! Self.getOption(descriptor: descriptor,
                                    level: SOL_SOCKET,
                                    name: SO_ERROR)

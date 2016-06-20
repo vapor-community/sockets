@@ -20,9 +20,9 @@ public class TCPClient {
         self.socket = alreadyConnectedSocket
     }
 
-    public convenience init(socket: TCPInternetSocket) throws {
+    public convenience init(socket: TCPInternetSocket, connectionTimeout timeout: Double? = nil) throws {
         try self.init(alreadyConnectedSocket: socket)
-        try self.socket.connect()
+        try self.socket.connect(withTimeout: timeout)
     }
     
     public convenience init(address: InternetAddress) throws {

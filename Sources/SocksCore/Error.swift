@@ -31,6 +31,7 @@ public enum ErrorReason {
     case unparsableBytes
     
     case connectFailed
+    case connectFailedWithSocketErrorCode(Int32)
     case connectTimedOut
     case sendFailedToSendAllBytes
     case readFailed
