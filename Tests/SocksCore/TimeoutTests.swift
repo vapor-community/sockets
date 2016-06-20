@@ -97,4 +97,26 @@ class TimeoutTests: XCTestCase {
         }
         XCTAssertEqualWithAccuracy(duration, 1.0, accuracy: 0.1)
     }
+    
+    func testConnectTimeoutSmall() throws {
+
+        let addr = InternetAddress(hostname: "localhost",
+                                   port: 2426)
+        let socket = try TCPInternetSocket(address: addr)
+        defer { try! socket.close() }
+
+        let duration = time {
+            do {
+                _ = try socket.connect(withTimeout: 1)
+                XCTFail()
+            } catch {
+                guard let err = error as? SocksCore.Error, case .connectTimedOut = err.type else {
+                    XCTFail(String(error))
+                    return
+                }
+            }
+        }
+        XCTAssertEqualWithAccuracy(duration, 1.0, accuracy: 0.1)
+    }
+
 }

@@ -58,7 +58,8 @@ extension TimeoutTests {
             ("testReceiveTimeoutTiny", testReceiveTimeoutTiny),
             ("testReceiveTimeoutSmall", testReceiveTimeoutSmall),
             ("testSendTimeoutSmall", testSendTimeoutSmall),
-            ("testReceiveDeliverAfterHalf", testReceiveDeliverAfterHalf)
+            ("testReceiveDeliverAfterHalf", testReceiveDeliverAfterHalf),
+            ("testConnectTimeoutSmall", testConnectTimeoutSmall)
         ]
     }
 }
