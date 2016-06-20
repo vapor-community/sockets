@@ -101,7 +101,13 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         guard res > -1 else { throw Error(.connectFailed) }
     }
     
-    public func connect(withTimeout timeout: Double) throws {
+    public func connect(withTimeout timeout: Double?) throws {
+        
+        guard let to = timeout else {
+            try connect()
+            return
+        }
+
         //set to nonblocking
         self.blocking = false
         
@@ -119,14 +125,15 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         }
         
         //wait for writeable socket or timeout
-        let (_, writes, _) = try select(writes: [descriptor], timeout: timeval(seconds: timeout))
+        let (_, writes, _) = try select(writes: [descriptor], timeout: timeval(seconds: to))
         guard !writes.isEmpty else {
             throw Error(.connectTimedOut)
         }
         
         //ensure no error was encountered
-        guard self.errorCode == 0 else {
-            throw Error(.connectFailed)
+        let err = self.errorCode
+        guard err == 0 else {
+            throw Error(.connectFailedWithSocketErrorCode(err))
         }
     }
 

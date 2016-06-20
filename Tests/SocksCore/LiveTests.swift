@@ -42,7 +42,7 @@ class LiveTests: XCTestCase {
         let socket = try TCPInternetSocket(address: addr)
         
         try socket.connect(withTimeout: 2)
-        
+            
         //sends a GET / request to google.com at port 80, expects a 302 redirect to HTTPS
         try socket.send(data: "GET /\r\n\r\n".toBytes())
         
@@ -55,7 +55,7 @@ class LiveTests: XCTestCase {
         //yay!
         XCTAssertTrue(received.starts(with: "HTTP/1.0 ".toBytes()), "Instead received: \(str)")
         
-        try! socket.close()
+        try socket.close()
         print("successfully sent and received data from google.com")
     }
 
