@@ -25,9 +25,9 @@ public class TCPClient {
         try self.socket.connect(withTimeout: timeout)
     }
     
-    public convenience init(address: InternetAddress) throws {
+    public convenience init(address: InternetAddress, connectionTimeout timeout: Double? = nil) throws {
         let socket = try TCPInternetSocket(address: address)
-        try self.init(socket: socket)
+        try self.init(socket: socket, connectionTimeout: timeout)
     }
     
     public func send(bytes: [UInt8]) throws {
