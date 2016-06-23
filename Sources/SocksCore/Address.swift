@@ -156,6 +156,11 @@ public class ResolvedInternetAddress {
     }
 }
 
+extension ResolvedInternetAddress: Equatable { }
+public func ==(lhs: ResolvedInternetAddress, rhs: ResolvedInternetAddress) -> Bool {
+    return lhs.asData() == rhs.asData()
+}
+
 extension ResolvedInternetAddress: CustomStringConvertible {
     
     public var description: String {
