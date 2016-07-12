@@ -35,7 +35,7 @@ public protocol TCPWriteableSocket: TCPSocket { }
 public protocol TCPReadableSocket: TCPSocket { }
 
 extension TCPReadableSocket {
-    
+
     public func recv(maxBytes: Int = BufferCapacity) throws -> [UInt8] {
         let data = Bytes(capacity: maxBytes)
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
@@ -45,7 +45,7 @@ extension TCPReadableSocket {
         let out = Array(finalBytes.map({ UInt8($0) }))
         return out
     }
-    
+
     public func recvAll() throws -> [UInt8] {
         var buffer: [UInt8] = []
         let chunkSize = 512
@@ -61,7 +61,7 @@ extension TCPReadableSocket {
 }
 
 extension TCPWriteableSocket {
-    
+
     public func send(data: [UInt8]) throws {
         let len = data.count
         let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
@@ -86,23 +86,23 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         self.config = config
         self.address = address
         self.closed = false
-        
+
         self.reuseAddress = true
     }
-    
+
     public convenience init(address: InternetAddress) throws {
         var conf: SocketConfig = .TCP(addressFamily: address.addressFamily)
         let resolved = try address.resolve(with: &conf)
         try self.init(descriptor: nil, config: conf, address: resolved)
     }
-    
+
     public func connect() throws {
         let res = socket_connect(self.descriptor, address.raw, address.rawLen)
         guard res > -1 else { throw Error(.connectFailed) }
     }
-    
+
     public func connect(withTimeout timeout: Double?) throws {
-        
+
         guard let to = timeout else {
             try connect()
             return
@@ -110,10 +110,10 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
 
         //set to nonblocking
         self.blocking = false
-        
+
         //set back to blocking at the end
         defer { self.blocking = true }
-        
+
         //call connect
         do {
             try connect()
@@ -123,13 +123,13 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
                 throw error
             }
         }
-        
+
         //wait for writeable socket or timeout
         let (_, writes, _) = try select(writes: [descriptor], timeout: timeval(seconds: to))
         guard !writes.isEmpty else {
             throw Error(.connectTimedOut)
         }
-        
+
         //ensure no error was encountered
         let err = self.errorCode
         guard err == 0 else {
@@ -141,9 +141,9 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         let res = socket_listen(self.descriptor, queueLimit)
         guard res > -1 else { throw Error(.listenFailed) }
     }
-    
+
     public func accept() throws -> TCPInternetSocket {
-        var length = socklen_t(sizeof(sockaddr_storage))
+        var length = socklen_t(sizeof(sockaddr_storage.self))
         let addr = UnsafeMutablePointer<sockaddr_storage>.init(allocatingCapacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
         let clientSocketDescriptor = socket_accept(self.descriptor, addrSockAddr, &length)
@@ -167,9 +167,9 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
 }
 
 public class TCPEstablishedSocket: TCPSocket {
-    
+
     public let descriptor: Descriptor
-    
+
     public init(descriptor: Descriptor) {
         self.descriptor = descriptor
     }
