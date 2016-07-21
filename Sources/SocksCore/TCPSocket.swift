@@ -40,7 +40,7 @@ extension TCPReadableSocket {
         let data = Bytes(capacity: maxBytes)
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
         let receivedBytes = socket_recv(self.descriptor, data.rawBytes, data.capacity, flags)
-        guard receivedBytes > -1 else { throw Error(.readFailed) }
+        guard receivedBytes > -1 else { throw SocksError(.readFailed) }
         let finalBytes = data.characters[0..<receivedBytes]
         let out = Array(finalBytes.map({ UInt8($0) }))
         return out
@@ -66,7 +66,7 @@ extension TCPWriteableSocket {
         let len = data.count
         let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
         let sentLen = socket_send(self.descriptor, data, len, flags)
-        guard sentLen == len else { throw Error(.sendFailedToSendAllBytes) }
+        guard sentLen == len else { throw SocksError(.sendFailedToSendAllBytes) }
     }
 }
 
@@ -98,7 +98,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
 
     public func connect() throws {
         let res = socket_connect(self.descriptor, address.raw, address.rawLen)
-        guard res > -1 else { throw Error(.connectFailed) }
+        guard res > -1 else { throw SocksError(.connectFailed) }
     }
 
     public func connect(withTimeout timeout: Double?) throws {
@@ -119,7 +119,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
             try connect()
         } catch {
             //only allow error "in progress"
-            guard let err = error as? Error where err.number == EINPROGRESS else {
+            guard let err = error as? SocksError, err.number == EINPROGRESS else {
                 throw error
             }
         }
@@ -127,19 +127,19 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         //wait for writeable socket or timeout
         let (_, writes, _) = try select(writes: [descriptor], timeout: timeval(seconds: to))
         guard !writes.isEmpty else {
-            throw Error(.connectTimedOut)
+            throw SocksError(.connectTimedOut)
         }
 
         //ensure no error was encountered
         let err = self.errorCode
         guard err == 0 else {
-            throw Error(.connectFailedWithSocketErrorCode(err))
+            throw SocksError(.connectFailedWithSocketErrorCode(err))
         }
     }
 
     public func listen(queueLimit: Int32 = 4096) throws {
         let res = socket_listen(self.descriptor, queueLimit)
-        guard res > -1 else { throw Error(.listenFailed) }
+        guard res > -1 else { throw SocksError(.listenFailed) }
     }
 
     public func accept() throws -> TCPInternetSocket {
@@ -149,7 +149,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         let clientSocketDescriptor = socket_accept(self.descriptor, addrSockAddr, &length)
         guard clientSocketDescriptor > -1 else {
             addr.deallocateCapacity(1)
-            throw Error(.acceptFailed)
+            throw SocksError(.acceptFailed)
         }
         let clientAddress = ResolvedInternetAddress(raw: addr)
         let clientSocket = try TCPInternetSocket(descriptor: clientSocketDescriptor,
@@ -161,7 +161,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     public func close() throws {
         closed = true
         if socket_close(self.descriptor) != 0 {
-            throw Error(.closeSocketFailed)
+            throw SocksError(.closeSocketFailed)
         }
     }
 }

@@ -121,7 +121,7 @@ extension AddressFamily {
         case Int32(AF_INET): self = .inet
         case Int32(AF_INET6): self = .inet6
         case Int32(AF_UNSPEC): self = .unspecified
-        default: throw Error(.unsupportedSocketAddressFamily(cType))
+        default: throw SocksError(.unsupportedSocketAddressFamily(cType))
         }
     }
 }

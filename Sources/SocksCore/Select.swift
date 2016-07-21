@@ -91,7 +91,7 @@ public func select(reads: [Descriptor] = [],
             filter(errors, &errorFDs)
         )
     }
-    throw Error(.selectFailed(reads: reads, writes: writes, errors: errors))
+    throw SocksError(.selectFailed(reads: reads, writes: writes, errors: errors))
 }
 
 extension RawSocket {

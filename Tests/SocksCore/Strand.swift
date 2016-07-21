@@ -23,13 +23,20 @@
 //Using Strand for now, switch to Dispatch whenever it's bundled into
 //Linux toolchains
 
+//
+//  Strand.swift
+//  Strand
+//
+//  Created by James Richard on 3/1/16.
+//
+
 #if os(Linux)
 import Glibc
 #else
 import Darwin.C
 #endif
 
-public enum StrandError: ErrorProtocol {
+public enum StrandError: Error {
     case threadCreationFailed
     case threadCancellationFailed(Int)
     case threadJoinFailed(Int)
@@ -39,23 +46,25 @@ public class Strand {
     #if os(Linux)
         private var pthread: pthread_t = 0
     #else
-        private var pthread: pthread_t?
+        private var pthread: pthread_t
     #endif
 
     public init(closure: () -> Void) throws {
         let holder = Unmanaged.passRetained(StrandClosure(closure: closure))
-        let pointer = UnsafeMutablePointer<Void>(holder.toOpaque())
 
+        let pointer = UnsafeMutablePointer<Void>(holder.toOpaque())
         #if os(Linux)
             guard pthread_create(&pthread, nil, runner, pointer) == 0 else {
                 holder.release()
                 throw StrandError.threadCreationFailed
             }
         #else
-            guard pthread_create(&pthread, nil, runner, pointer) == 0 else {
+            var pt: pthread_t?
+            guard pthread_create(&pt, nil, runner, pointer) == 0 && pt != nil else {
                 holder.release()
                 throw StrandError.threadCreationFailed
             }
+            pthread = pt!
         #endif
     }
 
@@ -82,6 +91,7 @@ public class Strand {
     }
 }
 
+#if os(Linux)
 private func runner(arg: UnsafeMutablePointer<Void>?) -> UnsafeMutablePointer<Void>? {
     guard let arg = arg else { return nil }
     let unmanaged = Unmanaged<StrandClosure>.fromOpaque(arg)
@@ -89,6 +99,14 @@ private func runner(arg: UnsafeMutablePointer<Void>?) -> UnsafeMutablePointer<Vo
     unmanaged.release()
     return nil
 }
+#else
+private func runner(arg: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<Void>? {
+    let unmanaged = Unmanaged<StrandClosure>.fromOpaque(arg)
+    unmanaged.takeUnretainedValue().closure()
+    unmanaged.release()
+    return nil
+}
+#endif
 
 private class StrandClosure {
     let closure: () -> Void
