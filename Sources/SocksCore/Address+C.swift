@@ -68,11 +68,19 @@ struct Resolver: InternetAddressResolver{
         case .inet:
             let addr = UnsafeMutablePointer<sockaddr_in>(addrInfo)!
             let specPtr = UnsafeMutablePointer<sockaddr_in>(ptr)
-            specPtr.assignFrom(addr, count: 1)
+            #if os(Linux)
+                specPtr.assign(from: addr, count: 1)
+            #else
+                specPtr.assignFrom(addr, count: 1)
+            #endif
         case .inet6:
             let addr = UnsafeMutablePointer<sockaddr_in6>(addrInfo)!
             let specPtr = UnsafeMutablePointer<sockaddr_in6>(ptr)
-            specPtr.assignFrom(addr, count: 1)
+            #if os(Linux)
+                specPtr.assign(from: addr, count: 1)
+            #else
+                specPtr.assignFrom(addr, count: 1)
+            #endif
         default:
             throw SocksError(.concreteSocketAddressFamilyRequired)
         }
