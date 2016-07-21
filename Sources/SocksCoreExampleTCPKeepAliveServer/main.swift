@@ -1,7 +1,7 @@
 import SocksCore
 import Socks
 
-enum MyError: ErrorProtocol {
+enum MyError: Error {
     case descriptorReuse
 }
 

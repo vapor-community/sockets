@@ -59,7 +59,7 @@ public class UDPInternetSocket: InternetSocket {
         )
         guard receivedBytes > -1 else {
             addr.deallocateCapacity(1)
-            throw Error(.readFailed)
+            throw SocksError(.readFailed)
         }
 
         let clientAddress = ResolvedInternetAddress(raw: addr)
@@ -82,6 +82,6 @@ public class UDPInternetSocket: InternetSocket {
             destination.raw,
             destination.rawLen
         )
-        guard sentLen == len else { throw Error(.sendFailedToSendAllBytes) }
+        guard sentLen == len else { throw SocksError(.sendFailedToSendAllBytes) }
     }
 }

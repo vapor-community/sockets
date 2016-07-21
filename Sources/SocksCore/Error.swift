@@ -1,5 +1,5 @@
 //
-//  Error.swift
+//  SocksError.swift
 //  Socks
 //
 //  Created by Honza Dvorsky on 3/20/16.
@@ -46,7 +46,8 @@ public enum ErrorReason {
 }
 
 //see error codes: https://gist.github.com/czechboy0/517b22041c0eeb33f723bb66933882e4
-public struct Error: ErrorProtocol, CustomStringConvertible {
+
+public struct SocksError: Error, CustomStringConvertible {
     
     public let type: ErrorReason
     public let number: Int32

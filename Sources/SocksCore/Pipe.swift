@@ -16,7 +16,7 @@ extension TCPEstablishedSocket: Pipeable {
         var descriptors: [Descriptor] = [0, 0]
         let socketType = SocketType.stream.toCType()
         guard socket_socketpair(AF_LOCAL, socketType, 0, &descriptors) != -1 else {
-            throw Error(.pipeCreationFailed)
+            throw SocksError(.pipeCreationFailed)
         }
         try descriptors.forEach {
             try TCPEstablishedSocket.disableSIGPIPE(descriptor: $0)

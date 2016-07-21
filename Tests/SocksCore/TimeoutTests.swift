@@ -35,7 +35,7 @@ class TimeoutTests: XCTestCase {
                 _ = try read.recv()
                 XCTFail()
             } catch {
-                guard let err = error as? SocksCore.Error, case .readFailed = err.type else {
+                guard let err = error as? SocksCore.SocksError, case .readFailed = err.type else {
                     XCTFail()
                     return
                 }
@@ -59,7 +59,7 @@ class TimeoutTests: XCTestCase {
                 _ = try read.recv()
                 XCTFail()
             } catch {
-                guard let err = error as? SocksCore.Error, case .readFailed = err.type else {
+                guard let err = error as? SocksCore.SocksError, case .readFailed = err.type else {
                     XCTFail()
                     return
                 }
@@ -110,7 +110,7 @@ class TimeoutTests: XCTestCase {
                 _ = try socket.connect(withTimeout: 1)
                 XCTFail()
             } catch {
-                guard let err = error as? SocksCore.Error, case .connectTimedOut = err.type else {
+                guard let err = error as? SocksCore.SocksError, case .connectTimedOut = err.type else {
                     XCTFail(String(error))
                     return
                 }

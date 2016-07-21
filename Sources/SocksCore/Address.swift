@@ -183,7 +183,7 @@ extension Socket {
         let res = getpeername(descriptor, addrSockAddr, &length)
         guard res > -1 else {
             addr.deallocateCapacity(1)
-            throw Error(.remoteAddressResolutionFailed)
+            throw SocksError(.remoteAddressResolutionFailed)
         }
         let clientAddress = ResolvedInternetAddress(raw: addr)
         return clientAddress
@@ -196,7 +196,7 @@ extension Socket {
         let res = getsockname(descriptor, addrSockAddr, &length)
         guard res > -1 else {
             addr.deallocateCapacity(1)
-            throw Error(.localAddressResolutionFailed)
+            throw SocksError(.localAddressResolutionFailed)
         }
         let clientAddress = ResolvedInternetAddress(raw: addr)
         return clientAddress

@@ -56,7 +56,7 @@ extension Collection where Iterator.Element == UInt8 {
             case .emptyInput: //we're done
                 return str
             case .error: //error, can't describe what however
-                throw Error(.unparsableBytes)
+                throw SocksError(.unparsableBytes)
             case .scalarValue(let unicodeScalar):
                 str.append(unicodeScalar)
             }
