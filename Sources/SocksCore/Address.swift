@@ -17,7 +17,7 @@
 //
 //  Example of the (assumed) main use case:
 //  assign a string to the hostname e.g. google.com
-//  and specify the Port via an integer or a service name
+//  and specify the Port via an integer
 //
 //  hostname -  can be set to a string that denotes 
 //              a hostname e.g. "localhost" or
