@@ -21,7 +21,7 @@ public class SynchronousTCPServer {
         try self.init(address: address)
     }
     
-    @noreturn public func startWithHandler(handler: (client: TCPClient) throws -> ()) throws {
+    public func startWithHandler(handler: (client: TCPClient) throws -> ()) throws -> Never  {
         
         let server = try TCPInternetSocket(address: address)
         try server.bind()

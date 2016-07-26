@@ -4,13 +4,13 @@ let package = Package(
     name: "Socks",
     targets: [
     	Target(name: "SocksCore"),
-    	Target(name: "Socks", dependencies: [.Target(name: "SocksCore")]),
-        Target(name: "SocksCoreExampleTCPServer", dependencies: [.Target(name: "SocksCore")]),
-        Target(name: "SocksCoreExampleTCPKeepAliveServer", dependencies: [.Target(name: "Socks")]),
-    	Target(name: "SocksCoreExampleTCPClient", dependencies: [.Target(name: "SocksCore")]),
-    	Target(name: "SocksExampleTCPServer", dependencies: [.Target(name: "Socks")]),
-    	Target(name: "SocksExampleTCPClient", dependencies: [.Target(name: "Socks")]),
-    	Target(name: "SocksExampleUDPClient", dependencies: [.Target(name: "Socks")]),
-    	Target(name: "SocksExampleUDPServer", dependencies: [.Target(name: "Socks")]),
+    	Target(name: "Socks", dependencies: ["SocksCore"]),
+        Target(name: "SocksCoreExampleTCPServer", dependencies: ["SocksCore"]),
+        Target(name: "SocksCoreExampleTCPKeepAliveServer", dependencies: ["Socks"]),
+    	Target(name: "SocksCoreExampleTCPClient", dependencies: ["SocksCore"]),
+    	Target(name: "SocksExampleTCPServer", dependencies: ["Socks"]),
+    	Target(name: "SocksExampleTCPClient", dependencies: ["Socks"]),
+    	Target(name: "SocksExampleUDPClient", dependencies: ["Socks"]),
+    	Target(name: "SocksExampleUDPServer", dependencies: ["Socks"]),
     ]
 )

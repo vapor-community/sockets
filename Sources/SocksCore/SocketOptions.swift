@@ -136,10 +136,10 @@ extension RawSocket {
     
     static func getOption<T>(descriptor: Int32, level: Int32, name: Int32) throws -> T {
         var length = socklen_t(strideof(T.self))
-        var val = UnsafeMutablePointer<T>.init(allocatingCapacity: 1)
+        var val = UnsafeMutablePointer<T>.allocate(capacity: 1)
         defer {
             val.deinitialize()
-            val.deallocateCapacity(1)
+            val.deallocate(capacity: 1)
         }
         guard getsockopt(descriptor, level, name, val, &length) != -1 else {
             throw SocksError(.optionGetFailed(level: level, name: name, type: String(T.self)))
