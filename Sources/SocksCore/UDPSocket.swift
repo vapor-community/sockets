@@ -46,7 +46,7 @@ public class UDPInternetSocket: InternetSocket {
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
 
         var length = socklen_t(sizeof(sockaddr_storage.self))
-        let addr = UnsafeMutablePointer<sockaddr_storage>.init(allocatingCapacity: 1)
+        let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
 
         let receivedBytes = socket_recvfrom(
@@ -58,7 +58,7 @@ public class UDPInternetSocket: InternetSocket {
             &length
         )
         guard receivedBytes > -1 else {
-            addr.deallocateCapacity(1)
+            addr.deallocate(capacity: 1)
             throw SocksError(.readFailed)
         }
 

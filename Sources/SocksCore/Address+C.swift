@@ -61,26 +61,18 @@ struct Resolver: InternetAddressResolver{
         guard let addrInfo = addrList.pointee.ai_addr else { throw SocksError(.ipAddressResolutionFailed) }
         let family = try AddressFamily(fromCType: Int32(addrInfo.pointee.sa_family))
         
-        let ptr = UnsafeMutablePointer<sockaddr_storage>(allocatingCapacity: 1)
-        ptr.initialize(with: sockaddr_storage())
+        let ptr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
+        ptr.initialize(to: sockaddr_storage())
         
         switch family {
         case .inet:
             let addr = UnsafeMutablePointer<sockaddr_in>(addrInfo)!
             let specPtr = UnsafeMutablePointer<sockaddr_in>(ptr)
-            #if os(Linux)
-                specPtr.assign(from: addr, count: 1)
-            #else
-                specPtr.assignFrom(addr, count: 1)
-            #endif
+            specPtr.assign(from: addr, count: 1)
         case .inet6:
             let addr = UnsafeMutablePointer<sockaddr_in6>(addrInfo)!
             let specPtr = UnsafeMutablePointer<sockaddr_in6>(ptr)
-            #if os(Linux)
-                specPtr.assign(from: addr, count: 1)
-            #else
-                specPtr.assignFrom(addr, count: 1)
-            #endif
+            specPtr.assign(from: addr, count: 1)
         default:
             throw SocksError(.concreteSocketAddressFamilyRequired)
         }

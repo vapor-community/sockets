@@ -73,7 +73,7 @@ public func select(reads: [Descriptor] = [],
     fdZero(&errorFDs)
     errors.forEach { fdSet($0, &errorFDs) }
     
-    let maxFD = (reads + writes + errors).reduce(0, combine: max)
+    let maxFD = (reads + writes + errors).reduce(0, max)
     let result: Int32
     if let timeout = timeout {
         var timeout = timeout
