@@ -20,9 +20,26 @@ class ConversionTests: XCTestCase {
         eq([Int]().periodSeparatedString(), "")
         eq([1].periodSeparatedString(), "1")
     }
-    /*
-    func testNumberArrayToColonSeparatedString() {
-        eq(lhs: [0xffff,0xeeee,0xdddd,0xcccc,0xbbbb,0xaaaa,0x9999,0x8888].colonSeparatedString(),"ffff:eeee:dddd:cccc:bbbb:aaaa:9999:8888")
-    }*/
+    
+    func testReceivableString() {
+        
+        var wordToDeserialize = "Hello Socks World"
+        
+        let myBytes = Array(wordToDeserialize.utf8)
+        var gen = myBytes.makeIterator()
+        let deserialized = try! String.deserialize { (maxBytes) throws -> [UInt8] in
+            var buffer: [UInt8] = []
+            while let next = gen.next() {
+                buffer.append(next)
+                if buffer.count == maxBytes {
+                    return buffer
+                }
+            }
+            return buffer
+        }
+        
+        eq(deserialized,wordToDeserialize)
+        
+    }
     
 }

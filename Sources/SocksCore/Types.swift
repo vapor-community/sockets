@@ -12,6 +12,14 @@
     import Darwin
 #endif
 
+public protocol Sendable {
+    func serialize() -> [UInt8]
+}
+
+protocol Receivable {
+    static func deserialize(reader: (maxBytes: Int) throws -> [UInt8]) throws -> Self
+}
+
 public enum ProtocolFamily {
     case inet
     case inet6

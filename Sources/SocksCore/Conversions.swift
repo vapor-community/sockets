@@ -20,9 +20,30 @@ extension Array {
 }
 
 extension String {
-    
     public func toBytes() -> [UInt8] {
         return Array(self.utf8)
+    }
+}
+
+// Sendable and Receivable implementations
+
+extension String: Sendable {
+    public func serialize() -> [UInt8] {
+        return self.toBytes()
+    }
+}
+
+extension String: Receivable {
+    static func deserialize(reader: (maxBytes: Int) throws -> [UInt8]) throws -> String {
+        var allBytes: [UInt8] = []
+        let chunkSize = 1024
+        while true {
+            let newBytes = try reader(maxBytes: chunkSize)
+            allBytes += newBytes
+            if newBytes.count < chunkSize {
+                return try allBytes.toString()
+            }
+        }
     }
 }
 
