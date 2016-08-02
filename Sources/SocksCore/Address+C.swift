@@ -48,7 +48,7 @@ struct Resolver: InternetAddressResolver{
         // The list of addresses that correspond to the hostname/service pair.
         // servinfo is the first node in a linked list of addresses that is empty
         // at this line
-        var servinfo = UnsafeMutablePointer<socket_addrinfo>.init(nil)
+        var servinfo: UnsafeMutablePointer<socket_addrinfo>? = nil
         // perform resolution
         let ret = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
         guard ret == 0 else { throw SocksError(.ipAddressValidationFailed) }
@@ -66,12 +66,13 @@ struct Resolver: InternetAddressResolver{
         
         switch family {
         case .inet:
-            let addr = UnsafeMutablePointer<sockaddr_in>(addrInfo)!
-            let specPtr = UnsafeMutablePointer<sockaddr_in>(ptr)
+//            addrInfo.
+            let addr = UnsafeMutablePointer<sockaddr_in>.init(OpaquePointer(addrInfo))!
+            let specPtr = UnsafeMutablePointer<sockaddr_in>(OpaquePointer(ptr))
             specPtr.assign(from: addr, count: 1)
         case .inet6:
-            let addr = UnsafeMutablePointer<sockaddr_in6>(addrInfo)!
-            let specPtr = UnsafeMutablePointer<sockaddr_in6>(ptr)
+            let addr = UnsafeMutablePointer<sockaddr_in6>(OpaquePointer(addrInfo))!
+            let specPtr = UnsafeMutablePointer<sockaddr_in6>(OpaquePointer(ptr))
             specPtr.assign(from: addr, count: 1)
         default:
             throw SocksError(.concreteSocketAddressFamilyRequired)

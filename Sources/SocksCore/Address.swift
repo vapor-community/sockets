@@ -79,7 +79,7 @@ public class ResolvedInternetAddress {
     
     let _raw: UnsafeMutablePointer<sockaddr_storage>
     var raw: UnsafeMutablePointer<sockaddr> {
-        return UnsafeMutablePointer<sockaddr>(_raw)
+        return UnsafeMutablePointer<sockaddr>(OpaquePointer(_raw))
     }
     
     /// WARNING: this pointer MUST be +1 allocated, ResolvedInternetAddress
@@ -100,8 +100,8 @@ public class ResolvedInternetAddress {
     public var port: UInt16 {
         let val: UInt16
         switch try! addressFamily() {
-        case .inet: val = UnsafePointer<sockaddr_in>(_raw).pointee.sin_port
-        case .inet6: val = UnsafePointer<sockaddr_in6>(_raw).pointee.sin6_port
+        case .inet: val = UnsafePointer<sockaddr_in>(OpaquePointer(_raw)).pointee.sin_port
+        case .inet6: val = UnsafePointer<sockaddr_in6>(OpaquePointer(_raw)).pointee.sin6_port
         default: fatalError()
         }
         return htons(val)
@@ -122,12 +122,12 @@ public class ResolvedInternetAddress {
         case .inet:
             maxLen = socklen_t(INET_ADDRSTRLEN)
             strData = UnsafeMutablePointer<Int8>.allocate(capacity: Int(maxLen))
-            var ptr = UnsafeMutablePointer<sockaddr_in>(raw).pointee.sin_addr
+            var ptr = UnsafeMutablePointer<sockaddr_in>(OpaquePointer(raw)).pointee.sin_addr
             inet_ntop(cfamily, &ptr, strData, maxLen)
         case .inet6:
             maxLen = socklen_t(INET6_ADDRSTRLEN)
             strData = UnsafeMutablePointer<Int8>.allocate(capacity: Int(maxLen))
-            var ptr = UnsafeMutablePointer<sockaddr_in6>(raw).pointee.sin6_addr
+            var ptr = UnsafeMutablePointer<sockaddr_in6>(OpaquePointer(raw)).pointee.sin6_addr
             inet_ntop(cfamily, &ptr, strData, maxLen)
         case .unspecified:
             fatalError("ResolvedInternetAddress should never be unspecified")
@@ -143,7 +143,7 @@ public class ResolvedInternetAddress {
     }
     
     public func asData() -> [UInt8] {
-        let data = UnsafeMutablePointer<UInt8>(_raw)
+        let data = UnsafeMutablePointer<UInt8>(OpaquePointer(_raw))
         let maxLen = Int(self.rawLen)
         let buffer = UnsafeBufferPointer(start: data, count: maxLen)
         let out = Array(buffer)
@@ -166,7 +166,7 @@ extension ResolvedInternetAddress: CustomStringConvertible {
     public var description: String {
         let family: String
         if let fam = try? self.addressFamily() {
-            family = String(fam)
+            family = String(describing: fam)
         } else {
             family = "UNRECOGNIZED FAMILY"
         }
@@ -179,7 +179,7 @@ extension Socket {
     public func remoteAddress() throws -> ResolvedInternetAddress {
         var length = socklen_t(sizeof(sockaddr_storage.self))
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
-        let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
+        let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
         let res = getpeername(descriptor, addrSockAddr, &length)
         guard res > -1 else {
             addr.deallocate(capacity: 1)
@@ -192,7 +192,7 @@ extension Socket {
     public func localAddress() throws -> ResolvedInternetAddress {
         var length = socklen_t(sizeof(sockaddr_storage.self))
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
-        let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
+        let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
         let res = getsockname(descriptor, addrSockAddr, &length)
         guard res > -1 else {
             addr.deallocate(capacity: 1)

@@ -47,7 +47,7 @@ public class UDPInternetSocket: InternetSocket {
 
         var length = socklen_t(sizeof(sockaddr_storage.self))
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
-        let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
+        let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
 
         let receivedBytes = socket_recvfrom(
             self.descriptor,

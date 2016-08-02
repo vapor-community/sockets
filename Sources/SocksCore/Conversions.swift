@@ -15,7 +15,7 @@ func htons(_ value: CUnsignedShort) -> CUnsignedShort {
 extension Array {
     
     func periodSeparatedString() -> String {
-        return self.map { String($0) }.joined(separator: ".")
+        return self.map({ String(describing: $0) }).joined(separator: ".")
     }
 }
 

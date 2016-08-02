@@ -21,7 +21,7 @@ class Bytes {
     let capacity: Int
     
     init(capacity: Int = BufferCapacity) {
-        self.rawBytes = UnsafeMutablePointer<UInt8>(malloc(capacity + 1))
+        self.rawBytes = UnsafeMutablePointer<UInt8>.allocate(capacity: capacity + 1)
         //add null strings terminator at location 'capacity'
         //so that whatever we receive, we always terminate properly when converting to a string?
         //otherwise we might overread and read garbage, potentially opening a security hole.
@@ -58,7 +58,7 @@ extension Collection where Iterator.Element == UInt8 {
             case .error: //error, can't describe what however
                 throw SocksError(.unparsableBytes)
             case .scalarValue(let unicodeScalar):
-                str.append(unicodeScalar)
+                str.append(String(unicodeScalar))
             }
         }
     }
