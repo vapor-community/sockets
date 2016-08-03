@@ -66,7 +66,6 @@ struct Resolver: InternetAddressResolver{
         
         switch family {
         case .inet:
-//            addrInfo.
             let addr = UnsafeMutablePointer<sockaddr_in>.init(OpaquePointer(addrInfo))!
             let specPtr = UnsafeMutablePointer<sockaddr_in>(OpaquePointer(ptr))
             specPtr.assign(from: addr, count: 1)

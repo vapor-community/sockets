@@ -47,18 +47,17 @@ class Bytes {
 extension Collection where Iterator.Element == UInt8 {
     
     public func toString() throws -> String {
-
         var utf = UTF8()
         var gen = self.makeIterator()
-        var str = String()
+        var chars = String.UnicodeScalarView()
         while true {
             switch utf.decode(&gen) {
             case .emptyInput: //we're done
-                return str
+                return String(chars)
             case .error: //error, can't describe what however
                 throw SocksError(.unparsableBytes)
             case .scalarValue(let unicodeScalar):
-                str.append(String(unicodeScalar))
+                chars.append(unicodeScalar)
             }
         }
     }
