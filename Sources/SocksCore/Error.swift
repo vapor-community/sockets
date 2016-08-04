@@ -57,7 +57,7 @@ public struct SocksError: Error, CustomStringConvertible {
         self.number = errno //last reported error code
     }
     
-    init(_ message: String) {
+    init(message: String) {
         self.type = .generic(message)
         self.number = -1
     }

@@ -130,7 +130,7 @@ extension RawSocket {
     static func setOption<T>(descriptor: Int32, level: Int32, name: Int32, value: T) throws {
         var val = value
         guard setsockopt(descriptor, level, name, &val, socklen_t(strideof(T.self))) != -1 else {
-            throw SocksError(.optionSetFailed(level: level, name: name, value: String(value)))
+            throw SocksError(.optionSetFailed(level: level, name: name, value: String(describing: value)))
         }
     }
     
@@ -142,7 +142,7 @@ extension RawSocket {
             val.deallocate(capacity: 1)
         }
         guard getsockopt(descriptor, level, name, val, &length) != -1 else {
-            throw SocksError(.optionGetFailed(level: level, name: name, type: String(T.self)))
+            throw SocksError(.optionGetFailed(level: level, name: name, type: String(describing: T.self)))
         }
         return val.pointee
     }

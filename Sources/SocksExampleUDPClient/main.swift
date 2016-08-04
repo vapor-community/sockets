@@ -11,7 +11,7 @@ do {
     try client.close()
     
     let str = try data.toString()
-    let senderStr = String(sender)
+    let senderStr = String(describing: sender)
     print("Received: \n\(str) from \(senderStr)")
 } catch {
     print("Error \(error)")

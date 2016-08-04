@@ -145,7 +145,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     public func accept() throws -> TCPInternetSocket {
         var length = socklen_t(sizeof(sockaddr_storage.self))
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
-        let addrSockAddr = UnsafeMutablePointer<sockaddr>(addr)
+        let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
         let clientSocketDescriptor = socket_accept(self.descriptor, addrSockAddr, &length)
         guard clientSocketDescriptor > -1 else {
             addr.deallocate(capacity: 1)
