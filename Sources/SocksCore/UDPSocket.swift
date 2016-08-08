@@ -45,7 +45,7 @@ public class UDPInternetSocket: InternetSocket {
         let data = Bytes(capacity: maxBytes)
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
 
-        var length = socklen_t(sizeof(sockaddr_storage.self))
+        var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
 

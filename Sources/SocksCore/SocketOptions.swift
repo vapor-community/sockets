@@ -129,13 +129,13 @@ extension RawSocket {
 
     static func setOption<T>(descriptor: Int32, level: Int32, name: Int32, value: T) throws {
         var val = value
-        guard setsockopt(descriptor, level, name, &val, socklen_t(strideof(T.self))) != -1 else {
+        guard setsockopt(descriptor, level, name, &val, socklen_t(MemoryLayout<T>.stride)) != -1 else {
             throw SocksError(.optionSetFailed(level: level, name: name, value: String(describing: value)))
         }
     }
     
     static func getOption<T>(descriptor: Int32, level: Int32, name: Int32) throws -> T {
-        var length = socklen_t(strideof(T.self))
+        var length = socklen_t(MemoryLayout<T>.stride)
         var val = UnsafeMutablePointer<T>.allocate(capacity: 1)
         defer {
             val.deinitialize()

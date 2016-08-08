@@ -91,8 +91,8 @@ public class ResolvedInternetAddress {
 
     var rawLen: socklen_t {
         switch try! addressFamily() {
-        case .inet: return socklen_t(sizeof(sockaddr_in.self))
-        case .inet6: return socklen_t(sizeof(sockaddr_in6.self))
+        case .inet: return socklen_t(MemoryLayout<sockaddr_in>.size)
+        case .inet6: return socklen_t(MemoryLayout<sockaddr_in6>.size)
         default: return 0
         }
     }
@@ -177,7 +177,7 @@ extension ResolvedInternetAddress: CustomStringConvertible {
 extension Socket {
     
     public func remoteAddress() throws -> ResolvedInternetAddress {
-        var length = socklen_t(sizeof(sockaddr_storage.self))
+        var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
         let res = getpeername(descriptor, addrSockAddr, &length)
@@ -190,7 +190,7 @@ extension Socket {
     }
     
     public func localAddress() throws -> ResolvedInternetAddress {
-        var length = socklen_t(sizeof(sockaddr_storage.self))
+        var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
         let res = getsockname(descriptor, addrSockAddr, &length)
