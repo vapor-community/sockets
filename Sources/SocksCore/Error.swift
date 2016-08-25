@@ -81,6 +81,8 @@ public struct ErrorLookUpTable {
         return description
     }
     
+    public static let interruptedSystemCall: Int32 = EINTR
+    
     static let errorDescriptions = [
         0: "Success",
         1: "Operation not permitted",
