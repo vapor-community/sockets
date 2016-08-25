@@ -19,7 +19,7 @@ class AddressResolutionTests: XCTestCase {
         for i in 1..<count {
             let resolver = Resolver()
             let family: AddressFamily = i < 500 ? .inet : .inet6
-            let address = InternetAddress(hostname: "google.com",
+            let address = InternetAddress(hostname: "httpbin.org",
                                           port: 80,
                                           addressFamily: family)
             var config: SocketConfig = .TCP()
