@@ -21,7 +21,7 @@
 ## Swift Package Manager
 
 ```swift
-.Package(url: "https://github.com/czechboy0/Socks.git", majorVersion: 0, minor: 10)
+.Package(url: "https://github.com/czechboy0/Socks.git", majorVersion: 0, minor: 12)
 ```
 
 :wrench: Usage
