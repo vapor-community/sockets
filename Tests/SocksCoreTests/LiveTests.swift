@@ -11,15 +11,14 @@ import XCTest
 
 class LiveTests: XCTestCase {
 
-    func testLive_HTTP_Get_Google_ipV4() throws {
+    func testLive_HTTP_Get_ipV4() throws {
         
-        let addr = InternetAddress(hostname: "google.com",
+        let addr = InternetAddress(hostname: "httpbin.org",
                                    port: 80)
         let socket = try TCPInternetSocket(address: addr)
         
         try socket.connect()
         
-        //sends a GET / request to google.com at port 80, expects a 302 redirect to HTTPS
         try socket.send(data: "GET /\r\n\r\n".toBytes())
         
         //receiving data
@@ -29,21 +28,20 @@ class LiveTests: XCTestCase {
         let str = try received.toString()
         
         //yay!
-        XCTAssertTrue(received.starts(with: "HTTP/1.0 ".toBytes()), "Instead received: \(str)")
+        XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".toBytes()), "Instead received: \(str)")
         
         try! socket.close()
-        print("successfully sent and received data from google.com")
+        print("successfully sent and received data from httpbin.org")
     }
     
-    func testLive_HTTP_Get_Google_ipV4_withTimeout() throws {
+    func testLive_HTTP_Get_ipV4_withTimeout() throws {
         
-        let addr = InternetAddress(hostname: "google.com",
+        let addr = InternetAddress(hostname: "httpbin.org",
                                    port: 80)
         let socket = try TCPInternetSocket(address: addr)
         
         try socket.connect(withTimeout: 2)
             
-        //sends a GET / request to google.com at port 80, expects a 302 redirect to HTTPS
         try socket.send(data: "GET /\r\n\r\n".toBytes())
         
         //receiving data
@@ -53,7 +51,7 @@ class LiveTests: XCTestCase {
         let str = try received.toString()
         
         //yay!
-        XCTAssertTrue(received.starts(with: "HTTP/1.0 ".toBytes()), "Instead received: \(str)")
+        XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".toBytes()), "Instead received: \(str)")
         
         try socket.close()
         print("successfully sent and received data from google.com")
