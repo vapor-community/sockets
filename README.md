@@ -1,70 +1,33 @@
 # Socks
 
-[![Build Status](https://travis-ci.org/czechboy0/Socks.svg?branch=master)](https://travis-ci.org/czechboy0/Socks)
-![Platforms](https://img.shields.io/badge/platforms-Linux%20%7C%20OS%20X-blue.svg)
-![Package Managers](https://img.shields.io/badge/package%20managers-swiftpm-yellow.svg)
+![Swift](http://img.shields.io/badge/swift-3.0-brightgreen.svg)
+[![Build Status](https://travis-ci.org/vapor/core.svg?branch=master)](https://travis-ci.org/vapor/socks)
+[![CircleCI](https://circleci.com/gh/vapor/core.svg?style=shield)](https://circleci.com/gh/vapor/socks)
+[![Code Coverage](https://codecov.io/gh/vapor/core/branch/master/graph/badge.svg)](https://codecov.io/gh/vapor/socks)
+[![Codebeat](https://codebeat.co/badges/a793ad97-47e3-40d9-82cf-2aafc516ef4e)](https://codebeat.co/projects/github-com-vapor-socks)
+[![Slack Status](http://vapor.team/badge.svg)](http://vapor.team)
 
-[![Twitter Czechboy0](https://img.shields.io/badge/twitter-czechboy0-green.svg)](http://twitter.com/czechboy0)
-[![Twitter matthiaskr1](https://img.shields.io/badge/twitter-matthiaskr1-green.svg)](http://twitter.com/matthiaskr1)
-
-> Pure-Swift Sockets. Linux & OS X ready.
-
-# Supported socket types
-
-| | TCP | UDP |
-| --- | --- | --- |
-| Client | ✅ | ✅ | 
-| Server | ✅ | ✅ |
-
-# Installation
-
-## Swift Package Manager
-
-```swift
-.Package(url: "https://github.com/vapor/Socks.git", majorVersion: 0, minor: 12)
-```
-
-:wrench: Usage
-------------
 The package provides two libraries: `SocksCore` and `Socks`.
 - `SocksCore` is just a Swift wrapper of the Berkeley sockets API with minimal differences. It is meant to be an easy way to use the low level API without having to deal with Swift/C interop.
 - `Socks` is a library providing common usecases built on top of `SocksCore` - a simple `TCPClient`, `SynchronousTCPServer` etc.
 
 If you're building a HTTP server, you'll probably want to use the `TCPClient`, without having to worry about its implementation details. However, if you need the low-level sockets API, just import `SocksCore` and use that instead.
 
-:game_die: Examples
-------------
-There are many working examples in this package which build as separate binaries. 
-- TCP client using SocksCore ([SocksCoreExampleTCPClient](https://github.com/vapor/Socks/blob/master/Sources/SocksCoreExampleTCPClient/main.swift))
-- TCP server using SocksCore ([SocksCoreExampleTCPServer](https://github.com/vapor/Socks/blob/master/Sources/SocksCoreExampleTCPServer/main.swift))
-- TCP server that keeps client connections alive using SocksCore ([SocksCoreExampleTCPKeepAliveServer](https://github.com/vapor/Socks/blob/master/Sources/SocksCoreExampleTCPKeepAliveServer/main.swift))
-- TCP client using Socks ([SocksExampleTCPClient](https://github.com/vapor/Socks/blob/master/Sources/SocksExampleTCPClient/main.swift))
-- TCP server using Socks ([SocksExampleTCPServer](https://github.com/vapor/Socks/blob/master/Sources/SocksExampleTCPServer/main.swift))
-- UDP client using Socks ([SocksExampleUDPClient](https://github.com/vapor/Socks/blob/master/Sources/SocksExampleUDPClient/main.swift))
-- UDP server using Socks ([SocksExampleUDPServer](https://github.com/vapor/Socks/blob/master/Sources/SocksExampleUDPServer/main.swift))
+> Pure-Swift Sockets. Linux & OS X ready.
 
-:books: Recommended reading
-------------
-- (1) [TCP/IP Sockets in C: Practical Guide for Programmers](http://www.e-reading.club/bookreader.php/136904/TCP%7CIP_Sockets_in_C:_Practical_Guide_for_Programmers.pdf) (First and Second edition)
-- (2) [Wikipedia: Berkeley Sockets](https://en.wikipedia.org/wiki/Berkeley_sockets)
+## 📖 Documentation
 
-:wrench: Used by
-- [Redbird](https://github.com/czechboy0/Redbird) *Pure-Swift implementation of a Redis client from the original protocol spec. OS X + Linux compatible.*
-- [Vapor](https://github.com/qutheory/vapor) *A web framework and server for Swift that works on OS X and Ubuntu.*
+Visit the Vapor web framework's [documentation](http://docs.vapor.codes) for instructions on how to use this package.
 
-:blue_heart: Code of Conduct
-------------
-Please note that this project is released with a [Contributor Code of Conduct](./CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+## 💧 Community
 
-:gift_heart: Contributing
-------------
-Please create an issue with a description of your problem or open a pull request with a fix.
+Join the welcoming community of fellow Vapor developers in [slack](http://vapor.team).
 
-:v: License
--------
-MIT
+## 🔧 Compatibility
 
-:alien: Authors
-------
+This package has been tested on macOS and Ubuntu.
+
+## 👥 Authors
+
 Honza Dvorsky - http://honzadvorsky.com, [@czechboy0](http://twitter.com/czechboy0)  
-Matthias Kreileder - [@matthiaskr1](https://twitter.com/matthiaskr1) 
+Matthias Kreileder - [@matthiaskr1](https://twitter.com/matthiaskr1)
