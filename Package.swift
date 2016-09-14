@@ -5,8 +5,8 @@ let package = Package(
     targets: [
     	Target(name: "SocksCore"),
     	Target(name: "Socks", dependencies: ["SocksCore"]),
-        //Target(name: "SocksCoreExampleTCPServer", dependencies: ["SocksCore"]),
-        //Target(name: "SocksCoreExampleTCPKeepAliveServer", dependencies: ["Socks"]),
+      //Target(name: "SocksCoreExampleTCPServer", dependencies: ["SocksCore"]),
+      //Target(name: "SocksCoreExampleTCPKeepAliveServer", dependencies: ["Socks"]),
     	//Target(name: "SocksCoreExampleTCPClient", dependencies: ["SocksCore"]),
     	//Target(name: "SocksExampleTCPServer", dependencies: ["Socks"]),
     	//Target(name: "SocksExampleTCPClient", dependencies: ["Socks"]),

@@ -1,5 +1,5 @@
 FROM kylef/swiftenv
-RUN swiftenv install DEVELOPMENT-SNAPSHOT-2016-08-18-a
+RUN swiftenv install 3.0-RELEASE
 
 WORKDIR /package
 VOLUME /package
