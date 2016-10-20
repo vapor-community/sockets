@@ -87,7 +87,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         self.address = address
         self.closed = false
 
-        self.reuseAddress = true
+        try setReuseAddress(true)
     }
 
     public convenience init(address: InternetAddress) throws {
@@ -131,7 +131,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         }
 
         //ensure no error was encountered
-        let err = self.errorCode
+        let err = try self.getErrorCode()
         guard err == 0 else {
             throw SocksError(.connectFailedWithSocketErrorCode(err))
         }

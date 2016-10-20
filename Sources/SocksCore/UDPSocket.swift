@@ -32,7 +32,7 @@ public class UDPInternetSocket: InternetSocket {
         self.config = config
         self.address = address
 
-        self.reuseAddress = true
+        try setReuseAddress(true)
     }
 
     public convenience init(address: InternetAddress) throws {

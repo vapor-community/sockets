@@ -21,15 +21,15 @@ class TimeoutTests: XCTestCase {
     
     func testDefaults() throws {
         let (read, write) = try TCPEstablishedSocket.pipe()
-        XCTAssertEqual(read.receivingTimeout, timeval(seconds: 0))
-        XCTAssertEqual(write.sendingTimeout, timeval(seconds: 0))
+        XCTAssertEqual(try read.getReceivingTimeout(), timeval(seconds: 0))
+        XCTAssertEqual(try write.getSendingTimeout(), timeval(seconds: 0))
     }
-    
+
     func testReceiveTimeoutTiny() throws {
         let (read, write) = try TCPEstablishedSocket.pipe()
         defer { try! read.close(); try! write.close() }
-        read.receivingTimeout = timeval(seconds: 0.5)
-        XCTAssertEqual(read.receivingTimeout, timeval(seconds: 0.5))
+        try read.setReceivingTimeout(timeval(seconds: 0.5))
+        XCTAssertEqual(try read.getReceivingTimeout(), timeval(seconds: 0.5))
         let duration = time {
             do {
                 _ = try read.recv()
@@ -52,8 +52,8 @@ class TimeoutTests: XCTestCase {
     func testReceiveTimeoutSmall() throws {
         let (read, write) = try TCPEstablishedSocket.pipe()
         defer { try! read.close(); try! write.close() }
-        read.receivingTimeout = timeval(seconds: 1)
-        XCTAssertEqual(read.receivingTimeout, timeval(seconds: 1))
+        try read.setReceivingTimeout(timeval(seconds: 1))
+        XCTAssertEqual(try read.getReceivingTimeout(), timeval(seconds: 1))
         let duration = time {
             do {
                 _ = try read.recv()
@@ -76,8 +76,8 @@ class TimeoutTests: XCTestCase {
     func testSendTimeoutSmall() throws {
         let (read, write) = try TCPEstablishedSocket.pipe()
         defer { try! read.close(); try! write.close() }
-        write.sendingTimeout = timeval(seconds: 1)
-        XCTAssertEqual(write.sendingTimeout, timeval(seconds: 1))
+        try write.setSendingTimeout(timeval(seconds: 1))
+        XCTAssertEqual(try write.getSendingTimeout(), timeval(seconds: 1))
 
         // HELP: how can we test a hanging send?
     }
@@ -118,5 +118,4 @@ class TimeoutTests: XCTestCase {
         }
         XCTAssertEqualWithAccuracy(duration, 1.0, accuracy: 0.1)
     }
-
 }
