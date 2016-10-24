@@ -6,6 +6,16 @@
 //
 //
 
+#if os(Linux)
+    import Glibc
+    private let s_socket = Glibc.socket
+    private let s_close = Glibc.close
+#else
+    import Darwin
+    private let s_socket = Darwin.socket
+    private let s_close = Darwin.close
+#endif
+
 import XCTest
 @testable import SocksCore
 
