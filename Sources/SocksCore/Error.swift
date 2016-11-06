@@ -26,7 +26,7 @@ public enum ErrorReason {
     case localAddressResolutionFailed
     case remoteAddressResolutionFailed
     case ipAddressResolutionFailed
-    case ipAddressValidationFailed
+    case ipAddressValidationFailed(String)
     case failedToGetIPFromHostname(String)
     case unparsableBytes
     
@@ -61,22 +61,13 @@ public struct SocksError: Error, CustomStringConvertible {
     }
     
     func getReason() -> String {
-        guard number >= 0 else { return "?" }
-        guard let reasonString = gai_strerror(number) else { return "?" }
-        let reason = String(validatingUTF8: reasonString) ?? "?"
+        let reason = String(validatingUTF8: strerror(number)) ?? "?"
         return reason
     }
     
     public var description: String {
-        return "Socket failed with code \(self.number) (\"\(ErrorLookUpTable.getCorrespondingErrorString(errorCode: self.number))\") [\(self.type)] \"\(getReason())\""
+        return "Socket failed with code \(self.number) (\"\(getReason())\") [\(self.type)]"
     }
-}
 
-public struct ErrorLookUpTable {
-    
-    public static func getCorrespondingErrorString(errorCode: Int32) -> String {
-        return String(validatingUTF8: strerror(errorCode)) ?? "?"
-    }
-    
     public static let interruptedSystemCall: Int32 = EINTR
 }

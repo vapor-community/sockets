@@ -149,7 +149,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         let clientSocketDescriptor = socket_accept(self.descriptor, addrSockAddr, &length)
         guard clientSocketDescriptor > -1 else {
             addr.deallocate(capacity: 1)
-            if errno == ErrorLookUpTable.interruptedSystemCall {
+            if errno == SocksError.interruptedSystemCall {
                 return try accept()
             }
             throw SocksError(.acceptFailed)
