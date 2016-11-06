@@ -64,12 +64,3 @@ extension TimeoutTests {
         ]
     }
 }
-
-extension ErrorCodesTests {
-    static var allTests : [(String, (ErrorCodesTests) -> () throws -> Void)] {
-        return [
-            ("testCornerCases", testCornerCases)
-        ]
-    }
-}
-
