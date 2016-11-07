@@ -6,7 +6,5 @@ sudo: required
 dist: trusty
 osx_image: xcode8
 script:
-  # https://github.com/travis-ci/travis-ci/issues/6307
-  - rvm get head
   - eval "$(curl -sL https://swift.vapor.sh/ci)"
   - eval "$(curl -sL https://swift.vapor.sh/codecov)"
