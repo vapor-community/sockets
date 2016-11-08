@@ -30,17 +30,17 @@ class OptionsTests: XCTestCase {
         
         try read.setKeepAlive(true)
         let keepAlive = try read.getKeepAlive()
-        XCTAssert(keepAlive == true)
+        XCTAssertEqual(keepAlive, true)
         
         let expectedTimeout = timeval(seconds: 0.987)
         
         try read.setSendingTimeout(expectedTimeout)
         let sendingTimeout = try read.getSendingTimeout()
-        XCTAssert(sendingTimeout == expectedTimeout)
+        XCTAssertEqual(sendingTimeout, expectedTimeout)
         
         try read.setReceivingTimeout(expectedTimeout)
         let receivingTimeout = try read.getReceivingTimeout()
-        XCTAssert(receivingTimeout == expectedTimeout)
+        XCTAssertEqual(receivingTimeout, expectedTimeout)
     }
     
     func testReadingSocketOptionOnClosedSocket() throws {
