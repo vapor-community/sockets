@@ -51,7 +51,10 @@ struct Resolver: InternetAddressResolver{
         var servinfo: UnsafeMutablePointer<socket_addrinfo>? = nil
         // perform resolution
         let ret = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
-        guard ret == 0 else { throw SocksError(.ipAddressValidationFailed) }
+        guard ret == 0 else {
+            let reason = String(validatingUTF8: gai_strerror(ret)) ?? "?"
+            throw SocksError(.ipAddressValidationFailed(reason))
+        }
         
         guard let addrList = servinfo else { throw SocksError(.ipAddressResolutionFailed) }
         
