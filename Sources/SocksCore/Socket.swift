@@ -40,7 +40,7 @@ extension Socket {
         let cProtocol = config.protocolType.toCType()
         
         let descriptor = s_socket(cProtocolFam, cType, cProtocol)
-        guard descriptor > 0 else { throw SocksError(.createSocketFailed) }
+        guard descriptor >= 0 else { throw SocksError(.createSocketFailed) }
         
         if config.reuseAddress {
             try setOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_REUSEADDR, value: 1)

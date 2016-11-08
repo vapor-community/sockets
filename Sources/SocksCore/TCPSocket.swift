@@ -6,6 +6,8 @@
 //
 //
 
+import Dispatch
+
 #if os(Linux)
     import Glibc
     private let socket_bind = Glibc.bind
@@ -76,6 +78,9 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
     public var closed: Bool
+    
+    // the DispatchSource if the socket is being watched for reads
+    private var watchingSource: DispatchSourceRead?
 
     public required init(descriptor: Descriptor?, config: SocketConfig, address: ResolvedInternetAddress) throws {
         if let descriptor = descriptor {
@@ -162,10 +167,41 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func close() throws {
+        stopWatching()
         closed = true
         if socket_close(self.descriptor) != 0 {
             throw SocksError(.closeSocketFailed)
         }
+    }
+    
+    /**
+        Start watching the socket for available data and execute the `handler`
+        on the specified queue if data is ready to be received.
+    */
+    public func startWatching(on queue:DispatchQueue, handler:@escaping ()->()) throws {
+        
+        if watchingSource != nil {
+            throw SocksError(.generic("Socket is already being watched"))
+        }
+        
+        // dispatch sources only work on non-blocking sockets
+        self.blocking = false
+        
+        // create a read source from the socket's descriptor that will execute the handler on the specified queue if data is ready to be read
+        let newSource = DispatchSource.makeReadSource(fileDescriptor: self.descriptor, queue: queue)
+        newSource.setEventHandler(handler:handler)
+        newSource.resume()
+        
+        // this source needs to be retained as long as the socket lives (or watching will end)
+        watchingSource = newSource
+    }
+    
+    /**
+        Stops watching the socket for available data.
+    */
+    public func stopWatching() {
+        watchingSource?.cancel()
+        watchingSource = nil
     }
 }
 
