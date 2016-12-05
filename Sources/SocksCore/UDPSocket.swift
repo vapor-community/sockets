@@ -65,7 +65,7 @@ public class UDPInternetSocket: InternetSocket {
         let clientAddress = ResolvedInternetAddress(raw: addr)
 
         let finalBytes = data.characters[0..<receivedBytes]
-        let out = Array(finalBytes.map({ UInt8($0) }))
+        let out = Array(finalBytes)
         return (data: out, sender: clientAddress)
     }
 

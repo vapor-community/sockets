@@ -44,7 +44,7 @@ extension TCPReadableSocket {
         let receivedBytes = socket_recv(self.descriptor, data.rawBytes, data.capacity, flags)
         guard receivedBytes > -1 else { throw SocksError(.readFailed) }
         let finalBytes = data.characters[0..<receivedBytes]
-        let out = Array(finalBytes.map({ UInt8($0) }))
+        let out = Array(finalBytes)
         return out
     }
 
