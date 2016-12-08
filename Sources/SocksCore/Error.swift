@@ -39,8 +39,6 @@ public enum ErrorReason {
     case listenFailed
     case acceptFailed
     
-    case remoteClosedConnection
-    
     case unsupportedSocketAddressFamily(Int32)
     case concreteSocketAddressFamilyRequired
     

@@ -43,7 +43,12 @@ extension TCPReadableSocket {
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
         let receivedBytes = socket_recv(self.descriptor, data.rawBytes, data.capacity, flags)
         guard receivedBytes > -1 else { throw SocksError(.readFailed) }
-        guard receivedBytes > 0 else { throw SocksError(.remoteClosedConnection) } 
+        
+        guard receivedBytes > 0 else {
+            _ = try? self.close()
+            return []
+        }
+        
         let finalBytes = data.characters[0..<receivedBytes]
         let out = Array(finalBytes.map({ UInt8($0) }))
         return out
