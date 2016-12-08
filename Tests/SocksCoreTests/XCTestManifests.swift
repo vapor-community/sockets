@@ -64,3 +64,11 @@ extension TimeoutTests {
         ]
     }
 }
+
+extension WatchingTests {
+    static var allTests : [(String, (WatchingTests) -> () throws -> Void)] {
+        return [
+            ("testWatching1000Times", testWatching1000Times)
+        ]
+    }
+}
