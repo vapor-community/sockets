@@ -94,6 +94,10 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
 
         try setReuseAddress(true)
     }
+    
+    deinit {
+        try? self.close()
+    }
 
     public convenience init(address: InternetAddress) throws {
         var conf: SocketConfig = .TCP(addressFamily: address.addressFamily)
