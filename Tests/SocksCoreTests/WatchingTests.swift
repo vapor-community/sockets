@@ -4,6 +4,14 @@ import Dispatch
 
 class WatchingTests: XCTestCase {
     
+    func testWatching1000Times() throws {
+        // this test needs to run a few times to make sure that GCD semaphores (used in `DispatchSource`) are properly released
+        for index in 0..<1000 {
+            print("Test \(index)")
+            try testWatching()
+        }
+    }
+
     func testWatching() throws {
         
         let serverAddress = InternetAddress.localhost(port: 0)
