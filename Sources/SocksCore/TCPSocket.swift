@@ -167,6 +167,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func close() throws {
+        if closed { return }
         stopWatching()
         closed = true
         if socket_close(self.descriptor) != 0 {
