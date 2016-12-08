@@ -22,32 +22,35 @@ import XCTest
 class OptionsTests: XCTestCase {
     
     func testSocketOptions() throws {
-        let (read, _) = try TCPEstablishedSocket.pipe()
+        let address = InternetAddress(hostname: "0.0.0.0", port: 0)
+        let socket = try TCPInternetSocket(address: address)
         
-        try read.setReuseAddress(true)
-        let reuseAddress = try read.getReuseAddress()
+        try socket.setReuseAddress(true)
+        let reuseAddress = try socket.getReuseAddress()
         XCTAssert(reuseAddress == true)
         
-        try read.setKeepAlive(true)
-        let keepAlive = try read.getKeepAlive()
+        try socket.setKeepAlive(true)
+        let keepAlive = try socket.getKeepAlive()
         XCTAssertEqual(keepAlive, true)
         
         let expectedTimeout = timeval(seconds: 0.987)
         
-        try read.setSendingTimeout(expectedTimeout)
-        let sendingTimeout = try read.getSendingTimeout()
+        try socket.setSendingTimeout(expectedTimeout)
+        let sendingTimeout = try socket.getSendingTimeout()
         XCTAssertEqual(sendingTimeout, expectedTimeout)
         
-        try read.setReceivingTimeout(expectedTimeout)
-        let receivingTimeout = try read.getReceivingTimeout()
+        try socket.setReceivingTimeout(expectedTimeout)
+        let receivingTimeout = try socket.getReceivingTimeout()
         XCTAssertEqual(receivingTimeout, expectedTimeout)
     }
     
     func testReadingSocketOptionOnClosedSocket() throws {
-        let (read, _) = try TCPEstablishedSocket.pipe()
-        try read.close()
+        let address = InternetAddress(hostname: "0.0.0.0", port: 0)
+        let socket = try TCPInternetSocket(address: address)
+
+        try socket.close()
         do {
-            _ = try read.getSendingTimeout()
+            _ = try socket.getSendingTimeout()
         }
         catch let error as SocksError {
             guard case ErrorReason.optionGetFailed(level: SOL_SOCKET, name: SO_SNDTIMEO, type: "timeval") = error.type else {
