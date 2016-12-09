@@ -72,3 +72,14 @@ extension WatchingTests {
         ]
     }
 }
+
+extension LifetimeTests {
+    static var allTests : [(String, (LifetimeTests) -> () throws -> Void)] {
+        return [
+            ("testStoppingTCPInternetSocket", testStoppingTCPInternetSocket),
+            ("testStoppingUDPSocket", testStoppingUDPSocket),
+            ("testReleasingTCPInternetSocket", testReleasingTCPInternetSocket),
+            ("testReleasingUDPInternetSocket", testReleasingUDPInternetSocket)
+        ]
+    }
+}

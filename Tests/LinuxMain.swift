@@ -8,5 +8,6 @@ XCTMain([
 	testCase(PipeTests.allTests),
 	testCase(SelectTests.allTests),
 	testCase(TimeoutTests.allTests),
-    testCase(WatchingTests.allTests)
+	testCase(WatchingTests.allTests),
+    testCase(LifetimeTests.allTests)
 ])
