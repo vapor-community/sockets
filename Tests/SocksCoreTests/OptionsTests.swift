@@ -53,7 +53,7 @@ class OptionsTests: XCTestCase {
             _ = try socket.getSendingTimeout()
         }
         catch let error as SocksError {
-            guard case ErrorReason.optionGetFailed(level: SOL_SOCKET, name: SO_SNDTIMEO, type: "timeval") = error.type else {
+            guard case ErrorReason.socketIsClosed = error.type else {
                 XCTFail()
                 return
             }

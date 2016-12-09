@@ -49,6 +49,7 @@ public class UDPInternetSocket: InternetSocket {
     }
 
     public func recvfrom(maxBytes: Int = BufferCapacity) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
+        if closed { throw SocksError(.socketIsClosed) }
         let data = Bytes(capacity: maxBytes)
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
 
@@ -77,6 +78,7 @@ public class UDPInternetSocket: InternetSocket {
     }
 
     public func sendto(data: [UInt8], address: ResolvedInternetAddress? = nil) throws {
+        if closed { throw SocksError(.socketIsClosed) }
         let len = data.count
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
         let destination = address ?? self.address

@@ -18,6 +18,20 @@ class LifetimeTests: XCTestCase {
         
         // attempt to close a second again; shouldn't throw
         try socket.close()
+
+        do {
+            // attempt to listen should fail on a closed socket
+            _ = try socket.listen()
+        }
+        catch let error as SocksError {
+            guard case ErrorReason.socketIsClosed = error.type else {
+                XCTFail("Wrong error")
+                return
+            }
+        }
+        catch {
+            XCTFail("Wrong error")
+        }
     }
 
     func testStoppingUDPSocket() throws {
@@ -35,6 +49,20 @@ class LifetimeTests: XCTestCase {
         
         // attempt to close a second again; shouldn't throw
         try socket.close()
+        
+        do {
+            // attempt to receive should fail on a closed socket
+            _ = try socket.recvfrom()
+        }
+        catch let error as SocksError {
+            guard case ErrorReason.socketIsClosed = error.type else {
+                XCTFail("Wrong error")
+                return
+            }
+        }
+        catch {
+            XCTFail("Wrong error")
+        }
     }
 
     func testReleasingTCPInternetSocket() throws {

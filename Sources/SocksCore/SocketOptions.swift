@@ -21,10 +21,12 @@ extension RawSocket {
     /// Control whether the socket calls are blocking or nonblocking
     public var blocking: Bool {
         get {
+            if closed { return true }
             let flags = fcntl(descriptor, F_GETFL, 0)
             return flags & O_NONBLOCK == 0
         }
         nonmutating set {
+            if closed { return }
             let flags = fcntl(descriptor, F_GETFL, 0)
             let newFlags: Int32
             if newValue {
@@ -39,6 +41,7 @@ extension RawSocket {
     /// Returns the current error code of the socket (0 if no error)
     public func getErrorCode() throws -> Int32
     {
+        if closed { throw SocksError(.socketIsClosed) }
         return try Self.getOption(descriptor: descriptor,
                                   level: SOL_SOCKET,
                                   name: SO_ERROR)
@@ -46,35 +49,43 @@ extension RawSocket {
     
     /// Keepalive messages enabled (if implemented by protocol)
     public func getKeepAlive() throws -> Bool {
+        if closed { throw SocksError(.socketIsClosed) }
         return try Self.getBoolOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_KEEPALIVE)
     }
     public func setKeepAlive(_ newValue:Bool) throws {
+        if closed { throw SocksError(.socketIsClosed) }
         try Self.setBoolOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_KEEPALIVE, value: newValue)
     }
     
     /// Binding allowed (under certain conditions) to an address or port already in use
     public func getReuseAddress() throws -> Bool {
+        if closed { throw SocksError(.socketIsClosed) }
         return try Self.getBoolOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_REUSEADDR)
     }
     public func setReuseAddress(_ newValue:Bool) throws {
+        if closed { throw SocksError(.socketIsClosed) }
         try Self.setBoolOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_REUSEADDR, value: newValue)
     }
     
     /// Specify the receiving timeout until reporting an error
     /// Zero timeval means wait forever
     public func getReceivingTimeout() throws -> timeval {
+        if closed { throw SocksError(.socketIsClosed) }
         return try Self.getOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_RCVTIMEO)
     }
     public func setReceivingTimeout(_ newValue:timeval) throws {
+        if closed { throw SocksError(.socketIsClosed) }
         try Self.setOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_RCVTIMEO, value: newValue)
     }
     
     /// Specify the sending timeout until reporting an error
     /// Zero timeval means wait forever
     public func getSendingTimeout() throws -> timeval {
+        if closed { throw SocksError(.socketIsClosed) }
         return try Self.getOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_SNDTIMEO)
     }
     public func setSendingTimeout(_ newValue:timeval) throws {
+        if closed { throw SocksError(.socketIsClosed) }
         try Self.setOption(descriptor: descriptor, level: SOL_SOCKET, name: SO_SNDTIMEO, value: newValue)
     }
     
