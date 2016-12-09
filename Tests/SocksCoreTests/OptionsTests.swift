@@ -22,8 +22,7 @@ import XCTest
 class OptionsTests: XCTestCase {
     
     func testSocketOptions() throws {
-        let address = InternetAddress(hostname: "0.0.0.0", port: 0)
-        let socket = try TCPInternetSocket(address: address)
+        let socket = try TCPInternetSocket(address: .localhost(port: 0))
         
         try socket.setReuseAddress(true)
         let reuseAddress = try socket.getReuseAddress()
@@ -45,8 +44,7 @@ class OptionsTests: XCTestCase {
     }
     
     func testReadingSocketOptionOnClosedSocket() throws {
-        let address = InternetAddress(hostname: "0.0.0.0", port: 0)
-        let socket = try TCPInternetSocket(address: address)
+        let socket = try TCPInternetSocket(address: .localhost(port: 0))
 
         try socket.close()
         do {

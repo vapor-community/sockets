@@ -1,6 +1,12 @@
 import XCTest
 @testable import SocksCore
 
+#if os(Linux)
+    import Glibc
+    private let F_GETFD = Glibc.F_GETFD
+#endif
+
+
 class LifetimeTests: XCTestCase {
     
     func testStoppingTCPInternetSocket() throws {
