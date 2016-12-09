@@ -18,7 +18,6 @@
 
 public protocol RawSocket {
     var descriptor: Descriptor { get }
-    var closed:Bool { get }
     func close() throws
 }
 

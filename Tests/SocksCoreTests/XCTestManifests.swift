@@ -64,22 +64,3 @@ extension TimeoutTests {
         ]
     }
 }
-
-extension WatchingTests {
-    static var allTests : [(String, (WatchingTests) -> () throws -> Void)] {
-        return [
-            ("testWatching", testWatching)
-        ]
-    }
-}
-
-extension LifetimeTests {
-    static var allTests : [(String, (LifetimeTests) -> () throws -> Void)] {
-        return [
-            ("testStoppingTCPInternetSocket", testStoppingTCPInternetSocket),
-            ("testStoppingUDPSocket", testStoppingUDPSocket),
-            ("testReleasingTCPInternetSocket", testReleasingTCPInternetSocket),
-            ("testReleasingUDPInternetSocket", testReleasingUDPInternetSocket)
-        ]
-    }
-}

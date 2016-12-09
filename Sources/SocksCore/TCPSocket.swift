@@ -54,7 +54,7 @@ extension TCPReadableSocket {
         }
         
         let finalBytes = data.characters[0..<receivedBytes]
-        let out = Array(finalBytes)
+        let out = Array(finalBytes.map({ UInt8($0) }))
         return out
     }
 
@@ -104,10 +104,6 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
 
         try setReuseAddress(true)
     }
-    
-    deinit {
-        try? self.close()
-    }
 
     public convenience init(address: InternetAddress) throws {
         var conf: SocketConfig = .TCP(addressFamily: address.addressFamily)
@@ -116,13 +112,11 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func connect() throws {
-        if closed { throw SocksError(.socketIsClosed) }
         let res = socket_connect(self.descriptor, address.raw, address.rawLen)
         guard res > -1 else { throw SocksError(.connectFailed) }
     }
 
     public func connect(withTimeout timeout: Double?) throws {
-        if closed { throw SocksError(.socketIsClosed) }
 
         guard let to = timeout else {
             try connect()
@@ -159,13 +153,11 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func listen(queueLimit: Int32 = 4096) throws {
-        if closed { throw SocksError(.socketIsClosed) }
         let res = socket_listen(self.descriptor, queueLimit)
         guard res > -1 else { throw SocksError(.listenFailed) }
     }
 
     public func accept() throws -> TCPInternetSocket {
-        if closed { throw SocksError(.socketIsClosed) }
         var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
@@ -185,7 +177,6 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func close() throws {
-        if closed { return }
         stopWatching()
         closed = true
         if socket_close(self.descriptor) != 0 {
@@ -226,7 +217,6 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
 
 public class TCPEstablishedSocket: TCPSocket {
 
-    public let closed = false
     public let descriptor: Descriptor
 
     public init(descriptor: Descriptor) {

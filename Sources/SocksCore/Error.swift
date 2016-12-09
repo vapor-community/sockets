@@ -42,8 +42,6 @@ public enum ErrorReason {
     case unsupportedSocketAddressFamily(Int32)
     case concreteSocketAddressFamilyRequired
     
-    case socketIsClosed
-    
     case generic(String)
 }
 

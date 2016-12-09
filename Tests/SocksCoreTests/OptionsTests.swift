@@ -22,36 +22,35 @@ import XCTest
 class OptionsTests: XCTestCase {
     
     func testSocketOptions() throws {
-        let socket = try TCPInternetSocket(address: .localhost(port: 0))
+        let (read, _) = try TCPEstablishedSocket.pipe()
         
-        try socket.setReuseAddress(true)
-        let reuseAddress = try socket.getReuseAddress()
+        try read.setReuseAddress(true)
+        let reuseAddress = try read.getReuseAddress()
         XCTAssert(reuseAddress == true)
         
-        try socket.setKeepAlive(true)
-        let keepAlive = try socket.getKeepAlive()
+        try read.setKeepAlive(true)
+        let keepAlive = try read.getKeepAlive()
         XCTAssertEqual(keepAlive, true)
         
         let expectedTimeout = timeval(seconds: 0.987)
         
-        try socket.setSendingTimeout(expectedTimeout)
-        let sendingTimeout = try socket.getSendingTimeout()
+        try read.setSendingTimeout(expectedTimeout)
+        let sendingTimeout = try read.getSendingTimeout()
         XCTAssertEqual(sendingTimeout, expectedTimeout)
         
-        try socket.setReceivingTimeout(expectedTimeout)
-        let receivingTimeout = try socket.getReceivingTimeout()
+        try read.setReceivingTimeout(expectedTimeout)
+        let receivingTimeout = try read.getReceivingTimeout()
         XCTAssertEqual(receivingTimeout, expectedTimeout)
     }
     
     func testReadingSocketOptionOnClosedSocket() throws {
-        let socket = try TCPInternetSocket(address: .localhost(port: 0))
-
-        try socket.close()
+        let (read, _) = try TCPEstablishedSocket.pipe()
+        try read.close()
         do {
-            _ = try socket.getSendingTimeout()
+            _ = try read.getSendingTimeout()
         }
         catch let error as SocksError {
-            guard case ErrorReason.socketIsClosed = error.type else {
+            guard case ErrorReason.optionGetFailed(level: SOL_SOCKET, name: SO_SNDTIMEO, type: "timeval") = error.type else {
                 XCTFail()
                 return
             }
