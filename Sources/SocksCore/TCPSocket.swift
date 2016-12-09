@@ -45,6 +45,10 @@ extension TCPReadableSocket {
         guard receivedBytes > -1 else { throw SocksError(.readFailed) }
         
         guard receivedBytes > 0 else {
+            // receiving 0 indicates a proper close .. no error.
+            // attempt a close, no failure possible because throw indicates already closed
+            // if already closed, no issue. 
+            // do NOT propogate as error
             _ = try? self.close()
             return []
         }
