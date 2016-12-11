@@ -47,7 +47,7 @@ extension TCPReadableSocket {
         guard receivedBytes > 0 else {
             // receiving 0 indicates a proper close .. no error.
             // attempt a close, no failure possible because throw indicates already closed
-            // if already closed, no issue. 
+            // if already closed, no issue.
             // do NOT propogate as error
             _ = try? self.close()
             return []
@@ -95,7 +95,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
 
     // the DispatchSource used to write if the socket is being watched
     private var sendingSource: DispatchSourceWrite?
-    private let sendingQueue = DispatchQueue(label: "SocksCoreNonblockingSendingQueue", attributes: .concurrent)
+    private let sendingQueue = DispatchQueue(label: "SocksCoreNonblockingSendingQueue")
 
     public required init(descriptor: Descriptor?, config: SocketConfig, address: ResolvedInternetAddress) throws {
         if let descriptor = descriptor {
@@ -219,14 +219,15 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         // create a read source from the socket's descriptor that will execute the handler on the specified queue if data is ready to be read
         let newWriteSource = DispatchSource.makeWriteSource(fileDescriptor: self.descriptor, queue: queue)
         newWriteSource.setEventHandler(handler: sendFromBuffer)
-        newWriteSource.resume()
-
-        // this source needs to be retained as long as the socket lives (or watching will end)
+        
+        // these sources need to be retained as long as the socket lives (or watching will end)
         watchingSource = newSource
+        sendingSource = newWriteSource
     }
 
     public func send(data: [UInt8]) throws {
         guard let writeSource = self.sendingSource else {
+            // send synchronously
             let len = data.count
             let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
             let sentLen = socket_send(self.descriptor, data, len, flags)
@@ -234,11 +235,14 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
             return
         }
         
-        sendingQueue.async(flags: .barrier) {
-            self.sendingBuffer.append(contentsOf: data)
+        sendingQueue.sync {
+            // if no data is waiting in the buffer, the source was suspended and needs to be resumed
+            let sourceNeedsToBeResumed = self.sendingBuffer.count == 0
+            sendingBuffer.append(contentsOf: data)
+            if sourceNeedsToBeResumed {
+                writeSource.resume()
+            }
         }
-        
-        writeSource.resume()
     }
     
     private func sendFromBuffer() {
@@ -248,7 +252,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
             if bytesSent > 0 {
                 sendingBuffer.removeFirst(bytesSent)
             }
-            
+
             if sendingBuffer.count == 0 {
                 self.sendingSource?.suspend()
             }
@@ -261,8 +265,14 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     public func stopWatching() {
         watchingSource?.cancel()
         watchingSource = nil
-        sendingSource?.cancel()
-        sendingSource = nil
+        sendingQueue.sync {
+            sendingSource?.cancel()
+            if sendingBuffer.count == 0 {
+                // if the sendingBuffer is empty, the queue is suspended and needs to be resumed before relasing it
+                self.sendingSource?.resume()
+            }
+            sendingSource = nil
+        }
         self.blocking = true
     }
 }
