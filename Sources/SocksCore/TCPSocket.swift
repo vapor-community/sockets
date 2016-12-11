@@ -88,9 +88,14 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
     public var closed: Bool
+    private var sendingBuffer = [UInt8]()
     
     // the DispatchSource if the socket is being watched for reads
     private var watchingSource: DispatchSourceRead?
+
+    // the DispatchSource used to write if the socket is being watched
+    private var sendingSource: DispatchSourceWrite?
+    private let sendingQueue = DispatchQueue(label: "SocksCoreNonblockingSendingQueue", attributes: .concurrent)
 
     public required init(descriptor: Descriptor?, config: SocketConfig, address: ResolvedInternetAddress) throws {
         if let descriptor = descriptor {
@@ -210,17 +215,55 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         let newSource = DispatchSource.makeReadSource(fileDescriptor: self.descriptor, queue: queue)
         newSource.setEventHandler(handler:handler)
         newSource.resume()
-        
+
+        // create a read source from the socket's descriptor that will execute the handler on the specified queue if data is ready to be read
+        let newWriteSource = DispatchSource.makeWriteSource(fileDescriptor: self.descriptor, queue: queue)
+        newWriteSource.setEventHandler(handler: sendFromBuffer)
+        newWriteSource.resume()
+
         // this source needs to be retained as long as the socket lives (or watching will end)
         watchingSource = newSource
     }
+
+    public func send(data: [UInt8]) throws {
+        guard let writeSource = self.sendingSource else {
+            let len = data.count
+            let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
+            let sentLen = socket_send(self.descriptor, data, len, flags)
+            guard sentLen == len else { throw SocksError(.sendFailedToSendAllBytes) }
+            return
+        }
+        
+        sendingQueue.async(flags: .barrier) {
+            self.sendingBuffer.append(contentsOf: data)
+        }
+        
+        writeSource.resume()
+    }
     
+    private func sendFromBuffer() {
+        sendingQueue.sync {
+            let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
+            let bytesSent = socket_send(self.descriptor, sendingBuffer, sendingBuffer.count, flags)
+            if bytesSent > 0 {
+                sendingBuffer.removeFirst(bytesSent)
+            }
+            
+            if sendingBuffer.count == 0 {
+                self.sendingSource?.suspend()
+            }
+        }
+    }
+
     /**
         Stops watching the socket for available data.
     */
     public func stopWatching() {
         watchingSource?.cancel()
         watchingSource = nil
+        sendingSource?.cancel()
+        sendingSource = nil
+        self.blocking = true
     }
 }
 
