@@ -13,6 +13,10 @@ let package = Package(
     	//Target(name: "SocksExampleUDPClient", dependencies: ["Socks"]),
     	//Target(name: "SocksExampleUDPServer", dependencies: ["Socks"]),
     ],
+    dependencies: [
+        // Core typealiases and extensions for working with Bytes.
+        .Package(url: "https://github.com/vapor/core.git", majorVersion: 1),
+    ],
     exclude: [
         "Sources/SocksCoreExampleTCPServer",
         "Sources/SocksCoreExampleTCPKeepAliveServer",

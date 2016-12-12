@@ -6,6 +6,7 @@
 //
 //
 
+import Core
 import Dispatch
 
 #if os(Linux)
@@ -72,9 +73,29 @@ extension TCPReadableSocket {
     }
 }
 
-extension TCPWriteableSocket {
+/**
+    Chunk size for sending bytes through `TCPWriteableSocket`.
+    If nil, all bytes are sent.
+*/
+public var TCPWriteableSocketChunkSize: Int? = 4096
 
+extension TCPWriteableSocket {
+    /**
+        Sends data by calling OS `send()` function.
+        Data is chunked according to `TCPWriteableSocketChunkSize`.
+        If chunk size is nil, all data will be sent in one call.
+    */
     public func send(data: [UInt8]) throws {
+        if let size = TCPWriteableSocketChunkSize {
+            for chunk in data.chunked(size: size) {
+                try _send(data: chunk)
+            }
+        } else {
+            try _send(data: data)
+        }
+    }
+
+    private func _send(data: [UInt8]) throws {
         let len = data.count
         let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
         let sentLen = socket_send(self.descriptor, data, len, flags)
