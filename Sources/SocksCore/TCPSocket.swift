@@ -204,7 +204,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         Start watching the socket for available data and execute the `handler`
         on the specified queue if data is ready to be received.
     */
-    public func startWatching(on queue:DispatchQueue, handler:@escaping ()->()) throws {
+    public func startWatching(on queue:DispatchQueue, cancel:(()->Void)? = nil, handler:@escaping ()->Void) throws {
         
         if watchingSource != nil {
             throw SocksError(.generic("Socket is already being watched"))
@@ -216,6 +216,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         // create a read source from the socket's descriptor that will execute the handler on the specified queue if data is ready to be read
         let newSource = DispatchSource.makeReadSource(fileDescriptor: self.descriptor, queue: queue)
         newSource.setEventHandler(handler:handler)
+        newSource.setCancelHandler(handler: cancel)
         newSource.resume()
 
         // create a read source from the socket's descriptor that will execute the handler on the specified queue if data is ready to be read
