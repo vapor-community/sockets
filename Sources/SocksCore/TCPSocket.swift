@@ -84,10 +84,10 @@ extension TCPWriteableSocket {
 
 public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TCPWriteableSocket {
 
-    public let descriptor: Descriptor
+    public private(set) var descriptor: Descriptor
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
-    public var closed: Bool
+    public private(set) var closed: Bool
     private var sendingBuffer = [UInt8]()
     
     // the DispatchSource if the socket is being watched for reads
@@ -192,10 +192,12 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     public func close() throws {
         if closed { return }
         stopWatching()
-        closed = true
         if socket_close(self.descriptor) != 0 {
             throw SocksError(.closeSocketFailed)
         }
+        // set descriptor to -1 to prevent further use
+        self.descriptor = -1
+        closed = true
     }
     
     /**
