@@ -22,8 +22,12 @@ class WatchingTests: XCTestCase {
         
         let queue = DispatchQueue(label: "codes.vapor.watchingTest", qos: .background)
         let group = DispatchGroup()
+
+        let cancelHandler = {
+            group.leave()
+        }
         
-        try listeningSocket.startWatching(on: queue) {
+        try listeningSocket.startWatching(on: queue, cancel:cancelHandler) {
             guard let serveSocket = try? listeningSocket.accept() else {
                 XCTFail("Socket failed to accept")
                 return
@@ -72,7 +76,16 @@ class WatchingTests: XCTestCase {
             return
         }
         
+        // wait for cancel handler
+        group.enter()
+
         listeningSocket.stopWatching()
+        
+        // checking if the cancel handler has been run
+        guard group.wait(timeout: .now() + 1) == DispatchTimeoutResult.success else {
+            XCTFail("Cancel handler did not run")
+            return
+        }
         
         // second attempt; this should time out, because the socket shouldn't be watching anymore
         let result2 = try connectToServer(serverAddress, on: queue, in: group, timeout: 0.5, send: testData)
