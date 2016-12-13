@@ -111,6 +111,8 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
     
     deinit {
+        // The socket needs to be closed (to close the underlying file descriptor). 
+        // If descriptors aren't properly freed, the system will run out sooner or later.
         try? self.close()
     }
 
