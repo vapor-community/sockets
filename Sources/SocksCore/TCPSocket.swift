@@ -203,6 +203,8 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     /**
         Start watching the socket for available data and execute the `handler`
         on the specified queue if data is ready to be received.
+        If a `cancel` handler was passed, it will be run when watching stops (e.g. if the socket is closed).
+        Watching sets the socket to nonblocking.
     */
     public func startWatching(on queue:DispatchQueue, cancel:(()->Void)? = nil, handler:@escaping ()->Void) throws {
         
@@ -229,8 +231,8 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func send(data: [UInt8]) throws {
+        // if there's no writeSource, assume the socket is blocking and send accordingly
         guard let writeSource = self.sendingSource else {
-            // send synchronously
             let len = data.count
             let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
             let sentLen = socket_send(self.descriptor, data, len, flags)
@@ -238,6 +240,8 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
             return
         }
         
+        // assume socket is nonblocking; buffer data and send whenever the socket is ready
+        // accessing the buffer needs to be synchronized to prevent multithreading issues
         sendingQueue.sync {
             // if no data is waiting in the buffer, the source was suspended and needs to be resumed
             let sourceNeedsToBeResumed = self.sendingBuffer.count == 0
@@ -248,6 +252,10 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         }
     }
     
+    /**
+        Sends as much data from `sendingBuffer` as the (nonblocking) socket can handle
+        and remove sent data from the buffer.
+     */
     private func sendFromBuffer() {
         sendingQueue.sync {
             let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
@@ -257,13 +265,16 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
             }
 
             if sendingBuffer.count == 0 {
+                // if there's no more data to be sent, the source is suspended until there's more
                 self.sendingSource?.suspend()
             }
         }
     }
 
     /**
-        Stops watching the socket for available data.
+        Stops watching the socket for available data. 
+        Runs the `cancel` handler passed when starting watching.
+        Sets the socket to `blocking` again.
     */
     public func stopWatching() {
         watchingSource?.cancel()
@@ -271,7 +282,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         sendingQueue.sync {
             sendingSource?.cancel()
             if sendingBuffer.count == 0 {
-                // if the sendingBuffer is empty, the queue is suspended and needs to be resumed before relasing it
+                // if the sendingBuffer is empty, the queue is suspended and needs to be resumed before releasing it
                 self.sendingSource?.resume()
             }
             sendingSource = nil
