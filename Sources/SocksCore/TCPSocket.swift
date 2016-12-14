@@ -47,14 +47,18 @@ extension TCPReadableSocket {
         guard receivedBytes > 0 else {
             // receiving 0 indicates a proper close .. no error.
             // attempt a close, no failure possible because throw indicates already closed
+<<<<<<< HEAD
             // if already closed, no issue. 
+=======
+            // if already closed, no issue.
+>>>>>>> b2d6cac0134c24c890c94668aaacf049caf7756f
             // do NOT propogate as error
             _ = try? self.close()
             return []
         }
         
         let finalBytes = data.characters[0..<receivedBytes]
-        let out = Array(finalBytes.map({ UInt8($0) }))
+        let out = Array(finalBytes)
         return out
     }
 
@@ -84,13 +88,18 @@ extension TCPWriteableSocket {
 
 public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TCPWriteableSocket {
 
-    public let descriptor: Descriptor
+    public private(set) var descriptor: Descriptor
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
-    public var closed: Bool
+    public private(set) var closed: Bool
+    private var sendingBuffer = [UInt8]()
     
     // the DispatchSource if the socket is being watched for reads
     private var watchingSource: DispatchSourceRead?
+
+    // the DispatchSource used to write if the socket is being watched
+    private var sendingSource: DispatchSourceWrite?
+    private let sendingQueue = DispatchQueue(label: "SocksCoreNonblockingSendingQueue")
 
     public required init(descriptor: Descriptor?, config: SocketConfig, address: ResolvedInternetAddress) throws {
         if let descriptor = descriptor {
@@ -104,6 +113,12 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
 
         try setReuseAddress(true)
     }
+    
+    deinit {
+        // The socket needs to be closed (to close the underlying file descriptor). 
+        // If descriptors aren't properly freed, the system will run out sooner or later.
+        try? self.close()
+    }
 
     public convenience init(address: InternetAddress) throws {
         var conf: SocketConfig = .TCP(addressFamily: address.addressFamily)
@@ -112,11 +127,13 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func connect() throws {
+        if closed { throw SocksError(.socketIsClosed) }
         let res = socket_connect(self.descriptor, address.raw, address.rawLen)
         guard res > -1 else { throw SocksError(.connectFailed) }
     }
 
     public func connect(withTimeout timeout: Double?) throws {
+        if closed { throw SocksError(.socketIsClosed) }
 
         guard let to = timeout else {
             try connect()
@@ -153,11 +170,13 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func listen(queueLimit: Int32 = 4096) throws {
+        if closed { throw SocksError(.socketIsClosed) }
         let res = socket_listen(self.descriptor, queueLimit)
         guard res > -1 else { throw SocksError(.listenFailed) }
     }
 
     public func accept() throws -> TCPInternetSocket {
+        if closed { throw SocksError(.socketIsClosed) }
         var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
@@ -177,18 +196,23 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func close() throws {
+        if closed { return }
         stopWatching()
-        closed = true
         if socket_close(self.descriptor) != 0 {
             throw SocksError(.closeSocketFailed)
         }
+        // set descriptor to -1 to prevent further use
+        self.descriptor = -1
+        closed = true
     }
     
     /**
         Start watching the socket for available data and execute the `handler`
         on the specified queue if data is ready to be received.
+        If a `cancel` handler was passed, it will be run when watching stops (e.g. if the socket is closed).
+        Watching sets the socket to nonblocking.
     */
-    public func startWatching(on queue:DispatchQueue, handler:@escaping ()->()) throws {
+    public func startWatching(on queue:DispatchQueue, cancel:(()->Void)? = nil, handler:@escaping ()->Void) throws {
         
         if watchingSource != nil {
             throw SocksError(.generic("Socket is already being watched"))
@@ -200,23 +224,82 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         // create a read source from the socket's descriptor that will execute the handler on the specified queue if data is ready to be read
         let newSource = DispatchSource.makeReadSource(fileDescriptor: self.descriptor, queue: queue)
         newSource.setEventHandler(handler:handler)
+        newSource.setCancelHandler(handler: cancel)
         newSource.resume()
+
+        // create a read source from the socket's descriptor that will execute the handler on the specified queue if data is ready to be read
+        let newWriteSource = DispatchSource.makeWriteSource(fileDescriptor: self.descriptor, queue: queue)
+        newWriteSource.setEventHandler(handler: sendFromBuffer)
         
-        // this source needs to be retained as long as the socket lives (or watching will end)
+        // these sources need to be retained as long as the socket lives (or watching will end)
         watchingSource = newSource
+        sendingSource = newWriteSource
+    }
+
+    public func send(data: [UInt8]) throws {
+        // if there's no writeSource, assume the socket is blocking and send accordingly
+        guard let writeSource = self.sendingSource else {
+            let len = data.count
+            let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
+            let sentLen = socket_send(self.descriptor, data, len, flags)
+            guard sentLen == len else { throw SocksError(.sendFailedToSendAllBytes) }
+            return
+        }
+        
+        // assume socket is nonblocking; buffer data and send whenever the socket is ready
+        // accessing the buffer needs to be synchronized to prevent multithreading issues
+        sendingQueue.sync {
+            // if no data is waiting in the buffer, the source was suspended and needs to be resumed
+            let sourceNeedsToBeResumed = self.sendingBuffer.count == 0
+            sendingBuffer.append(contentsOf: data)
+            if sourceNeedsToBeResumed {
+                writeSource.resume()
+            }
+        }
     }
     
     /**
-        Stops watching the socket for available data.
+        Sends as much data from `sendingBuffer` as the (nonblocking) socket can handle
+        and remove sent data from the buffer.
+     */
+    private func sendFromBuffer() {
+        sendingQueue.sync {
+            let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
+            let bytesSent = socket_send(self.descriptor, sendingBuffer, sendingBuffer.count, flags)
+            if bytesSent > 0 {
+                sendingBuffer.removeFirst(bytesSent)
+            }
+
+            if sendingBuffer.count == 0 {
+                // if there's no more data to be sent, the source is suspended until there's more
+                self.sendingSource?.suspend()
+            }
+        }
+    }
+
+    /**
+        Stops watching the socket for available data. 
+        Runs the `cancel` handler passed when starting watching.
+        Sets the socket to `blocking` again.
     */
     public func stopWatching() {
         watchingSource?.cancel()
         watchingSource = nil
+        sendingQueue.sync {
+            sendingSource?.cancel()
+            if sendingBuffer.count == 0 {
+                // if the sendingBuffer is empty, the queue is suspended and needs to be resumed before releasing it
+                self.sendingSource?.resume()
+            }
+            sendingSource = nil
+        }
+        self.blocking = true
     }
 }
 
 public class TCPEstablishedSocket: TCPSocket {
 
+    public let closed = false
     public let descriptor: Descriptor
 
     public init(descriptor: Descriptor) {
