@@ -47,11 +47,7 @@ extension TCPReadableSocket {
         guard receivedBytes > 0 else {
             // receiving 0 indicates a proper close .. no error.
             // attempt a close, no failure possible because throw indicates already closed
-<<<<<<< HEAD
             // if already closed, no issue. 
-=======
-            // if already closed, no issue.
->>>>>>> b2d6cac0134c24c890c94668aaacf049caf7756f
             // do NOT propogate as error
             _ = try? self.close()
             return []
