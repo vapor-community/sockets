@@ -212,6 +212,12 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         try startWatching(on: queue, cancel: nil, handler: handler)
     }
 
+    /**
+        Start watching the socket for available data and execute the `handler`
+        on the specified queue if data is ready to be received.
+        If a `cancel` handler was passed, it will be run when watching stops (e.g. if the socket is closed).
+        Watching sets the socket to nonblocking.
+    */
     public func startWatching(on queue: DispatchQueue, cancel: (() -> ())?, handler: @escaping () -> ()) throws {
         
         if watchingSource != nil {
