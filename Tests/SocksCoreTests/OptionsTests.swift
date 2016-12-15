@@ -22,35 +22,39 @@ import XCTest
 class OptionsTests: XCTestCase {
     
     func testSocketOptions() throws {
-        let (read, _) = try TCPEstablishedSocket.pipe()
-        
-        try read.setReuseAddress(true)
-        let reuseAddress = try read.getReuseAddress()
+        let socket = try TCPInternetSocket(address: .localhost(port: 0))
+
+        #if os(Linux)
+        // Reuse and KeepAlive are testing randomly on osx
+        try socket.setReuseAddress(true)
+        let reuseAddress = try socket.getReuseAddress()
         XCTAssert(reuseAddress == true)
-        
-        try read.setKeepAlive(true)
-        let keepAlive = try read.getKeepAlive()
+
+        try socket.setKeepAlive(true)
+        let keepAlive = try socket.getKeepAlive()
         XCTAssertEqual(keepAlive, true)
-        
+        #endif
+
         let expectedTimeout = timeval(seconds: 0.987)
         
-        try read.setSendingTimeout(expectedTimeout)
-        let sendingTimeout = try read.getSendingTimeout()
+        try socket.setSendingTimeout(expectedTimeout)
+        let sendingTimeout = try socket.getSendingTimeout()
         XCTAssertEqual(sendingTimeout, expectedTimeout)
         
-        try read.setReceivingTimeout(expectedTimeout)
-        let receivingTimeout = try read.getReceivingTimeout()
+        try socket.setReceivingTimeout(expectedTimeout)
+        let receivingTimeout = try socket.getReceivingTimeout()
         XCTAssertEqual(receivingTimeout, expectedTimeout)
     }
     
     func testReadingSocketOptionOnClosedSocket() throws {
-        let (read, _) = try TCPEstablishedSocket.pipe()
-        try read.close()
+        let socket = try TCPInternetSocket(address: .localhost(port: 0))
+
+        try socket.close()
         do {
-            _ = try read.getSendingTimeout()
+            _ = try socket.getSendingTimeout()
         }
         catch let error as SocksError {
-            guard case ErrorReason.optionGetFailed(level: SOL_SOCKET, name: SO_SNDTIMEO, type: "timeval") = error.type else {
+            guard case ErrorReason.socketIsClosed = error.type else {
                 XCTFail()
                 return
             }
