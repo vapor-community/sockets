@@ -232,19 +232,22 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         newSource.setEventHandler(handler:handler)
         newSource.setCancelHandler(handler: cancel)
         newSource.resume()
-
-        // create a read source from the socket's descriptor that will execute the handler on the specified queue if data is ready to be read
-        let newWriteSource = DispatchSource.makeWriteSource(fileDescriptor: self.descriptor, queue: queue)
-        newWriteSource.setEventHandler(handler: sendFromBuffer)
-        
-        // these sources need to be retained as long as the socket lives (or watching will end)
+        // this source need to be retained as long as the socket lives (or watching will end)
         watchingSource = newSource
-        sendingSource = newWriteSource
+
+        #if !os(Linux)
+            // libdispatch on Linux (which uses epoll) has a bug that prevents using read and write sources on the same descriptor: https://bugs.swift.org/browse/SR-3360
+            
+            // create a read source from the socket's descriptor that will execute the handler on the specified queue if data is ready to be read
+            let newWriteSource = DispatchSource.makeWriteSource(fileDescriptor: self.descriptor, queue: queue)
+            newWriteSource.setEventHandler(handler: sendFromBuffer)
+            sendingSource = newWriteSource
+        #endif
     }
 
     public func send(data: [UInt8]) throws {
         // if there's no writeSource, assume the socket is blocking and send accordingly
-        guard let writeSource = self.sendingSource else {
+        if self.watchingSource == nil {
             let len = data.count
             let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
             let sentLen = socket_send(self.descriptor, data, len, flags)
@@ -252,16 +255,23 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
             return
         }
         
-        // assume socket is nonblocking; buffer data and send whenever the socket is ready
-        // accessing the buffer needs to be synchronized to prevent multithreading issues
-        sendingQueue.sync {
-            // if no data is waiting in the buffer, the source was suspended and needs to be resumed
-            let sourceNeedsToBeResumed = self.sendingBuffer.count == 0
+        // assume socket is nonblocking; buffer data and send whenever the socket is ready.
+        // accessing the buffer needs to be synchronized to prevent multithreading issues.
+        #if os(Linux)
             sendingBuffer.append(contentsOf: data)
-            if sourceNeedsToBeResumed {
-                writeSource.resume()
+            DispatchQueue.global(qos: .background).async {
+                self.sendFromBuffer()
             }
-        }
+        #else
+            sendingQueue.sync {
+                // if no data is waiting in the buffer, the source was suspended and needs to be resumed
+                let sourceNeedsToBeResumed = self.sendingBuffer.count == 0
+                sendingBuffer.append(contentsOf: data)
+                if sourceNeedsToBeResumed {
+                    self.sendingSource?.resume()
+                }
+            }
+        #endif
     }
     
     /**
@@ -276,10 +286,19 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
                 sendingBuffer.removeFirst(bytesSent)
             }
 
-            if sendingBuffer.count == 0 {
-                // if there's no more data to be sent, the source is suspended until there's more
-                self.sendingSource?.suspend()
-            }
+            #if os(Linux)
+                if sendingBuffer.count > 0 {
+                    // call again
+                    DispatchQueue.global(qos: .background).async {
+                        self.sendFromBuffer()
+                    }
+                }
+            #else
+                if sendingBuffer.count == 0 {
+                    // if there's no more data to be sent, the source is suspended until there's more
+                    self.sendingSource?.suspend()
+                }
+            #endif
         }
     }
 
