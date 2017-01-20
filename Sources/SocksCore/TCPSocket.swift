@@ -245,8 +245,8 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func send(data: [UInt8]) throws {
-        // if there's no writeSource, assume the socket is blocking and send accordingly
-        if self.watchingSource == nil {
+        // if there's no sendingSource, assume the socket is blocking and send accordingly
+        if self.sendingSource == nil {
             let len = data.count
             let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
             let sentLen = socket_send(self.descriptor, data, len, flags)
@@ -284,9 +284,9 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
             if bytesSent > 0 {
                 sendingBuffer.removeFirst(bytesSent)
             }
-
+            
             #if os(Linux)
-                if sendingBuffer.count > 0 {
+                if sendingBuffer.count > 0 && bytesSent >= 0 { // Don't schedule more sendFromBuffers() if we get an error in the socket_send() call
                     // call again
                     DispatchQueue.global(qos: .background).async {
                         self.sendFromBuffer()
