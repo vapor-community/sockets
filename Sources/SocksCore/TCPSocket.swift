@@ -47,7 +47,7 @@ extension TCPReadableSocket {
                 // closed by peer, need to close this side. 
                 // Since this is not an error, no need to throw unless the close
                 // itself throws an error.
-                _ = try? self.close()
+                _ = try self.close()
                 return []
             } else {
                 throw SocksError(.readFailed)
