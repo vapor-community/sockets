@@ -43,7 +43,10 @@ extension TCPReadableSocket {
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
         let receivedBytes = socket_recv(self.descriptor, data.rawBytes, data.capacity, flags)
         guard receivedBytes != -1 else {
-            if errno == ECONNRESET { // closed by peer, need to close this side too!
+            if errno == ECONNRESET {
+                // closed by peer, need to close this side. 
+                // Since this is not an error, no need to throw unless the close
+                // itself throws an error.
                 _ = try? self.close()
                 return []
             } else {
