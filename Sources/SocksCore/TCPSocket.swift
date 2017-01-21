@@ -39,22 +39,29 @@ public protocol TCPReadableSocket: TCPSocket { }
 extension TCPReadableSocket {
 
     public func recv(maxBytes: Int = BufferCapacity) throws -> [UInt8] {
+    	var out = Array<UInt8>()
         let data = Bytes(capacity: maxBytes)
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
         let receivedBytes = socket_recv(self.descriptor, data.rawBytes, data.capacity, flags)
-        guard receivedBytes > -1 else { throw SocksError(.readFailed) }
-        
-        guard receivedBytes > 0 else {
+        guard receivedBytes > -1 else {
+	    if errno == 104 { // closed by peer, need to close this side too!
+	       _ = try? self.close()
+	       return [] 
+	    } else {
+	      	throw SocksError(.readFailed)
+	    }
+	}
+      
+        if receivedBytes == 0  {
             // receiving 0 indicates a proper close .. no error.
             // attempt a close, no failure possible because throw indicates already closed
             // if already closed, no issue. 
             // do NOT propogate as error
             _ = try? self.close()
-            return []
-        }
-        
-        let finalBytes = data.characters[0..<receivedBytes]
-        let out = Array(finalBytes)
+        } else {
+            let finalBytes = data.characters[0..<receivedBytes]
+            out = Array(finalBytes)
+	}
         return out
     }
 
@@ -71,6 +78,7 @@ extension TCPReadableSocket {
         return buffer
     }
 }
+
 
 extension TCPWriteableSocket {
 
