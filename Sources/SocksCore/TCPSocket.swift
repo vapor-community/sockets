@@ -204,8 +204,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         if closed { return }
         stopWatching()
         closed = true
-        if socket_close(self.descriptor) != 0 {
-            closed = false
+        if socket_close(self.descriptor) != 0 {            
             throw SocksError(.closeSocketFailed)
         }
         // set descriptor to -1 to prevent further use
