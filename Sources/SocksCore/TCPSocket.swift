@@ -42,8 +42,18 @@ extension TCPReadableSocket {
         let data = Bytes(capacity: maxBytes)
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
         let receivedBytes = socket_recv(self.descriptor, data.rawBytes, data.capacity, flags)
-        guard receivedBytes > -1 else { throw SocksError(.readFailed) }
-        
+        guard receivedBytes != -1 else {
+            if errno == ECONNRESET {
+                // closed by peer, need to close this side. 
+                // Since this is not an error, no need to throw unless the close
+                // itself throws an error.
+                _ = try self.close()
+                return []
+            } else {
+                throw SocksError(.readFailed)
+            }
+        }
+      
         guard receivedBytes > 0 else {
             // receiving 0 indicates a proper close .. no error.
             // attempt a close, no failure possible because throw indicates already closed
@@ -52,10 +62,8 @@ extension TCPReadableSocket {
             _ = try? self.close()
             return []
         }
-        
         let finalBytes = data.characters[0..<receivedBytes]
-        let out = Array(finalBytes)
-        return out
+        return Array(finalBytes)
     }
 
     public func recvAll() throws -> [UInt8] {
@@ -71,6 +79,7 @@ extension TCPReadableSocket {
         return buffer
     }
 }
+
 
 extension TCPWriteableSocket {
 
@@ -205,7 +214,6 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     /**
         Start watching the socket for available data and execute the `handler`
         on the specified queue if data is ready to be received.
-        If a `cancel` handler was passed, it will be run when watching stops (e.g. if the socket is closed).
         Watching sets the socket to nonblocking.
     */
     public func startWatching(on queue: DispatchQueue, handler: @escaping () -> ()) throws {
@@ -246,8 +254,8 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func send(data: [UInt8]) throws {
-        // if there's no writeSource, assume the socket is blocking and send accordingly
-        if self.watchingSource == nil {
+        // if there's no sendingSource, assume the socket is blocking and send accordingly
+        if self.sendingSource == nil {
             let len = data.count
             let flags = Int32(SOCKET_NOSIGNAL) //FIXME: allow setting flags with a Swift enum
             let sentLen = socket_send(self.descriptor, data, len, flags)
@@ -285,9 +293,9 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
             if bytesSent > 0 {
                 sendingBuffer.removeFirst(bytesSent)
             }
-
+            
             #if os(Linux)
-                if sendingBuffer.count > 0 {
+                if sendingBuffer.count > 0 && bytesSent >= 0 { // Don't schedule more sendFromBuffers() if we get an error in the socket_send() call
                     // call again
                     DispatchQueue.global(qos: .background).async {
                         self.sendFromBuffer()
