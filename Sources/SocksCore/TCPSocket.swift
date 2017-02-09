@@ -205,10 +205,13 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         stopWatching()
         closed = true
         if socket_close(self.descriptor) != 0 {
-            if errno != EBADF {
+            if errno == EBADF {
+                self.descriptor = -1
+                throw SocksError(.socketIsClosed)
+            } else {
                 closed = false
+                throw SocksError(.closeSocketFailed)
             }
-            throw SocksError(.closeSocketFailed)
         }
         // set descriptor to -1 to prevent further use
         self.descriptor = -1
