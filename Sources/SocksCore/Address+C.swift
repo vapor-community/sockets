@@ -57,7 +57,7 @@ struct Resolver: InternetAddressResolver{
         }
         
         guard let addrList = servinfo else { throw SocksError(.ipAddressResolutionFailed) }
-        defer{
+        defer {
             freeaddrinfo(addrList)
         }
         
