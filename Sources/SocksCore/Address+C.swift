@@ -57,6 +57,9 @@ struct Resolver: InternetAddressResolver{
         }
         
         guard let addrList = servinfo else { throw SocksError(.ipAddressResolutionFailed) }
+        defer{
+            freeaddrinfo(addrList)
+        }
         
         //this takes the first resolved address, potentially we should
         //get all of the addresses in the list and allow for iterative
@@ -81,7 +84,6 @@ struct Resolver: InternetAddressResolver{
         }
         
         let address = ResolvedInternetAddress(raw: ptr)
-        freeaddrinfo(addrList)
         
         // Adjust SocketConfig with the resolved address family
         config.addressFamily = try address.addressFamily()
