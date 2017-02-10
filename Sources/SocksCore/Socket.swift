@@ -18,7 +18,7 @@
 
 public protocol RawSocket {
     var descriptor: Descriptor { get }
-    var closed: Bool { get }
+    var isClosed: Bool { get }
     func close() throws
 }
 
@@ -31,6 +31,11 @@ extension RawSocket {
         if s_close(self.descriptor) != 0 {
             throw SocksError(.closeSocketFailed)
         }
+    }
+
+    @available(*, deprecated: 1.2.6, renamed: "isClosed", message: "use isClosed instead")
+    public var closed: Bool {
+        return isClosed
     }
 }
 
