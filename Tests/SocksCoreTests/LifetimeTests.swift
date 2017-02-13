@@ -8,7 +8,19 @@ import XCTest
 
 
 class LifetimeTests: XCTestCase {
-    
+
+    func testStoppingAClosedTCPInternetSocket() throws {
+        let socket = try TCPInternetSocket(address: .localhost(port: 0))
+
+        #if os(Linux)
+           let _ = Glibc.close(socket.descriptor)
+        #else
+           let _ =  Darwin.close(socket.descriptor)
+        #endif
+
+        XCTAssertThrowsError(try socket.close())
+    }
+
     func testStoppingTCPInternetSocket() throws {
         let socket = try TCPInternetSocket(address: .localhost(port: 0))
 
@@ -17,6 +29,8 @@ class LifetimeTests: XCTestCase {
         XCTAssertEqual(fdFlagOpen, 0)
         
         try socket.close()
+
+        XCTAssertTrue(socket.closed)
         
         // file descriptor should be closed
         let fdFlagClosed = fcntl(socket.descriptor, F_GETFD)
