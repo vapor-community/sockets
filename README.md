@@ -17,46 +17,47 @@ If you're building a HTTP server, you'll probably want to use the `TCPClient`, w
 
 ## Usage
 	
-	### A Simple TCP Client
+### A Simple TCP Client
 
-	[Full code](https://github.com/vapor/socks/blob/master/Sources/SocksExampleTCPClient/main.swift)
+[Full code](https://github.com/vapor/socks/blob/master/Sources/SocksExampleTCPClient/main.swift)
 
-	```swift
-		import Socks
+```swift
+	import Socks
 
-		let address = InternetAddress(hostname: "google.com", port: 80)
-		do {
-		    let client = try TCPClient(address: address)
-		    try client.send(bytes: "GET /\r\n\r\n".toBytes())
-		    let str = try client.receiveAll().toString()
-		    try client.close()
-		    print("Received: \n\(str)")
-		} catch {
-		    print("Error \(error)")
-		}
-	```
+	let address = InternetAddress(hostname: "google.com", port: 80)
+	do {
+	    let client = try TCPClient(address: address)
+	    try client.send(bytes: "GET /\r\n\r\n".toBytes())
+	    let str = try client.receiveAll().toString()
+	    try client.close()
+	    print("Received: \n\(str)")
+	} catch {
+	    print("Error \(error)")
+	}
+```
 
-	### A Simple Echo Server
-	
-	[Full code](https://github.com/vapor/socks/blob/master/Sources/SocksExampleTCPServer/main.swift)
-	```swift
-	    import Socks
+### A Simple Echo Server
 
-		do {
-		    let server = try SynchronousTCPServer(port: 8080)
-		    print("Listening on \"\(server.address.hostname)\" (\(server.address.addressFamily)) \(server.address.port)")
-		    
-		    try server.startWithHandler { (client) in
-		        // echo
-		        let data = try client.receiveAll()
-		        try client.send(bytes: data)
-		        try client.close()
-		        print("Echoed: \(try data.toString())")
-		    }
-		} catch {
-		    print("Error \(error)")
-		}
-	```
+[Full code](https://github.com/vapor/socks/blob/master/Sources/SocksExampleTCPServer/main.swift)
+
+```swift
+    import Socks
+
+	do {
+	    let server = try SynchronousTCPServer(port: 8080)
+	    print("Listening on \"\(server.address.hostname)\" (\(server.address.addressFamily)) \(server.address.port)")
+	    
+	    try server.startWithHandler { (client) in
+	        // echo
+	        let data = try client.receiveAll()
+	        try client.send(bytes: data)
+	        try client.close()
+	        print("Echoed: \(try data.toString())")
+	    }
+	} catch {
+	    print("Error \(error)")
+	}
+```
 
 ## 📖 Documentation
 
