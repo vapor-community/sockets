@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Dispatch
 @testable import SocksCore
 
 class PipeTests: XCTestCase {
@@ -60,13 +61,15 @@ class PipeTests: XCTestCase {
         let msg_part2 = "Socket".toBytes()
        
         try write.send(data: msg_part1)
+        
         DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
-            do{
+            do {
                 try write.send(data: msg_part2)
-            }catch{
+            }catch {
                 XCTFail("failed to send data")
             }
         }
+        
         let inMsg = try read.readn(bytes: msg_part1.count + msg_part2.count)
         XCTAssertEqual(msg_part1 + msg_part2, inMsg)
 
@@ -81,12 +84,13 @@ class PipeTests: XCTestCase {
         
         try write.send(data: msg_part1)
         DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
-            do{
+            do {
                 try write.close()
-            }catch{
+            } catch {
                 XCTFail("failed close write socket")
             }
         }
+        
         let inMsg = try read.readn(bytes: msg_part1.count + msg_part2.count)
         XCTAssertEqual(msg_part1, inMsg)
         
