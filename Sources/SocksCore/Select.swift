@@ -77,9 +77,9 @@ public func select(reads: [Descriptor] = [],
     let result: Int32
     if let timeout = timeout {
         var timeout = timeout
-        result = system_select(maxFD + 1, &readFDs, &writeFDs, &errorFDs, &timeout)
+        result = system_select(maxFD + Int32(1), &readFDs, &writeFDs, &errorFDs, &timeout)
     } else {
-        result = system_select(maxFD + 1, &readFDs, &writeFDs, &errorFDs, nil)
+        result = system_select(maxFD + Int32(1), &readFDs, &writeFDs, &errorFDs, nil)
     }
     
     if result == 0 {
