@@ -23,7 +23,7 @@ public class UDPInternetSocket: InternetSocket {
     public let descriptor: Descriptor
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
-    public private(set) var closed = false
+    public private(set) var isClosed = false
 
     public required init(descriptor: Descriptor?, config: SocketConfig, address: ResolvedInternetAddress) throws {
 
@@ -49,7 +49,7 @@ public class UDPInternetSocket: InternetSocket {
     }
 
     public func recvfrom(maxBytes: Int = BufferCapacity) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
-        if closed { throw SocksError(.socketIsClosed) }
+        if isClosed { throw SocksError(.socketIsClosed) }
         let data = Bytes(capacity: maxBytes)
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
 
@@ -78,7 +78,7 @@ public class UDPInternetSocket: InternetSocket {
     }
 
     public func sendto(data: [UInt8], address: ResolvedInternetAddress? = nil) throws {
-        if closed { throw SocksError(.socketIsClosed) }
+        if isClosed { throw SocksError(.socketIsClosed) }
         let len = data.count
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
         let destination = address ?? self.address
@@ -95,8 +95,8 @@ public class UDPInternetSocket: InternetSocket {
     }
 
     public func close() throws {
-        if closed { return }
-        closed = true
+        if isClosed { return }
+        isClosed = true
         if socket_close(self.descriptor) != 0 {
             throw SocksError(.closeSocketFailed)
         }

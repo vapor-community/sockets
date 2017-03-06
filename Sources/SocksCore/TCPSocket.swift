@@ -44,7 +44,7 @@ extension TCPReadableSocket {
         let receivedBytes = socket_recv(self.descriptor, data.rawBytes, data.capacity, flags)
         guard receivedBytes != -1 else {
             if errno == ECONNRESET {
-                // closed by peer, need to close this side. 
+                // closed by peer, need to close this side.
                 // Since this is not an error, no need to throw unless the close
                 // itself throws an error.
                 _ = try self.close()
@@ -57,7 +57,7 @@ extension TCPReadableSocket {
         guard receivedBytes > 0 else {
             // receiving 0 indicates a proper close .. no error.
             // attempt a close, no failure possible because throw indicates already closed
-            // if already closed, no issue. 
+            // if already closed, no issue.
             // do NOT propogate as error
             _ = try? self.close()
             return []
@@ -96,7 +96,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     public private(set) var descriptor: Descriptor
     public let config: SocketConfig
     public let address: ResolvedInternetAddress
-    public private(set) var closed: Bool
+    public private(set) var isClosed: Bool
     private var sendingBuffer = [UInt8]()
     
     // the DispatchSource if the socket is being watched for reads
@@ -114,13 +114,13 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
         }
         self.config = config
         self.address = address
-        self.closed = false
+        self.isClosed = false
 
         try setReuseAddress(true)
     }
     
     deinit {
-        // The socket needs to be closed (to close the underlying file descriptor). 
+        // The socket needs to be closed (to close the underlying file descriptor).
         // If descriptors aren't properly freed, the system will run out sooner or later.
         try? self.close()
     }
@@ -132,13 +132,13 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func connect() throws {
-        if closed { throw SocksError(.socketIsClosed) }
+        if isClosed { throw SocksError(.socketIsClosed) }
         let res = socket_connect(self.descriptor, address.raw, address.rawLen)
         guard res > -1 else { throw SocksError(.connectFailed) }
     }
 
     public func connect(withTimeout timeout: Double?) throws {
-        if closed { throw SocksError(.socketIsClosed) }
+        if isClosed { throw SocksError(.socketIsClosed) }
 
         guard let to = timeout else {
             try connect()
@@ -175,13 +175,13 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func listen(queueLimit: Int32 = 4096) throws {
-        if closed { throw SocksError(.socketIsClosed) }
+        if isClosed { throw SocksError(.socketIsClosed) }
         let res = socket_listen(self.descriptor, queueLimit)
         guard res > -1 else { throw SocksError(.listenFailed) }
     }
 
     public func accept() throws -> TCPInternetSocket {
-        if closed { throw SocksError(.socketIsClosed) }
+        if isClosed { throw SocksError(.socketIsClosed) }
         var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
@@ -201,20 +201,21 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     }
 
     public func close() throws {
-        if closed { return }
+        if isClosed { return }
         stopWatching()
-        closed = true
+        isClosed = true
         if socket_close(self.descriptor) != 0 {
             if errno == EBADF {
                 self.descriptor = -1
                 throw SocksError(.socketIsClosed)
             } else {
-                closed = false
+                isClosed = false
                 throw SocksError(.closeSocketFailed)
             }
         }
         // set descriptor to -1 to prevent further use
         self.descriptor = -1
+        isClosed = true
     }
     
     /**
@@ -338,7 +339,7 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
 
 public class TCPEstablishedSocket: TCPSocket {
 
-    public let closed = false
+    public let isClosed = false
     public let descriptor: Descriptor
 
     public init(descriptor: Descriptor) {
