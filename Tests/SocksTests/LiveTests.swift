@@ -1,36 +1,51 @@
-//
-//  LiveTests.swift
-//  Socks
-//
-//  Created by Honza Dvorsky on 3/20/16.
-//
-//
-
 import XCTest
 @testable import Socks
 
 class LiveTests: XCTestCase {
+
+    func testLive_HTTP_Get_ipV4() throws {
+        
+        let addr = InternetAddress(hostname: "httpbin.org",
+                                   port: 80)
+        let socket = try TCPInternetSocket(address: addr)
+        
+        try socket.connect()
+        
+        try socket.send(data: "GET /\r\n\r\n".toBytes())
+        
+        //receiving data
+        let received = try socket.recv()
+        
+        //converting data to a string
+        let str = try received.toString()
+        
+        //yay!
+        XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".toBytes()), "Instead received: \(str)")
+        
+        try! socket.close()
+        print("successfully sent and received data from httpbin.org")
+    }
     
-//    func testLive_UDP_Server_NoLeaks() throws {
-//        
-//        let server = try! SynchronousUDPServer(port: 8080)
-//        print("Listening on port \(server.address.port)")
-//        try server.startWithHandler { (received, client) in
-//            print("Echoing \(try received.toString())")
-//            try client.send(bytes: received)
-//            try client.close()
-//        }
-//    }
-    
-//    func testLive_TCP_Server_NoLeaks() throws {
-//        
-//        let server = try! SynchronousTCPServer(port: 8080)
-//        print("Listening on port \(server.address.port)")
-//        try server.startWithHandler { (client) in
-//            let received = try client.receiveAll()
-//            print("Echoing \(try received.toString())")
-//            try client.send(bytes: received)
-//            try client.close()
-//        }
-//    }
+    func testLive_HTTP_Get_ipV4_withTimeout() throws {
+        
+        let addr = InternetAddress(hostname: "httpbin.org",
+                                   port: 80)
+        let socket = try TCPInternetSocket(address: addr)
+        
+        try socket.connect(withTimeout: 2)
+            
+        try socket.send(data: "GET /\r\n\r\n".toBytes())
+        
+        //receiving data
+        let received = try socket.recv()
+        
+        //converting data to a string
+        let str = try received.toString()
+        
+        //yay!
+        XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".toBytes()), "Instead received: \(str)")
+        
+        try socket.close()
+        print("successfully sent and received data from google.com")
+    }
 }
