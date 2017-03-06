@@ -36,7 +36,10 @@ extension PipeTests {
         return [
             ("testSendAndReceive", testSendAndReceive),
             ("testNoData", testNoData),
-            ("testNoSIGPIPE", testNoSIGPIPE)
+            ("testNoSIGPIPE", testNoSIGPIPE),
+            ("testReadnSimple",testReadnSimple),
+            ("testReadnWith2Segment",testReadnWith2Segment),
+            ("testReadnAndRemoteClosed", testReadnAndRemoteClosed)
         ]
     }
 }
