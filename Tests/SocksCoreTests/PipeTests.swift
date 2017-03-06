@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Dispatch
 @testable import SocksCore
 
 class PipeTests: XCTestCase {
@@ -41,5 +42,59 @@ class PipeTests: XCTestCase {
         
         try write.close()
     }
+    
+    func testReadnSimple() throws {
+        let (read, write) = try TCPEstablishedSocket.pipe()
+        defer { try! read.close(); try! write.close() }
+        
+        let msg = "Hello Socket".toBytes()
+        try write.send(data: msg)
+        let inMsg = try read.readn(bytes: msg.count)
+        XCTAssertEqual(msg, inMsg)
+    }
+
+    func testReadnWith2Segment() throws {
+        let (read, write) = try TCPEstablishedSocket.pipe()
+        defer { try! read.close(); try! write.close() }
+        
+        let msg_part1 = "Hello".toBytes()
+        let msg_part2 = "Socket".toBytes()
+       
+        try write.send(data: msg_part1)
+        
+        DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
+            do {
+                try write.send(data: msg_part2)
+            }catch {
+                XCTFail("failed to send data")
+            }
+        }
+        
+        let inMsg = try read.readn(bytes: msg_part1.count + msg_part2.count)
+        XCTAssertEqual(msg_part1 + msg_part2, inMsg)
+
+    }
+    
+    
+    func testReadnAndRemoteClosed() throws {
+        let (read, write) = try TCPEstablishedSocket.pipe()
+        
+        let msg_part1 = "Hello".toBytes()
+        let msg_part2 = "Socket".toBytes()
+        
+        try write.send(data: msg_part1)
+        DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
+            do {
+                try write.close()
+            } catch {
+                XCTFail("failed close write socket")
+            }
+        }
+        
+        let inMsg = try read.readn(bytes: msg_part1.count + msg_part2.count)
+        XCTAssertEqual(msg_part1, inMsg)
+        
+    }
+
 
 }

@@ -78,6 +78,46 @@ extension TCPReadableSocket {
         }
         return buffer
     }
+    
+    /// Try to receive exactly  bytes,instead of maxBytes.
+    ///
+    /// - Parameter bytes: number of byte
+    /// - Returns: the exactly number of bytes, or the actual byte has received if the remote end has close the connection.
+    /// - Throws: SocksError
+    public func readn(bytes: Int) throws -> [UInt8] {
+        let data = Bytes(capacity: bytes)
+        let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
+        var alreadyReceivedBytes = 0
+        while alreadyReceivedBytes < bytes {
+            let remainBytes = bytes - alreadyReceivedBytes
+            let receivedBytes = socket_recv(self.descriptor, (data.rawBytes + alreadyReceivedBytes), remainBytes, flags)
+            guard receivedBytes != -1 else {
+                if errno == ECONNRESET {
+                    // closed by peer, need to close this side.
+                    // Since this is not an error, no need to throw unless the close
+                    // itself throws an error.
+                    _ = try self.close()
+                    return Array(data.characters[0..<alreadyReceivedBytes])
+                } else {
+                    throw SocksError(.readFailed)
+                }
+            }
+            guard receivedBytes > 0 else {
+                // receiving 0 indicates a proper close .. no error.
+                // attempt a close, no failure possible because throw indicates already closed
+                // if already closed, no issue.
+                // do NOT propogate as error
+                _ = try? self.close()
+                return Array(data.characters[0..<alreadyReceivedBytes])
+            }
+            
+            alreadyReceivedBytes = alreadyReceivedBytes + receivedBytes
+            
+        }
+        
+        let finalBytes = data.characters[0..<bytes]
+        return Array(finalBytes)
+    }
 }
 
 
