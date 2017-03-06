@@ -203,8 +203,15 @@ public class TCPInternetSocket: InternetSocket, TCPSocket, TCPReadableSocket, TC
     public func close() throws {
         if isClosed { return }
         stopWatching()
+        isClosed = true
         if socket_close(self.descriptor) != 0 {
-            throw SocksError(.closeSocketFailed)
+            if errno == EBADF {
+                self.descriptor = -1
+                throw SocksError(.socketIsClosed)
+            } else {
+                isClosed = false
+                throw SocksError(.closeSocketFailed)
+            }
         }
         // set descriptor to -1 to prevent further use
         self.descriptor = -1
