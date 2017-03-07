@@ -1,5 +1,5 @@
 import XCTest
-@testable import SocksCoreTests
+@testable import SocksTests
 
 XCTMain([
 	testCase(AddressResolutionTests.allTests),
@@ -8,6 +8,5 @@ XCTMain([
 	testCase(PipeTests.allTests),
 	testCase(SelectTests.allTests),
 	testCase(TimeoutTests.allTests),
-	testCase(WatchingTests.allTests),
 	testCase(LifetimeTests.allTests)
 ])
