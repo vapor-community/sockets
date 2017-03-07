@@ -17,7 +17,7 @@ class LiveTests: XCTestCase {
         let received = try socket.recv()
         
         //converting data to a string
-        let str = try received.toString()
+        let str = received.string
         
         //yay!
         XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".toBytes()), "Instead received: \(str)")
@@ -40,7 +40,7 @@ class LiveTests: XCTestCase {
         let received = try socket.recv()
         
         //converting data to a string
-        let str = try received.toString()
+        let str = received.string
         
         //yay!
         XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".toBytes()), "Instead received: \(str)")

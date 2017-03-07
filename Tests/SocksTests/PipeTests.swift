@@ -7,7 +7,7 @@ class PipeTests: XCTestCase {
         let (read, write) = try TCPEstablishedSocket.pipe()
         let msg = "Hello Socket".toBytes()
         try write.send(data: msg)
-        let inMsg = try read.recv().toString()
+        let inMsg = try read.recv().string
         try read.close()
         try write.close()
         XCTAssertEqual(inMsg, "Hello Socket")
