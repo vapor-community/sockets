@@ -9,7 +9,7 @@ import Bits
 // Buffer capacity is the same as the maximum UDP packet size
 public let BufferCapacity = 65_507
 
-class Bytes {
+final class Bytes {
     
     let rawBytes: UnsafeMutablePointer<UInt8>
     let capacity: Int

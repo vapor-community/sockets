@@ -5,7 +5,7 @@ class PipeTests: XCTestCase {
     
     func testSendAndReceive() throws {
         let (read, write) = try TCPEstablishedSocket.pipe()
-        let msg = "Hello Socket".toBytes()
+        let msg = "Hello Socket".makeBytes()
         try write.send(data: msg)
         let inMsg = try read.recv().string
         try read.close()
@@ -24,7 +24,7 @@ class PipeTests: XCTestCase {
         let (read, write) = try TCPEstablishedSocket.pipe()
         try read.close()
 
-        let msg = "Hello Socket".toBytes()
+        let msg = "Hello Socket".makeBytes()
 
         XCTAssertThrowsError(try write.send(data: msg)) { (error) in
             let err = error as! SocksError

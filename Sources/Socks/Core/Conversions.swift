@@ -10,11 +10,3 @@ extension Array {
         return self.map({ String(describing: $0) }).joined(separator: ".")
     }
 }
-
-extension String {
-    
-    public func toBytes() -> [UInt8] {
-        return Array(self.utf8)
-    }
-}
-

@@ -27,7 +27,7 @@ public class TCPClient {
     }
     
     /// Sends `bytes` on socket.
-    public func send(bytes: [UInt8]) throws {
+    public func send(_ bytes: [UInt8]) throws {
         try self.socket.send(data: bytes)
     }
     
