@@ -21,7 +21,7 @@ public class UDPClient {
         try self.init(socket: socket)
     }
     
-    public func send(bytes: [UInt8], destination: ResolvedInternetAddress? = nil) throws {
+    public func send(_ bytes: [UInt8], to destination: ResolvedInternetAddress? = nil) throws {
         let address = destination ?? self.socket.address
         try self.socket.sendto(data: bytes, address: address)
     }

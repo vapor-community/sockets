@@ -11,16 +11,16 @@ class LiveTests: XCTestCase {
         
         try socket.connect()
         
-        try socket.send(data: "GET /\r\n\r\n".toBytes())
+        try socket.send(data: "GET /\r\n\r\n".makeBytes())
         
         //receiving data
         let received = try socket.recv()
         
         //converting data to a string
-        let str = try received.toString()
+        let str = received.string
         
         //yay!
-        XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".toBytes()), "Instead received: \(str)")
+        XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".makeBytes()), "Instead received: \(str)")
         
         try! socket.close()
         print("successfully sent and received data from httpbin.org")
@@ -34,16 +34,16 @@ class LiveTests: XCTestCase {
         
         try socket.connect(withTimeout: 2)
             
-        try socket.send(data: "GET /\r\n\r\n".toBytes())
+        try socket.send(data: "GET /\r\n\r\n".makeBytes())
         
         //receiving data
         let received = try socket.recv()
         
         //converting data to a string
-        let str = try received.toString()
+        let str = received.string
         
         //yay!
-        XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".toBytes()), "Instead received: \(str)")
+        XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".makeBytes()), "Instead received: \(str)")
         
         try socket.close()
         print("successfully sent and received data from google.com")

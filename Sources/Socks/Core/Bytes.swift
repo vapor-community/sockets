@@ -4,10 +4,12 @@
     import Darwin
 #endif
 
+import Bits
+
 // Buffer capacity is the same as the maximum UDP packet size
 public let BufferCapacity = 65_507
 
-class Bytes {
+final class Bytes {
     
     let rawBytes: UnsafeMutablePointer<UInt8>
     let capacity: Int
@@ -32,28 +34,6 @@ class Bytes {
     }
     
     func toString() throws -> String {
-        return try self.characters.toString()
+        return self.characters.string
     }
 }
-
-extension Collection where Iterator.Element == UInt8 {
-    
-    public func toString() throws -> String {
-        var utf = UTF8()
-        var gen = self.makeIterator()
-        var chars = String.UnicodeScalarView()
-        while true {
-            switch utf.decode(&gen) {
-            case .emptyInput: //we're done
-                return String(chars)
-            case .error: //error, can't describe what however
-                throw SocksError(.unparsableBytes)
-            case .scalarValue(let unicodeScalar):
-                chars.append(unicodeScalar)
-            }
-        }
-    }
-}
-
-
-

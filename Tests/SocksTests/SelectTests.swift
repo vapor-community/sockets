@@ -26,7 +26,7 @@ class SelectTests: XCTestCase {
     
     func testOnePipeReadyToReadOneToWrite() throws {
         let (read, write) = try TCPEstablishedSocket.pipe()
-        try write.send(data: "Heya".toBytes())
+        try write.send(data: "Heya".makeBytes())
         let (reads, writes, errors) = try select(reads: [read.descriptor],
                                                  writes: [write.descriptor],
                                                  errors: [],
@@ -44,8 +44,8 @@ class SelectTests: XCTestCase {
         let (read1, write1) = try TCPEstablishedSocket.pipe()
         let (read2, write2) = try TCPEstablishedSocket.pipe()
         let (read3, write3) = try TCPEstablishedSocket.pipe()
-        try write1.send(data: "Heya".toBytes())
-        try write3.send(data: "Socks".toBytes())
+        try write1.send(data: "Heya".makeBytes())
+        try write3.send(data: "Socks".makeBytes())
         let (reads, writes, errors) = try select(reads: [read1.descriptor, read2.descriptor, read3.descriptor],
                                                  writes: [],
                                                  errors: [],
