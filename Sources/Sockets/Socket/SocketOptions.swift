@@ -1,27 +1,6 @@
 import libc
 
 extension RawSocket {
-    
-    /// Control whether the socket calls are blocking or nonblocking
-    public var blocking: Bool {
-        get {
-            if isClosed { return true }
-            let flags = fcntl(descriptor.raw, F_GETFL, 0)
-            return flags & O_NONBLOCK == 0
-        }
-        set {
-            if isClosed { return }
-            let flags = fcntl(descriptor.raw, F_GETFL, 0)
-            let newFlags: Int32
-            if newValue {
-                newFlags = flags & ~O_NONBLOCK
-            } else {
-                newFlags = flags | O_NONBLOCK
-            }
-            _ = fcntl(descriptor.raw, F_SETFL, newFlags)
-        }
-    }
-    
     /// Returns the current error code of the socket (0 if no error)
     public func getErrorCode() throws -> Int32
     {

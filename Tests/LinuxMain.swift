@@ -1,5 +1,6 @@
 import XCTest
 @testable import SocksTests
+@testable import TransportTests
 
 XCTMain([
 	testCase(AddressResolutionTests.allTests),
@@ -8,5 +9,7 @@ XCTMain([
 	testCase(PipeTests.allTests),
 	testCase(SelectTests.allTests),
 	testCase(TimeoutTests.allTests),
-	testCase(LifetimeTests.allTests)
+	testCase(LifetimeTests.allTests),
+    testCase(StreamTests.allTests),
+    testCase(StreamBufferTests.allTests)
 ])
