@@ -8,12 +8,9 @@ import Dispatch
 class SockStreamTests: XCTestCase {
     static let allTests = [
         ("testTCPInternetSocket", testTCPInternetSocket),
+        ("testDirect", testDirect),
         ("testTCPInternetSocketThrows", testTCPInternetSocketThrows),
         ("testTCPServer", testTCPServer),
-        // ("testSecurityLayerStrings", testSecurityLayerStrings),
-        ("testFoundationStream", testFoundationStream),
-        //("testFoundationThrows", testFoundationThrows),
-        ("testFoundationEventCode", testFoundationEventCode)
     ]
 
     func testTCPInternetSocket() throws {
@@ -102,6 +99,7 @@ class SockStreamTests: XCTestCase {
         try client.send("Hello, World!".makeBytes())
     }
 
+    #if os(OSX)
     func testFoundationStream() throws {
         let clientStream = try FoundationStream(
             hostname: "httpbin.org",
@@ -141,32 +139,5 @@ class SockStreamTests: XCTestCase {
         )
         XCTAssertTrue(clientStream.isClosed)
     }
+    #endif
 }
-
-// import XCTest
-// @testable import VaporTLS
-//import TLS
-//
-//class TLSStreamTests: XCTestCase {
-//    static var allTests = [
-//        ("testSend", testSend)
-//    ]
-//
-//    func testSend() throws {
-//        let config = try Context(
-//            .client,
-//            verifyCertificates: false
-//        )
-//
-//        do {
-//            let clientStream = try TCPClientStream(host: "api.spotify.com", port: 443, securityLayer: .tls(config)).connect()
-//            let uri = "/v1/search?type=artist&q=hannah%20diamond"
-//            try clientStream.send("GET \(uri) HTTP/1.1\r\nHost: api.spotify.com\r\nAccept: */*\r\n\r\n".makeBytes())
-//            let response = try clientStream.receive(max: 2048).string
-//
-//            XCTAssert(response.contains("spotify:artist:3sXErEOw7EmO6Sj7EgjHdU"))
-//        } catch {
-//            XCTFail("Could not send: \(error)")
-//        }
-//    }
-//}

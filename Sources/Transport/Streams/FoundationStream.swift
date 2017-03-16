@@ -1,9 +1,8 @@
-
+#if os(OSX)
 import Core
 import Foundation
 
 public final class FoundationStream: NSObject, Stream, ClientStream, StreamDelegate {
-
     public enum Error: Swift.Error {
         case unableToCompleteReadOperation
         case unableToCompleteWriteOperation
@@ -83,12 +82,9 @@ public final class FoundationStream: NSObject, Stream, ClientStream, StreamDeleg
     // MARK: Connect
 
     public func connect() throws {
-//            if case .tls(let context) = securityLayer {
-//                upgradeSSL(context)
-//            }
         input.open()
         output.open()
-        // return self
+        try securityLayer.connect(self)
     }
 
     // MARK: Stream Events
@@ -97,21 +93,6 @@ public final class FoundationStream: NSObject, Stream, ClientStream, StreamDeleg
         if eventCode.contains(.endEncountered) { _ = try? close() }
     }
 }
-
-//    extension FoundationStream {
-//        public func upgradeSSL(_ context: Context?) {
-//            [input, output].forEach { stream in stream.upgradeSSL(context) }
-//        }
-//    }
-//
-//    extension Foundation.Stream {
-//        @discardableResult
-//        func upgradeSSL(_ context: Context?) -> Bool {
-//            //TODO: apply TLS.Config's properties to the stream
-//            return setProperty(Foundation.StreamSocketSecurityLevel.negotiatedSSL.rawValue,
-//                               forKey: Foundation.Stream.PropertyKey.socketSecurityLevelKey)
-//        }
-//    }
 
 extension Foundation.Stream {
     var closed: Bool {
@@ -123,3 +104,4 @@ extension Foundation.Stream {
         }
     }
 }
+#endif
