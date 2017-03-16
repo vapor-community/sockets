@@ -64,4 +64,5 @@ fastlane/report.xml
 fastlane/screenshots
 
 Package.pins
+*.xcodeproj
 

@@ -8,11 +8,6 @@ import Dispatch
 ///
 /// Send calls are buffered until `flush()` is called.
 public final class StreamBuffer: DuplexStream, Equatable {
-
-//    public var peerAddress: String {
-//        return stream.peerAddress
-//    }
-
     private let stream: DuplexStream
     private let size: Int
 
