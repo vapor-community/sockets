@@ -9,7 +9,7 @@ public protocol RawSocket: Stream {
 extension RawSocket {
     public func close() throws {
         if libc.close(descriptor.raw) != 0 {
-            throw SocksError(.closeSocketFailed)
+            throw SocketsError(.closeSocketFailed)
         }
     }
 }

@@ -13,7 +13,7 @@ extension InternetSocket {
         )
 
         guard res > -1 else {
-            throw SocksError(.bindFailed)
+            throw SocketsError(.bindFailed)
         }
     }
 }

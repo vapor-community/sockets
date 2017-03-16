@@ -1,8 +1,4 @@
-#if os(Linux)
-    import Glibc
-#else
-    import Darwin
-#endif
+import libc
 
 //
 //  Brief: Specify an internet address
@@ -172,7 +168,7 @@ extension Socket {
         let res = getpeername(descriptor.raw, addrSockAddr, &length)
         guard res > -1 else {
             addr.deallocate(capacity: 1)
-            throw SocksError(.remoteAddressResolutionFailed)
+            throw SocketsError(.remoteAddressResolutionFailed)
         }
         let clientAddress = ResolvedInternetAddress(raw: addr)
         return clientAddress
@@ -185,10 +181,9 @@ extension Socket {
         let res = getsockname(descriptor.raw, addrSockAddr, &length)
         guard res > -1 else {
             addr.deallocate(capacity: 1)
-            throw SocksError(.localAddressResolutionFailed)
+            throw SocketsError(.localAddressResolutionFailed)
         }
         let clientAddress = ResolvedInternetAddress(raw: addr)
         return clientAddress
     }
 }
-

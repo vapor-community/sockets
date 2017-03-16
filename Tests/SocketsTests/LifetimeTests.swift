@@ -33,7 +33,7 @@ class LifetimeTests: XCTestCase {
             // attempt to listen should fail on a closed socket
             _ = try socket.listen()
         }
-        catch let error as SocksError {
+        catch let error as SocketsError {
             guard case ErrorReason.socketIsClosed = error.type else {
                 XCTFail("Wrong error")
                 return
@@ -64,7 +64,7 @@ class LifetimeTests: XCTestCase {
             // attempt to receive should fail on a closed socket
             _ = try socket.recvfrom()
         }
-        catch let error as SocksError {
+        catch let error as SocketsError {
             guard case ErrorReason.socketIsClosed = error.type else {
                 XCTFail("Wrong error")
                 return

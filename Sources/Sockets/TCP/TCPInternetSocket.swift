@@ -57,7 +57,6 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket, TCPDuplex
         port = resolved.port
         self.securityLayer = securityLayer
         self.isClosed = false
-        try setReuseAddress(true)
     }
 
     // MARK: Close
@@ -76,9 +75,9 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket, TCPDuplex
         if libc.close(descriptor.raw) != 0 {
             if errno == EBADF {
                 descriptor = -1
-                throw SocksError(.socketIsClosed)
+                throw SocketsError(.socketIsClosed)
             } else {
-                throw SocksError(.closeSocketFailed)
+                throw SocketsError(.closeSocketFailed)
             }
         }
 

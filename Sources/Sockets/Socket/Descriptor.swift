@@ -10,7 +10,7 @@ public struct Descriptor {
         let cProtocol = config.protocolType.toCType()
 
         let descriptor = socket(cProtocolFam, cType, cProtocol)
-        guard descriptor >= 0 else { throw SocksError(.createSocketFailed) }
+        guard descriptor >= 0 else { throw SocketsError(.createSocketFailed) }
         self.raw = descriptor
 
         if config.reuseAddress {
@@ -71,7 +71,7 @@ extension Descriptor {
             &val,
             socklen_t(MemoryLayout<T>.stride)
         ) != -1 else {
-            throw SocksError(
+            throw SocketsError(
                 .optionSetFailed(
                     level: level,
                     name: name,
@@ -89,7 +89,7 @@ extension Descriptor {
             val.deallocate(capacity: 1)
         }
         guard getsockopt(raw, level, name, val, &length) != -1 else {
-            throw SocksError(
+            throw SocketsError(
                 .optionGetFailed(
                     level: level,
                     name: name,

@@ -52,7 +52,6 @@
 		OBJ_183 /* Debugging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_110 /* Debugging.framework */; };
 		OBJ_184 /* libc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_111 /* libc.framework */; };
 		OBJ_193 /* Exports.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Exports.swift */; };
-		OBJ_194 /* Transport.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Transport.swift */; };
 		OBJ_195 /* Address+C.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Address+C.swift */; };
 		OBJ_196 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Address.swift */; };
 		OBJ_197 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* Buffer.swift */; };
@@ -296,7 +295,6 @@
 /* Begin PBXFileReference section */
 		C32333BD1E7B469000C9450A /* TCPServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPServer.swift; sourceTree = "<group>"; };
 		C32333BF1E7B46A200C9450A /* TCPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPClient.swift; sourceTree = "<group>"; };
-		OBJ_10 /* Transport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transport.swift; sourceTree = "<group>"; };
 		OBJ_100 /* BytesConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BytesConvertible.swift; sourceTree = "<group>"; };
 		OBJ_101 /* ByteSequence+Conversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ByteSequence+Conversions.swift"; sourceTree = "<group>"; };
 		OBJ_102 /* Data+BytesConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+BytesConvertible.swift"; sourceTree = "<group>"; };
@@ -698,7 +696,6 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_9 /* Exports.swift */,
-				OBJ_10 /* Transport.swift */,
 				OBJ_11 /* Address */,
 				OBJ_14 /* Core */,
 				OBJ_20 /* Socket */,
@@ -1019,7 +1016,6 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_193 /* Exports.swift in Sources */,
-				OBJ_194 /* Transport.swift in Sources */,
 				OBJ_195 /* Address+C.swift in Sources */,
 				OBJ_196 /* Address.swift in Sources */,
 				OBJ_197 /* Buffer.swift in Sources */,

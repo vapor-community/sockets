@@ -16,7 +16,6 @@ public class UDPInternetSocket: InternetSocket {
         }
         self.config = config
         self.address = address
-        try setReuseAddress(true)
     }
 
     public convenience init(address: InternetAddress) throws {
@@ -30,7 +29,7 @@ public class UDPInternetSocket: InternetSocket {
     }
 
     public func recvfrom(maxBytes: Int = BufferCapacity) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
-        if isClosed { throw SocksError(.socketIsClosed) }
+        if isClosed { throw SocketsError(.socketIsClosed) }
         let data = Buffer(capacity: maxBytes)
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
 
@@ -48,7 +47,7 @@ public class UDPInternetSocket: InternetSocket {
         )
         guard receivedBytes > -1 else {
             addr.deallocate(capacity: 1)
-            throw SocksError(.readFailed)
+            throw SocketsError(.readFailed)
         }
 
         let clientAddress = ResolvedInternetAddress(raw: addr)
@@ -59,7 +58,7 @@ public class UDPInternetSocket: InternetSocket {
     }
 
     public func sendto(data: [UInt8], address: ResolvedInternetAddress? = nil) throws {
-        if isClosed { throw SocksError(.socketIsClosed) }
+        if isClosed { throw SocketsError(.socketIsClosed) }
         let len = data.count
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
         let destination = address ?? self.address
@@ -72,14 +71,14 @@ public class UDPInternetSocket: InternetSocket {
             destination.raw,
             destination.rawLen
         )
-        guard sentLen == len else { throw SocksError(.sendFailedToSendAllBytes) }
+        guard sentLen == len else { throw SocketsError(.sendFailedToSendAllBytes) }
     }
 
     public func close() throws {
         if isClosed { return }
         isClosed = true
         if libc.close(descriptor.raw) != 0 {
-            throw SocksError(.closeSocketFailed)
+            throw SocketsError(.closeSocketFailed)
         }
     }
 }

@@ -21,7 +21,7 @@ extension TCPReadableSocket {
                 _ = try self.close()
                 return []
             } else {
-                throw SocksError(.readFailed)
+                throw SocketsError(.readFailed)
             }
         }
 

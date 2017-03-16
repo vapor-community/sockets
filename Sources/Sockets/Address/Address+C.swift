@@ -45,10 +45,10 @@ struct Resolver: InternetAddressResolver{
         let ret = getaddrinfo(internetAddress.hostname, internetAddress.port.toString(), &addressCriteria, &servinfo)
         guard ret == 0 else {
             let reason = String(validatingUTF8: gai_strerror(ret)) ?? "?"
-            throw SocksError(.ipAddressValidationFailed(reason))
+            throw SocketsError(.ipAddressValidationFailed(reason))
         }
         
-        guard let addrList = servinfo else { throw SocksError(.ipAddressResolutionFailed) }
+        guard let addrList = servinfo else { throw SocketsError(.ipAddressResolutionFailed) }
         defer {
             freeaddrinfo(addrList)
         }
@@ -56,7 +56,7 @@ struct Resolver: InternetAddressResolver{
         //this takes the first resolved address, potentially we should
         //get all of the addresses in the list and allow for iterative
         //connecting
-        guard let addrInfo = addrList.pointee.ai_addr else { throw SocksError(.ipAddressResolutionFailed) }
+        guard let addrInfo = addrList.pointee.ai_addr else { throw SocketsError(.ipAddressResolutionFailed) }
         let family = try AddressFamily(fromCType: Int32(addrInfo.pointee.sa_family))
         
         let ptr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
@@ -72,7 +72,7 @@ struct Resolver: InternetAddressResolver{
             let specPtr = UnsafeMutablePointer<sockaddr_in6>(OpaquePointer(ptr))
             specPtr.assign(from: addr, count: 1)
         default:
-            throw SocksError(.concreteSocketAddressFamilyRequired)
+            throw SocketsError(.concreteSocketAddressFamilyRequired)
         }
         
         let address = ResolvedInternetAddress(raw: ptr)

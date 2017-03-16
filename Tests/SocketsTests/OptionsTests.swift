@@ -1,13 +1,4 @@
-#if os(Linux)
-    import Glibc
-    private let s_socket = Glibc.socket
-    private let s_close = Glibc.close
-#else
-    import Darwin
-    private let s_socket = Darwin.socket
-    private let s_close = Darwin.close
-#endif
-
+import libc
 import XCTest
 @testable import Sockets
 
@@ -45,7 +36,7 @@ class OptionsTests: XCTestCase {
         do {
             _ = try socket.getSendingTimeout()
         }
-        catch let error as SocksError {
+        catch let error as SocketsError {
             guard case ErrorReason.socketIsClosed = error.type else {
                 XCTFail()
                 return

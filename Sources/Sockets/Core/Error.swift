@@ -1,11 +1,6 @@
-#if os(Linux)
-    import Glibc
-#else
-    import Darwin
-#endif
+import libc
 
 public enum ErrorReason {
-    
     case createSocketFailed
     case optionSetFailed(level: Int32, name: Int32, value: String)
     case optionGetFailed(level: Int32, name: Int32, type: String)
@@ -43,7 +38,7 @@ public enum ErrorReason {
     case generic(String)
 }
 
-public struct SocksError: Error, CustomStringConvertible {
+public struct SocketsError: Error, CustomStringConvertible {
     
     public let type: ErrorReason
     public let number: Int32

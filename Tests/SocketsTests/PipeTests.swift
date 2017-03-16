@@ -27,7 +27,7 @@ class PipeTests: XCTestCase {
         let msg = "Hello Socket".makeBytes()
 
         XCTAssertThrowsError(try write.send(msg)) { (error) in
-            let err = error as! SocksError
+            let err = error as! SocketsError
             XCTAssertEqual(err.number, 32) //broken pipe
         }
         

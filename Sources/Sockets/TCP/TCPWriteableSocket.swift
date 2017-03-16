@@ -7,7 +7,7 @@ extension TCPWriteableSocket {
         let len = data.count
         let sentLen = libc.send(descriptor.raw, data, len, 0)
         guard sentLen == len else {
-            throw SocksError(.sendFailedToSendAllBytes)
+            throw SocketsError(.sendFailedToSendAllBytes)
         }
     }
 

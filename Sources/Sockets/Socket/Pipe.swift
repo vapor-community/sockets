@@ -9,7 +9,7 @@ extension TCPEstablishedSocket: Pipeable {
         var rawDescriptors: [Int32] = [0, 0]
         let socketType = SocketType.stream.toCType()
         guard socketpair(AF_LOCAL, socketType, 0, &rawDescriptors) != -1 else {
-            throw SocksError(.pipeCreationFailed)
+            throw SocketsError(.pipeCreationFailed)
         }
 
         let descriptors = rawDescriptors.map({ Descriptor($0) })

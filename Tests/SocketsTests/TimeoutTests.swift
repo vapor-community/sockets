@@ -27,7 +27,7 @@ class TimeoutTests: XCTestCase {
                 _ = try read.receive(max: 2048)
                 XCTFail()
             } catch {
-                guard let err = error as? Sockets.SocksError, case .readFailed = err.type else {
+                guard let err = error as? Sockets.SocketsError, case .readFailed = err.type else {
                     XCTFail()
                     return
                 }
@@ -51,7 +51,7 @@ class TimeoutTests: XCTestCase {
                 _ = try read.receive(max: 2048)
                 XCTFail()
             } catch {
-                guard let err = error as? Sockets.SocksError, case .readFailed = err.type else {
+                guard let err = error as? Sockets.SocketsError, case .readFailed = err.type else {
                     XCTFail()
                     return
                 }

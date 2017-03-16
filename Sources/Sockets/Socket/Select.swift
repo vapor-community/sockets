@@ -88,7 +88,7 @@ public func select(reads: [Int32] = [],
             filter(errors, &errorFDs)
         )
     }
-    throw SocksError(.selectFailed(reads: reads, writes: writes, errors: errors))
+    throw SocketsError(.selectFailed(reads: reads, writes: writes, errors: errors))
 }
 
 extension RawSocket {
