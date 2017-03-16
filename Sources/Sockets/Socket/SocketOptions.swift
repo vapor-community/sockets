@@ -45,7 +45,7 @@ extension RawSocket {
         if isClosed { throw SocketsError(.socketIsClosed) }
         return try descriptor.getOption(level: SOL_SOCKET, name: SO_SNDTIMEO)
     }
-    public func setSendingTimeout(_ newValue:timeval) throws {
+    public func setSendingTimeout(_ newValue: timeval) throws {
         if isClosed { throw SocketsError(.socketIsClosed) }
         try descriptor.setOption(level: SOL_SOCKET, name: SO_SNDTIMEO, value: newValue)
     }
