@@ -1,6 +1,6 @@
 import libc
 
-public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket, InternetStream, DuplexProgramStream {
+public final class TCPInternetSocket {
 
     // program
     public let scheme: String
@@ -129,3 +129,15 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket, InternetS
         isClosed = true
     }
 }
+
+// MARK: Socks
+
+extension TCPInternetSocket: TCPReadableSocket { }
+extension TCPInternetSocket: TCPWriteableSocket { }
+extension TCPInternetSocket: InternetSocket { }
+
+// MARK: Transport
+
+extension TCPInternetSocket: ClientStream { }
+extension TCPInternetSocket: ServerStream { }
+extension TCPInternetSocket: InternetStream { }
