@@ -14,8 +14,13 @@ class StreamBufferTests: XCTestCase {
         ("testStreamBufferMisc", testStreamBufferMisc)
     ]
 
-    lazy var testStream: TestStream! = TestStream()
-    lazy var streamBuffer: StreamBuffer! = StreamBuffer(self.testStream)
+    var testStream: TestStream!
+    var streamBuffer: StreamBuffer<TestStream>!
+
+    override func setUp() {
+        testStream = TestStream()
+        streamBuffer = StreamBuffer(testStream)
+    }
 
     override func tearDown() {
         super.tearDown()
@@ -70,7 +75,7 @@ class StreamBufferTests: XCTestCase {
 }
 
 
-final class TestStream: Transport.DuplexStream {
+final class TestStream: DuplexStream {
     var peerAddress: String = "1.2.3.4:5678"
 
     var isClosed: Bool

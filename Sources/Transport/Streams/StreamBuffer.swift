@@ -7,8 +7,8 @@ import Dispatch
 /// the buffer.
 ///
 /// Send calls are buffered until `flush()` is called.
-public final class StreamBuffer: DuplexStream, Equatable {
-    private let stream: DuplexStream
+public final class StreamBuffer<Stream: DuplexStream>: DuplexStream, Equatable {
+    private let stream: Stream
     private let size: Int
 
     private var receiveIterator: IndexingIterator<[Byte]>
@@ -26,7 +26,7 @@ public final class StreamBuffer: DuplexStream, Equatable {
         try stream.close()
     }
 
-    public init(_ stream: DuplexStream, size: Int = 2048) {
+    public init(_ stream: Stream, size: Int = 2048) {
         self.size = size
         self.stream = stream
 
