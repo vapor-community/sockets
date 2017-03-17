@@ -26,7 +26,6 @@ class SockStreamTests: XCTestCase {
         let received = try httpBin.receive(max: 2048)
         try httpBin.close()
 
-        print(received.makeString())
         XCTAssert(
             received
                 .makeString()

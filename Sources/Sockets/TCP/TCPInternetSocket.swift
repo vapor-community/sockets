@@ -1,7 +1,5 @@
 import libc
 
-//public typealias TCPDuplexProgram = TCPServer & TCPClient
-
 public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexProgramStream {
 
     // program
@@ -40,7 +38,8 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexPr
             descriptor,
             conf,
             resolved,
-            scheme: scheme
+            scheme: scheme,
+            hostname: address.hostname
         )
     }
 
@@ -48,12 +47,13 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexPr
         _ descriptor: Descriptor,
         _ config: Config,
         _ resolved: ResolvedInternetAddress,
-        scheme: String
+        scheme: String,
+        hostname: String
     ) throws {
         self.descriptor = descriptor
         self.config = config
         self.address = resolved
-        hostname = resolved.ipString()
+        self.hostname = hostname
         port = resolved.port
         self.scheme = scheme
         self.isClosed = false
@@ -95,7 +95,8 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexPr
             Descriptor(clientSocketDescriptor),
             config,
             clientAddress,
-            scheme: scheme
+            scheme: scheme,
+            hostname: hostname
         )
 
         return clientSocket
