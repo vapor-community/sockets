@@ -1,6 +1,6 @@
 import libc
 
-public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexProgramStream {
+public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket, InternetStream, DuplexProgramStream {
 
     // program
     public let scheme: String
