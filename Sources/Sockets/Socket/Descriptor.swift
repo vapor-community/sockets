@@ -36,13 +36,16 @@ private let SOCKET_NOSIGNAL = SO_NOSIGPIPE
 
 
 extension Descriptor {
+    /// prevents SIGPIPE from killing process
     func disableSIGPIPE() throws {
-        // prevents SIGPIPE from killing process
+        signal(SIGPIPE, SIG_IGN)
+        #if !os(Linux)
         try setOption(
             level: SOL_SOCKET,
             name: SOCKET_NOSIGNAL,
             value: 1
         )
+        #endif
     }
 
     func setBoolOption(
