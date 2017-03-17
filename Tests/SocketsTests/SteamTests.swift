@@ -21,7 +21,7 @@ class SockStreamTests: XCTestCase {
         )
         try httpBin.setTimeout(10)
         try httpBin.connect()
-        try httpBin.send("GET /html\r\n\r\n".makeBytes())
+        try httpBin.send("GET /html HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
         try httpBin.flush()
         let received = try httpBin.receive(max: 2048)
         try httpBin.close()
@@ -39,7 +39,7 @@ class SockStreamTests: XCTestCase {
         do {
             let socket = try TCPInternetSocket(address)
             try socket.connect()
-            try socket.send("GET /html\r\n\r\n")
+            try socket.send("GET /html HTTP/1.1\r\nHost: httpbin.org\r\n\r\n")
             let received = try socket.receive(max: 2048)
             let str = received.makeString()
             try socket.close()
@@ -115,7 +115,7 @@ class SockStreamTests: XCTestCase {
             try clientStream.setTimeout(30)
             XCTFail("Foundation stream should throw on timeout set")
         } catch {}
-        try clientStream.send("GET /html\r\n\r\n".makeBytes())
+        try clientStream.send("GET /html HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
         try clientStream.flush()
         let received = try clientStream.receive(max: 2048)
         try clientStream.close()

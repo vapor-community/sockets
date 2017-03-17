@@ -1,7 +1,6 @@
 import libc
 
 public final class TCPInternetSocket {
-
     // program
     public let scheme: String
     public let hostname: String
@@ -16,20 +15,20 @@ public final class TCPInternetSocket {
     // MARK: Init
 
     public convenience init(
-        scheme: String,
-        hostname: String,
-        port: Port
+        scheme: String = "http",
+        hostname: String = "0.0.0.0",
+        port: Port = 80
     ) throws {
         let address = InternetAddress(
             hostname: hostname,
             port: port
         )
-        try self.init(address, scheme)
+        try self.init(address, scheme: scheme)
     }
 
     public convenience init(
         _ address: InternetAddress,
-        _ scheme: String = "http"
+        scheme: String = "http"
     ) throws {
         var conf = Config.TCP(addressFamily: address.addressFamily)
         let resolved = try address.resolve(with: &conf)
@@ -47,8 +46,8 @@ public final class TCPInternetSocket {
         _ descriptor: Descriptor,
         _ config: Config,
         _ resolved: ResolvedInternetAddress,
-        scheme: String,
-        hostname: String
+        scheme: String = "http",
+        hostname: String = "0.0.0.0"
     ) throws {
         self.descriptor = descriptor
         self.config = config

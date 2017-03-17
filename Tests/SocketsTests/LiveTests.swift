@@ -4,7 +4,6 @@ import XCTest
 class LiveTests: XCTestCase {
 
     func testLive_HTTP_Get_ipV4() throws {
-        
         let addr = InternetAddress(
             hostname: "httpbin.org",
             port: 80
@@ -13,23 +12,22 @@ class LiveTests: XCTestCase {
         
         try socket.connect()
         
-        try socket.send("GET /\r\n\r\n".makeBytes())
+        try socket.send("GET / HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
         
         //receiving data
         let received = try socket.receive(max: 2048)
         
         //converting data to a string
         let str = received.makeString()
-        
+
         //yay!
         XCTAssertTrue(
             received
-                .starts(with: "<!DOCTYPE html>".makeBytes())
-            , "Instead received: \(str)"
+                .starts(with: "HTTP/1.1 200 OK".makeBytes()),
+            "Instead received: \(str)"
         )
         
         try! socket.close()
-        print("successfully sent and received data from httpbin.org")
     }
     
     func testLive_HTTP_Get_ipV4_withTimeout() throws {
@@ -40,7 +38,7 @@ class LiveTests: XCTestCase {
         
         try socket.connect()
             
-        try socket.send("GET /\r\n\r\n".makeBytes())
+        try socket.send("GET / HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
         
         //receiving data
         let received = try socket.receive(max: 2048)
@@ -49,7 +47,10 @@ class LiveTests: XCTestCase {
         let str = received.makeString()
         
         //yay!
-        XCTAssertTrue(received.starts(with: "<!DOCTYPE html>".makeBytes()), "Instead received: \(str)")
+        XCTAssertTrue(
+            received.starts(with: "HTTP/1.1 200 OK".makeBytes()),
+            "Instead received: \(str)"
+        )
         
         try socket.close()
         print("successfully sent and received data from google.com")
