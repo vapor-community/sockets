@@ -4,8 +4,6 @@ import XCTest
 import Core
 import Transport
 
-import Sockets
-
 class StreamBufferTests: XCTestCase {
     static let allTests = [
         ("testStreamBufferSending", testStreamBufferSending),
