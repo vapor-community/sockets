@@ -24,7 +24,7 @@ class TimeoutTests: XCTestCase {
         XCTAssertEqual(try read.getReceivingTimeout(), timeval(seconds: 0.5))
         let duration = time {
             do {
-                _ = try read.receive(max: 2048)
+                _ = try read.read(max: 2048)
                 XCTFail()
             } catch {
                 guard let err = error as? Sockets.SocketsError, case .readFailed = err.type else {
@@ -48,7 +48,7 @@ class TimeoutTests: XCTestCase {
         XCTAssertEqual(try read.getReceivingTimeout(), timeval(seconds: 1))
         let duration = time {
             do {
-                _ = try read.receive(max: 2048)
+                _ = try read.read(max: 2048)
                 XCTFail()
             } catch {
                 guard let err = error as? Sockets.SocketsError, case .readFailed = err.type else {

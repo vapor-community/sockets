@@ -34,19 +34,19 @@ public final class StreamBuffer<Stream: DuplexStream>: DuplexStream, Equatable {
         self.sendBuffer = []
     }
 
-    public func receive() throws -> Byte? {
+    public func readByte() throws -> Byte? {
         guard let next = receiveIterator.next() else {
-            receiveIterator = try stream.receive(max: size).makeIterator()
+            receiveIterator = try stream.read(max: size).makeIterator()
             return receiveIterator.next()
         }
         return next
     }
 
-    public func receive(max: Int) throws -> Bytes {
+    public func read(max: Int) throws -> Bytes {
         var bytes: Bytes = []
 
         for _ in 0 ..< max {
-            guard let byte = try receive() else {
+            guard let byte = try readByte() else {
                 break
             }
 
@@ -56,13 +56,13 @@ public final class StreamBuffer<Stream: DuplexStream>: DuplexStream, Equatable {
         return bytes
     }
 
-    public func send(_ bytes: Bytes) throws {
+    public func write(_ bytes: Bytes) throws {
         sendBuffer += bytes
     }
 
     public func flush() throws {
         guard !sendBuffer.isEmpty else { return }
-        try stream.send(sendBuffer)
+        try stream.write(sendBuffer)
         try stream.flush()
         sendBuffer = []
     }

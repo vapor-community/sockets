@@ -3,7 +3,7 @@ import libc
 public protocol TCPReadableSocket: TCPSocket, ReadableStream {}
 
 extension TCPReadableSocket {
-    public func receive(max: Int) throws -> Bytes{
+    public func read(max: Int) throws -> Bytes{
         let buffer = Buffer(capacity: max)
 
         let receivedBytes = libc.recv(

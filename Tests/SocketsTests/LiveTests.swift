@@ -12,10 +12,10 @@ class LiveTests: XCTestCase {
         
         try socket.connect()
         
-        try socket.send("GET / HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
+        try socket.write("GET / HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
         
         //receiving data
-        let received = try socket.receive(max: 2048)
+        let received = try socket.read(max: 2048)
         
         //converting data to a string
         let str = received.makeString()
@@ -38,10 +38,10 @@ class LiveTests: XCTestCase {
         
         try socket.connect()
             
-        try socket.send("GET / HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
+        try socket.write("GET / HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
         
         //receiving data
-        let received = try socket.receive(max: 2048)
+        let received = try socket.read(max: 2048)
         
         //converting data to a string
         let str = received.makeString()

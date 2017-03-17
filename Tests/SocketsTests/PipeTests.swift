@@ -6,8 +6,8 @@ class PipeTests: XCTestCase {
     func testSendAndReceive() throws {
         let (read, write) = try TCPEstablishedSocket.pipe()
         let msg = "Hello Socket".makeBytes()
-        try write.send(msg)
-        let inMsg = try read.receive(max: 2048).makeString()
+        try write.write(msg)
+        let inMsg = try read.read(max: 2048).makeString()
         try read.close()
         try write.close()
         XCTAssertEqual(inMsg, "Hello Socket")
@@ -26,7 +26,7 @@ class PipeTests: XCTestCase {
 
         let msg = "Hello Socket".makeBytes()
 
-        XCTAssertThrowsError(try write.send(msg)) { (error) in
+        XCTAssertThrowsError(try write.write(msg)) { (error) in
             let err = error as! SocketsError
             XCTAssertEqual(err.number, 32) //broken pipe
         }
