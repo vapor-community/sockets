@@ -75,8 +75,8 @@ class StreamTests: XCTestCase {
 
     func testTCPServer() throws {
         let group = DispatchGroup()
+        group.enter()
         background {
-            group.enter()
             do {
                 let serverStream = try TCPInternetSocket(
                     scheme: "http",
@@ -97,7 +97,6 @@ class StreamTests: XCTestCase {
         }
 
         group.wait()
-        usleep(100)
 
         let client = try TCPInternetSocket(
             scheme: "http",
