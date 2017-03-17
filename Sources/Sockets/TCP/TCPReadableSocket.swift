@@ -8,7 +8,7 @@ extension TCPReadableSocket {
 
         let receivedBytes = libc.recv(
             descriptor.raw,
-            buffer.rawBytes,
+            buffer.pointer,
             buffer.capacity,
             0
         )

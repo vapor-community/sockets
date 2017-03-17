@@ -39,7 +39,7 @@ public class UDPInternetSocket: InternetSocket {
 
         let receivedBytes = libc.recvfrom(
             descriptor.raw,
-            data.rawBytes,
+            data.pointer,
             data.capacity,
             flags,
             addrSockAddr,

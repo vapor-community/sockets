@@ -15,4 +15,3 @@ extension TCPWriteableSocket {
         // no need to flush
     }
 }
-

@@ -1,7 +1,6 @@
 /// A Config bundels together the information needed to
 /// create a socket
 public struct Config {
-
     public var addressFamily: AddressFamily
     public let socketType: SocketType
     public let protocolType: Protocol
