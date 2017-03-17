@@ -1,8 +1,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "Socks",
+    name: "Sockets",
+    targets: [
+        Target(name: "Transport"),
+        Target(name: "Sockets", dependencies: ["Transport"])
+    ],
     dependencies: [
-        .Package(url: "https://github.com/vapor/bits.git", majorVersion: 0),
+        // Core extensions, type-aliases, and functions that facilitate common tasks.
+        .Package(url: "https://github.com/vapor/core.git", Version(2,0,0, prereleaseIdentifiers: ["alpha"]))
     ]
 )
