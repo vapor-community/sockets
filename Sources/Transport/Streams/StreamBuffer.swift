@@ -7,12 +7,12 @@ import Dispatch
 /// the buffer.
 ///
 /// Send calls are buffered until `flush()` is called.
-public final class StreamBuffer<Stream: DuplexStream>: DuplexStream, Equatable {
+public final class StreamBuffer<Stream: DuplexStream>: DuplexStream {
     private let stream: Stream
     private let size: Int
 
-    private var receiveIterator: IndexingIterator<[Byte]>
-    internal private(set) var sendBuffer: Bytes
+    private var readIterator: IndexingIterator<[Byte]>
+    private var writeBuffer: Bytes
 
     public var isClosed: Bool {
         return stream.isClosed
@@ -30,44 +30,55 @@ public final class StreamBuffer<Stream: DuplexStream>: DuplexStream, Equatable {
         self.size = size
         self.stream = stream
 
-        self.receiveIterator = Bytes().makeIterator()
-        self.sendBuffer = []
+        readIterator = Bytes().makeIterator()
+        writeBuffer = []
     }
 
     public func readByte() throws -> Byte? {
-        guard let next = receiveIterator.next() else {
-            receiveIterator = try stream.read(max: size).makeIterator()
-            return receiveIterator.next()
+        guard let next = readIterator.next() else {
+            readIterator = try stream.read(max: size).makeIterator()
+            return readIterator.next()
         }
         return next
     }
 
     public func read(max: Int) throws -> Bytes {
-        var bytes: Bytes = []
+        var bytes = readIterator.array
 
-        for _ in 0 ..< max {
-            guard let byte = try readByte() else {
+        while bytes.count < max {
+            let new = try stream.read(max: size)
+            bytes += new
+            if new.count < size {
                 break
             }
-
-            bytes += byte
         }
 
-        return bytes
+        let cap = bytes.count > max
+            ? max
+            : bytes.count
+
+        let result = bytes[0..<cap].array
+
+        if cap >= bytes.count {
+            readIterator = [].makeIterator()
+        } else {
+            let remaining = bytes[cap..<bytes.count]
+            readIterator = remaining
+                .array
+                .makeIterator()
+        }
+
+        return result
     }
 
     public func write(_ bytes: Bytes) throws {
-        sendBuffer += bytes
+        writeBuffer += bytes
     }
 
     public func flush() throws {
-        guard !sendBuffer.isEmpty else { return }
-        try stream.write(sendBuffer)
+        guard !writeBuffer.isEmpty else { return }
+        try stream.write(writeBuffer)
         try stream.flush()
-        sendBuffer = []
-    }
-    
-    public static func ==(lhs: StreamBuffer, rhs: StreamBuffer) -> Bool {
-        return lhs === rhs
+        writeBuffer = []
     }
 }

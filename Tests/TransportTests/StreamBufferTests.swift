@@ -4,6 +4,8 @@ import XCTest
 import Core
 import Transport
 
+import Sockets
+
 class StreamBufferTests: XCTestCase {
     static let allTests = [
         ("testStreamBufferSending", testStreamBufferSending),
@@ -71,6 +73,21 @@ class StreamBufferTests: XCTestCase {
 
         try streamBuffer.setTimeout(42)
         XCTAssert(testStream.timeout == 42, "stream buffer should set underlying timeout")
+    }
+
+    func testLarge() throws {
+        let testStream = TestStream()
+        let bytes = Bytes(repeating: .A, count: 65_536)
+        try testStream.write(bytes)
+        let buffer = StreamBuffer(testStream, size: 5)
+        
+        for i in 0..<32 {
+            let stuff = try buffer.read(max: 2048)
+            XCTAssertEqual(stuff.count, 2048, "Failed on iteratior \(i)")
+        }
+
+        let zero = try buffer.readByte()
+        XCTAssertNil(zero)
     }
 }
 
