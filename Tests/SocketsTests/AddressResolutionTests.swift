@@ -16,8 +16,7 @@ class AddressResolutionTests: XCTestCase {
                 addressFamily: family
             )
             var config: Config = .TCP()
-            let resolved = try resolver.resolve(address, with: &config)
-            print(resolved.ipString())
+            _ = try resolver.resolve(address, with: &config)
         }
     }
 }

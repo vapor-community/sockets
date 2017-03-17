@@ -93,7 +93,7 @@ class StreamTests: XCTestCase {
             }
         }
 
-        usleep(100)
+        usleep(500)
 
         let client = try TCPInternetSocket(
             scheme: "http",
