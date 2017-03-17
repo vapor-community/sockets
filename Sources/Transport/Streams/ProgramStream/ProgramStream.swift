@@ -10,7 +10,6 @@ public protocol ProgramStream: DuplexStream {
     var scheme: String { get }
     var hostname: String { get }
     var port: Port { get }
-    init(scheme: String, hostname: String, port: Port) throws
 }
 
 extension Int {

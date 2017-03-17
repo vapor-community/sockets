@@ -5,8 +5,10 @@ class LiveTests: XCTestCase {
 
     func testLive_HTTP_Get_ipV4() throws {
         
-        let addr = InternetAddress(hostname: "httpbin.org",
-                                   port: 80)
+        let addr = InternetAddress(
+            hostname: "httpbin.org",
+            port: 80
+        )
         let socket = try TCPInternetSocket(addr)
         
         try socket.connect()
