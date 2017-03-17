@@ -83,7 +83,7 @@ class SockStreamTests: XCTestCase {
                     port: 8692
                 )
                 try serverStream.bind()
-                try serverStream.listen()
+                try serverStream.listen(max: 4096)
                 let client = try serverStream.accept()
                 let message = try client
                     .receive(max: 2048)

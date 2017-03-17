@@ -31,7 +31,7 @@ class LifetimeTests: XCTestCase {
 
         do {
             // attempt to listen should fail on a closed socket
-            _ = try socket.listen()
+            _ = try socket.listen(max: 4096)
         }
         catch let error as SocketsError {
             guard case ErrorReason.socketIsClosed = error.type else {

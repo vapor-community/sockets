@@ -69,9 +69,9 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexPr
 
     // MARK: Server
 
-    public func listen(queueLimit: Int32 = 4096) throws {
+    public func listen(max: Int) throws {
         if isClosed { throw SocketsError(.socketIsClosed) }
-        let res = libc.listen(descriptor.raw, queueLimit)
+        let res = libc.listen(descriptor.raw, Int32(max % Int(Int32.max)))
         guard res > -1 else { throw SocketsError(.listenFailed) }
     }
 
