@@ -4,26 +4,17 @@ public enum ProgramStreamError: Error {
 
 public typealias DuplexProgramStream = ClientStream & ServerStream
 
+public typealias Port = UInt16
+
 public protocol ProgramStream: DuplexStream {
+    var scheme: String { get }
     var hostname: String { get }
-    var port: UInt16 { get }
-    var securityLayer: SecurityLayer { get }
-    init(hostname: String, port: UInt16, _ securityLayer: SecurityLayer) throws
+    var port: Port { get }
+    init(scheme: String, hostname: String, port: Port) throws
 }
 
-extension ProgramStream {
-    public init(hostname: String, port: Int) throws {
-        let port = UInt16(port % Int(UInt16.max))
-        try self.init(hostname: hostname, port: port, .none)
+extension Int {
+    public var port: Port {
+        return Port(self % Int(Port.max))
     }
 }
-
-//extension String {
-//    public var securityLayer: SecurityLayer {
-//        if self == "http" || self == "ws" {
-//            return .tls(nil)
-//        }
-//
-//        return .none
-//    }
-//}

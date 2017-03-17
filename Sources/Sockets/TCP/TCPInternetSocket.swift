@@ -4,10 +4,10 @@ import libc
 
 public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexProgramStream {
 
-    // stream
+    // program
+    public let scheme: String
     public let hostname: String
-    public let port: UInt16
-    public let securityLayer: SecurityLayer
+    public let port: Port
 
     // sockets
     public let address: ResolvedInternetAddress
@@ -18,20 +18,20 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexPr
     // MARK: Init
 
     public convenience init(
+        scheme: String,
         hostname: String,
-        port: UInt16,
-        _ securityLayer: SecurityLayer = .none
+        port: Port
     ) throws {
         let address = InternetAddress(
             hostname: hostname,
             port: port
         )
-        try self.init(address, securityLayer)
+        try self.init(address, scheme)
     }
 
     public convenience init(
         _ address: InternetAddress,
-        _ securityLayer: SecurityLayer = .none
+        _ scheme: String = "http"
     ) throws {
         var conf = Config.TCP(addressFamily: address.addressFamily)
         let resolved = try address.resolve(with: &conf)
@@ -40,7 +40,7 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexPr
             descriptor,
             conf,
             resolved,
-            securityLayer
+            scheme: scheme
         )
     }
 
@@ -48,14 +48,14 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexPr
         _ descriptor: Descriptor,
         _ config: Config,
         _ resolved: ResolvedInternetAddress,
-        _ securityLayer: SecurityLayer
+        scheme: String
     ) throws {
         self.descriptor = descriptor
         self.config = config
         self.address = resolved
         hostname = resolved.ipString()
         port = resolved.port
-        self.securityLayer = securityLayer
+        self.scheme = scheme
         self.isClosed = false
     }
 
@@ -95,7 +95,7 @@ public final class TCPInternetSocket: InternetSocket, TCPDuplexSocket,  DuplexPr
             Descriptor(clientSocketDescriptor),
             config,
             clientAddress,
-            self.securityLayer
+            scheme: scheme
         )
 
         return clientSocket

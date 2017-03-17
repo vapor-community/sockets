@@ -15,6 +15,7 @@ class SockStreamTests: XCTestCase {
 
     func testTCPInternetSocket() throws {
         let httpBin = try TCPInternetSocket(
+            scheme: "http",
             hostname: "httpbin.org",
             port: 80
         )
@@ -52,6 +53,7 @@ class SockStreamTests: XCTestCase {
 
     func testTCPInternetSocketThrows() throws {
         let google = try TCPInternetSocket(
+            scheme: "http",
             hostname: "google.com",
             port: 80
         )
@@ -76,6 +78,7 @@ class SockStreamTests: XCTestCase {
         background {
             do {
                 let serverStream = try TCPInternetSocket(
+                    scheme: "http",
                     hostname: "0.0.0.0",
                     port: 8692
                 )
@@ -92,6 +95,7 @@ class SockStreamTests: XCTestCase {
         }
 
         let client = try TCPInternetSocket(
+            scheme: "http",
             hostname: "0.0.0.0",
             port: 8692
         )
@@ -102,6 +106,7 @@ class SockStreamTests: XCTestCase {
     #if os(OSX)
     func testFoundationStream() throws {
         let clientStream = try FoundationStream(
+            scheme: "http",
             hostname: "httpbin.org",
             port: 80
         )
@@ -127,6 +132,7 @@ class SockStreamTests: XCTestCase {
     func testFoundationEventCode() throws {
         // will default to underlying FoundationStream for TLS.
         let clientStream = try FoundationStream(
+            scheme: "http",
             hostname: "google.com",
             port: 80
         )

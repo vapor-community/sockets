@@ -19,20 +19,22 @@ public final class FoundationStream: NSObject, Stream, ClientStream, StreamDeleg
             || output.closed
     }
 
+    // program
+    public let scheme: String
     public let hostname: String
-    public let port: UInt16
-    public let securityLayer: SecurityLayer
+    public let port: Port
+
     let input: InputStream
     let output: OutputStream
 
     public init(
+        scheme: String,
         hostname: String,
-        port: UInt16,
-        _ securityLayer: SecurityLayer
+        port: Port
     ) throws {
+        self.scheme = scheme
         self.hostname = hostname
         self.port = port
-        self.securityLayer = securityLayer
 
         var inputStream: InputStream? = nil
         var outputStream: OutputStream? = nil
