@@ -26,6 +26,7 @@ public final class StreamBuffer<Stream: DuplexStream>: DuplexStream {
         try stream.close()
     }
 
+    /// create a buffer steam with a chunk size
     public init(_ stream: Stream, size: Int = 2048) {
         self.size = size
         self.stream = stream
@@ -34,6 +35,7 @@ public final class StreamBuffer<Stream: DuplexStream>: DuplexStream {
         writeBuffer = []
     }
 
+    /// Reads the next byte from the buffer
     public func readByte() throws -> Byte? {
         guard let next = readIterator.next() else {
             readIterator = try stream.read(max: size).makeIterator()
@@ -42,9 +44,13 @@ public final class StreamBuffer<Stream: DuplexStream>: DuplexStream {
         return next
     }
 
+    /// reads a chunk of bytes from the buffer
+    /// less than max
     public func read(max: Int) throws -> Bytes {
         var bytes = readIterator.array
 
+        // while the byte count is below max
+        // continue fetching, until the stream is empty
         while bytes.count < max {
             let new = try stream.read(max: size)
             bytes += new
@@ -53,24 +59,33 @@ public final class StreamBuffer<Stream: DuplexStream>: DuplexStream {
             }
         }
 
+        // if byte count is below max,
+        // set that as the cap
         let cap = bytes.count > max
             ? max
             : bytes.count
 
+        // pull out the result array
         let result = bytes[0..<cap].array
 
         if cap >= bytes.count {
+            // if returning all bytes, 
+            // create empty iterator
             readIterator = [].makeIterator()
         } else {
+            // if not returning all bytes,
+            // create an iterator with remaining
             let remaining = bytes[cap..<bytes.count]
             readIterator = remaining
                 .array
                 .makeIterator()
         }
 
+        // return requested bytes
         return result
     }
 
+    /// write bytes to the buffer stream
     public func write(_ bytes: Bytes) throws {
         writeBuffer += bytes
     }
