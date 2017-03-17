@@ -84,7 +84,6 @@ public final class FoundationStream: NSObject, Stream, ClientStream, StreamDeleg
     public func connect() throws {
         input.open()
         output.open()
-        try securityLayer.connect(self)
     }
 
     // MARK: Stream Events
