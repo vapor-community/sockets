@@ -102,7 +102,7 @@ class SockStreamTests: XCTestCase {
         try client.write("Hello, World!".makeBytes())
     }
 
-    #if os(OSX)
+    #if os(OSX) || os(iOS)
     func testFoundationStream() throws {
         let clientStream = try FoundationStream(
             scheme: "http",

@@ -1,4 +1,4 @@
-#if os(OSX)
+#if os(OSX) || os(iOS)
 import Foundation
 
 public final class FoundationStream: NSObject, Stream, ClientStream, StreamDelegate {

@@ -22,7 +22,8 @@ extension WriteableStream {
         try write(try string.makeBytes())
     }
 
-    public func writeLine() throws {
+    /// Writes a CRLF line ending
+    public func writeLineEnd() throws {
         try write([.carriageReturn, .newLine])
     }
 }

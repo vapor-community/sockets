@@ -15,8 +15,8 @@ extension TCPEstablishedSocket: Pipeable {
         let descriptors = rawDescriptors.map({ Descriptor($0) })
         try descriptors.forEach({ try $0.disableSIGPIPE() })
 
-        let read = TCPEstablishedReadableSocket(descriptor: descriptors[0])
-        let write = TCPEstablishedWriteableSocket(descriptor: descriptors[1])
+        let read = TCPEstablishedSocket(descriptor: descriptors[0])
+        let write = TCPEstablishedSocket(descriptor: descriptors[1])
         return (read, write)
     }
 }

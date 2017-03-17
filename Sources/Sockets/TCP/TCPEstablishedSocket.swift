@@ -7,5 +7,5 @@ public class TCPEstablishedSocket: TCPSocket {
     }
 }
 
-public class TCPEstablishedWriteableSocket: TCPEstablishedSocket, TCPWriteableSocket { }
-public class TCPEstablishedReadableSocket: TCPEstablishedSocket, TCPReadableSocket { }
+extension TCPEstablishedSocket: TCPWriteableSocket { }
+extension TCPEstablishedSocket: TCPReadableSocket { }
