@@ -29,7 +29,7 @@ extension Descriptor: ExpressibleByIntegerLiteral {
 
 
 #if os(Linux)
-private let SOCKET_NOSIGNAL = MSG_NOSIGNAL
+private let SOCKET_NOSIGNAL = Int32(MSG_NOSIGNAL)
 #else
 private let SOCKET_NOSIGNAL = SO_NOSIGPIPE
 #endif
