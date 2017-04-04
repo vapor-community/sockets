@@ -55,4 +55,35 @@ class LiveTests: XCTestCase {
         try socket.close()
         print("successfully sent and received data from google.com")
     }
+    
+    func testBigBody() throws {
+        do {
+            let httpbin = try TCPInternetSocket(scheme: "http", hostname: "httpbin.org", port: 80)
+            try httpbin.connect()
+            
+            try httpbin.write("GET /bytes/8191 HTTP/1.1")
+            try httpbin.writeLineEnd()
+            try httpbin.write("Host: httpbin.org")
+            try httpbin.writeLineEnd()
+            try httpbin.writeLineEnd()
+
+            var bytes: Bytes = []
+            while true {
+                let new = try httpbin.read(max: 1)
+                if new.count == 0 {
+                    break
+                }
+                if bytes.count > 8192 {
+                    break
+                }
+                bytes += new
+            }
+            
+            try httpbin.close()
+            XCTAssert(bytes.count > 8192)
+            
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
 }

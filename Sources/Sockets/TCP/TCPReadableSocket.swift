@@ -14,13 +14,17 @@ extension TCPReadableSocket {
         )
 
         guard receivedBytes != -1 else {
-            if errno == ECONNRESET {
+            switch errno {
+            case EINTR:
+                // try again
+                return try read(max: max)
+            case ECONNRESET:
                 // closed by peer, need to close this side.
                 // Since this is not an error, no need to throw unless the close
                 // itself throws an error.
                 _ = try self.close()
                 return []
-            } else {
+            default:
                 throw SocketsError(.readFailed)
             }
         }

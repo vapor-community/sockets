@@ -63,7 +63,15 @@ public final class TCPInternetSocket {
     public func connect() throws {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let res = libc.connect(descriptor.raw, address.raw, address.rawLen)
-        guard res > -1 else { throw SocketsError(.connectFailed) }
+        guard res > -1 else {
+            switch errno {
+            case EINTR:
+                // try again
+                return try connect()
+            default:
+                throw SocketsError(.connectFailed)
+            }
+        }
     }
 
     // MARK: Server
