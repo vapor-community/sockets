@@ -54,7 +54,7 @@ public final class StreamBuffer<Stream: DuplexStream>: DuplexStream {
         while bytes.count < max {
             let new = try stream.read(max: size)
             bytes += new
-            if new.count < size {
+            if new.count == 0 {
                 break
             }
         }
