@@ -52,7 +52,8 @@ public final class StreamBuffer<Stream: DuplexStream>: DuplexStream {
         // while the byte count is below max
         // continue fetching, until the stream is empty
         while bytes.count < max {
-            let new = try stream.read(max: size)
+            let more = max - bytes.count
+            let new = try stream.read(max: more < size ? size : more)
             bytes += new
             if new.count == 0 {
                 break

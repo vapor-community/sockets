@@ -86,4 +86,15 @@ class LiveTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
+    
+    func testTooManyFilesOpen() throws {
+        do {
+            for _ in 0..<20 {
+                let socket = try TCPInternetSocket(scheme: "http", hostname: "httpbin.org", port: 80)
+                try socket.connect()
+            }
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
 }
