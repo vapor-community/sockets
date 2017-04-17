@@ -69,7 +69,11 @@ public final class TCPInternetSocket {
                 // try again
                 return try connect()
             default:
-                throw SocketsError(.connectFailed)
+                throw SocketsError(.connectFailed(
+                    scheme: scheme,
+                    hostname: hostname,
+                    port: port
+                ))
             }
         }
     }

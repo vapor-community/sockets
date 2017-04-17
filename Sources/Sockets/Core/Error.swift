@@ -21,7 +21,7 @@ public enum ErrorReason {
     case failedToGetIPFromHostname(String)
     case unparsableBytes
     
-    case connectFailed
+    case connectFailed(scheme: String, hostname: String, port: Port)
     case connectTimedOut
     case sendFailedToSendAllBytes
     case readFailed
@@ -93,8 +93,8 @@ extension SocketsError: Debuggable {
             return "Failed to get IP from hostname: \(s)"
         case .unparsableBytes:
             return "Encountered unparsable bytes"
-        case .connectFailed:
-            return "Failed trying to connect"
+        case .connectFailed(let scheme, let hostname, let port):
+            return "Failed trying to connect to \(scheme)://\(hostname):\(port)"
         case .connectTimedOut:
             return "Connection timed out"
         case .sendFailedToSendAllBytes:
