@@ -37,7 +37,7 @@ public enum ErrorReason {
     case generic(String)
 }
 
-public struct SocketsError: Error, CustomStringConvertible {
+public struct SocketsError: Error {
     
     public let type: ErrorReason
     public let number: Int32
@@ -50,15 +50,6 @@ public struct SocketsError: Error, CustomStringConvertible {
     public init(message: String) {
         self.type = .generic(message)
         self.number = -1
-    }
-    
-    func getReason() -> String {
-        let reason = String(validatingUTF8: strerror(number)) ?? "?"
-        return reason
-    }
-    
-    public var description: String {
-        return "Socket failed with code \(self.number) (\"\(getReason())\") [\(self.type)]"
     }
 
     public static let interruptedSystemCall: Int32 = EINTR
