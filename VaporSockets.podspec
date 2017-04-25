@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = "10.10"
   s.watchos.deployment_target = "2.0"
 
-  s.source       = { :git => "https://github.com/vapor/sockets.git", :tag => '2.0.0-beta.3' }
+  s.source       = { :git => "https://github.com/banxi1988/sockets.git", :branch => 'master' }
   
   s.source_files  = ["Sources/Sockets/**/*.swift" ]
 
