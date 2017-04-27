@@ -18,3 +18,8 @@
         <img src="http://img.shields.io/badge/swift-3.1-brightgreen.svg" alt="Swift 3.1">
     </a>
 </center>
+
+## 👥 Authors
+
+Honza Dvorsky - http://honzadvorsky.com, [@czechboy0](http://twitter.com/czechboy0)  
+Matthias Kreileder - [@matthiaskr1](https://twitter.com/matthiaskr1)
