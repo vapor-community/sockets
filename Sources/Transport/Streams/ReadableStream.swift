@@ -1,8 +1,15 @@
 /// A readable byte stream
 public protocol ReadableStream: Stream {
-    func read(max: Int) throws -> Bytes
-    // Optional, performance
-    func readByte() throws -> Byte?
+    func read(max: Int, into buffer: inout Bytes) throws -> Int
+}
+
+extension ReadableStream {
+    /// convenenience for not requiring a buffer to be passed
+    public func read(max: Int) throws -> Bytes {
+        var buffer = Bytes(repeating: 0, count: max)
+        let receivedCount = try read(max: max, into: &buffer)
+        return Array(buffer[0..<receivedCount])
+    }
 }
 
 extension ReadableStream {
