@@ -10,9 +10,7 @@ extension ReadableStream {
         let receivedCount = try read(max: max, into: &buffer)
         return Array(buffer[0..<receivedCount])
     }
-}
-
-extension ReadableStream {
+    
     /// Reads and filters non-valid ASCII characters
     /// from the stream until a new line character is returned.
     public func readLine() throws -> Bytes {

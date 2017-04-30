@@ -10,6 +10,5 @@ XCTMain([
 	testCase(PipeTests.allTests),
 	testCase(SelectTests.allTests),
     testCase(StreamTests.allTests),
-	testCase(TimeoutTests.allTests),
-    testCase(StreamBufferTests.allTests)
+	testCase(TimeoutTests.allTests)
 ])
