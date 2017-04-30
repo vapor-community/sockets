@@ -5,7 +5,6 @@ public protocol ReadableStream: Stream {
 
 extension ReadableStream {
     /// convenenience for not requiring a buffer to be passed
-    @available(*, deprecated)
     public func read(max: Int) throws -> Bytes {
         var buffer = Bytes(repeating: 0, count: max)
         let receivedCount = try read(max: max, into: &buffer)
@@ -14,7 +13,6 @@ extension ReadableStream {
     
     /// Reads and filters non-valid ASCII characters
     /// from the stream until a new line character is returned.
-    @available(*, deprecated)
     public func readLine() throws -> Bytes {
         var line: Bytes = []
 
@@ -39,7 +37,6 @@ extension ReadableStream {
 
     /// Reads all bytes from the stream using
     /// a chunk size.
-    @available(*, deprecated)
     public func readAll(chunkSize: Int = 512) throws -> Bytes {
         var lastSize = 0
         var bytes: Bytes = []
@@ -57,7 +54,6 @@ extension ReadableStream {
     /// byte array from the stream and returns the first.
     ///
     /// This can be overridden with something more performant.
-    @available(*, deprecated)
     public func readByte() throws -> Byte? {
         return try read(max: 1).first
     }
