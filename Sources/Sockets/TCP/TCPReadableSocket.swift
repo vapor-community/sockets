@@ -4,12 +4,7 @@ public protocol TCPReadableSocket: TCPSocket, ReadableStream {}
 
 extension TCPReadableSocket {
     public func read(max: Int, into buffer: inout Bytes) throws -> Int {
-        let receivedBytes = libc.recv(
-            descriptor.raw,
-            &buffer,
-            max,
-            0
-        )
+        let receivedBytes = libc.read(descriptor.raw, &buffer, max)
 
         guard receivedBytes != -1 else {
             switch errno {
