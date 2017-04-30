@@ -1,6 +1,5 @@
 import XCTest
 @testable import SocketsTests
-@testable import TransportTests
 
 XCTMain([
 	testCase(AddressResolutionTests.allTests),
