@@ -3,27 +3,20 @@ import libc
 public protocol TCPReadableSocket: TCPSocket, ReadableStream {}
 
 extension TCPReadableSocket {
-    public func read(max: Int) throws -> Bytes{
-        let buffer = Buffer(capacity: max)
-
-        let receivedBytes = libc.recv(
-            descriptor.raw,
-            buffer.pointer,
-            buffer.capacity,
-            0
-        )
+    public func read(max: Int, into buffer: inout Bytes) throws -> Int {
+        let receivedBytes = libc.read(descriptor.raw, &buffer, max)
 
         guard receivedBytes != -1 else {
             switch errno {
             case EINTR:
                 // try again
-                return try read(max: max)
+                return try read(max: max, into: &buffer)
             case ECONNRESET:
                 // closed by peer, need to close this side.
                 // Since this is not an error, no need to throw unless the close
                 // itself throws an error.
                 _ = try self.close()
-                return []
+                return 0
             default:
                 throw SocketsError(.readFailed)
             }
@@ -35,9 +28,9 @@ extension TCPReadableSocket {
             // if already closed, no issue.
             // do NOT propogate as error
             _ = try? self.close()
-            return []
+            return 0
         }
 
-        return Array(buffer.bytes[0..<receivedBytes])
+        return receivedBytes
     }
 }

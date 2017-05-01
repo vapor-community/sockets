@@ -71,11 +71,10 @@ public final class FoundationStream: NSObject, Stream, ClientStream, StreamDeleg
 
     public func flush() throws {}
 
-    public func read(max: Int) throws -> Bytes {
-        var buffer = Bytes(repeating: 0, count: max)
+    public func read(max: Int, into buffer: inout Bytes) throws -> Int {
         let read = input.read(&buffer, maxLength: max)
         guard read != -1 else { throw Error.unableToCompleteReadOperation }
-        return buffer.prefix(read).array
+        return read
     }
 
     // MARK: Connect
