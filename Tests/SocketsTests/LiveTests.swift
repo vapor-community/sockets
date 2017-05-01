@@ -31,7 +31,6 @@ class LiveTests: XCTestCase {
     }
     
     func testLive_HTTP_Get_ipV4_withTimeout() throws {
-        
         let addr = InternetAddress(hostname: "httpbin.org",
                                    port: 80)
         let socket = try TCPInternetSocket(addr)
