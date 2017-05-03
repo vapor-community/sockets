@@ -23,11 +23,11 @@ public enum ErrorReason {
     
     case connectFailed(scheme: String, hostname: String, port: Port)
     case connectTimedOut
-    case sendFailedToSendAllBytes
     case readFailed
     case bindFailed
     case listenFailed
     case acceptFailed
+    case writeFailed
     
     case unsupportedSocketAddressFamily(Int32)
     case concreteSocketAddressFamilyRequired
@@ -88,8 +88,8 @@ extension SocketsError: Debuggable {
             return "Failed trying to connect to \(scheme)://\(hostname):\(port)"
         case .connectTimedOut:
             return "Connection timed out"
-        case .sendFailedToSendAllBytes:
-            return "Failed sending all bytes"
+        case .writeFailed:
+            return "Failed to write from socket"
         case .readFailed:
             return "Failed trying to read from socket"
         case .bindFailed:
@@ -139,8 +139,8 @@ extension SocketsError: Debuggable {
             return "connectFailed"
         case .connectTimedOut:
             return "connectTimedOut"
-        case .sendFailedToSendAllBytes:
-            return "sendFailedToSendAllBytes"
+        case .writeFailed:
+            return "writeFailed"
         case .readFailed:
             return "readFailed"
         case .bindFailed:

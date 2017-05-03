@@ -59,14 +59,8 @@ public final class FoundationStream: NSObject, Stream, ClientStream, StreamDeleg
         input.close()
     }
 
-    public func write(_ bytes: Bytes) throws {
-        guard !bytes.isEmpty else { return }
-        
-        var buffer = bytes
-        let written = output.write(&buffer, maxLength: buffer.count)
-        guard written == bytes.count else {
-            throw Error.unableToCompleteWriteOperation
-        }
+    public func write(max: Int, from buffer: Bytes) throws -> Int {
+        return output.write(buffer, maxLength: buffer.count)
     }
 
     public func flush() throws {}

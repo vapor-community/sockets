@@ -152,3 +152,10 @@ extension TCPInternetSocket: InternetSocket { }
 extension TCPInternetSocket: ClientStream { }
 extension TCPInternetSocket: ServerStream { }
 extension TCPInternetSocket: InternetStream { }
+
+
+extension TCPInternetSocket: DescriptorRepresentable {
+    public func makeDescriptor() -> Descriptor {
+        return descriptor
+    }
+}
