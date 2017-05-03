@@ -71,7 +71,7 @@ public class UDPInternetSocket: InternetSocket {
             destination.raw,
             destination.rawLen
         )
-        guard sentLen == len else { throw SocketsError(.sendFailedToSendAllBytes) }
+        guard sentLen == len else { throw SocketsError(.writeFailed) }
     }
 
     public func close() throws {
