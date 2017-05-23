@@ -6,7 +6,7 @@ class PipeTests: XCTestCase {
     func testSendAndReceive() throws {
         let (read, write) = try TCPEstablishedSocket.pipe()
         let msg = "Hello Socket".makeBytes()
-        try write.write(msg)
+        _ = try write.write(msg)
         let inMsg = try read.read(max: 2048).makeString()
         try read.close()
         try write.close()

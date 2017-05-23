@@ -12,7 +12,7 @@ class LiveTests: XCTestCase {
         
         try socket.connect()
         
-        try socket.write("GET / HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
+        _ = try socket.write("GET / HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
         
         //receiving data
         let received = try socket.read(max: 2048)
@@ -37,7 +37,7 @@ class LiveTests: XCTestCase {
         
         try socket.connect()
             
-        try socket.write("GET / HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
+        _ = try socket.write("GET / HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
         
         //receiving data
         let received = try socket.read(max: 2048)
@@ -60,11 +60,11 @@ class LiveTests: XCTestCase {
             let httpbin = try TCPInternetSocket(scheme: "http", hostname: "httpbin.org", port: 80)
             try httpbin.connect()
             
-            try httpbin.write("GET /bytes/8191 HTTP/1.1")
-            try httpbin.writeLineEnd()
-            try httpbin.write("Host: httpbin.org")
-            try httpbin.writeLineEnd()
-            try httpbin.writeLineEnd()
+            _ = try httpbin.write("GET /bytes/8191 HTTP/1.1")
+            _ = try httpbin.writeLineEnd()
+            _ = try httpbin.write("Host: httpbin.org")
+            _ = try httpbin.writeLineEnd()
+            _ = try httpbin.writeLineEnd()
 
             var bytes: Bytes = []
             while true {

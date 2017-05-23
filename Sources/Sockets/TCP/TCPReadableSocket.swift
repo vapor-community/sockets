@@ -17,6 +17,9 @@ extension TCPReadableSocket {
                 // itself throws an error.
                 _ = try self.close()
                 return 0
+            case EAGAIN:
+                // timeout reached (linux)
+                return 0
             default:
                 throw SocketsError(.readFailed)
             }
