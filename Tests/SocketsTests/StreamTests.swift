@@ -21,7 +21,7 @@ class StreamTests: XCTestCase {
         )
         try httpBin.setTimeout(10)
         try httpBin.connect()
-        try httpBin.write("GET /html HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
+        _ = try httpBin.write("GET /html HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
         try httpBin.flush()
         let received = try httpBin.read(max: 2048)
         try httpBin.close()
@@ -39,7 +39,7 @@ class StreamTests: XCTestCase {
         do {
             let socket = try TCPInternetSocket(address)
             try socket.connect()
-            try socket.write("GET /html HTTP/1.1\r\nHost: httpbin.org\r\n\r\n")
+            _ = try socket.write("GET /html HTTP/1.1\r\nHost: httpbin.org\r\n\r\n")
             let received = try socket.read(max: 2048)
             let str = received.makeString()
             try socket.close()
@@ -58,7 +58,7 @@ class StreamTests: XCTestCase {
         )
 
         do {
-            try google.write("GET /\r\n\r\n".makeBytes())
+            _ = try google.write("GET /\r\n\r\n".makeBytes())
             XCTFail("should throw -- not connected")
         } catch {
             // pass
@@ -104,7 +104,7 @@ class StreamTests: XCTestCase {
             port: 8692
         )
         try client.connect()
-        try client.write("Hello, World!".makeBytes())
+        _ = try client.write("Hello, World!".makeBytes())
     }
 
     #if os(OSX) || os(iOS)
@@ -116,7 +116,7 @@ class StreamTests: XCTestCase {
         )
         try clientStream.connect()
         XCTAssert(!clientStream.isClosed)
-        try clientStream.write("GET /html HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
+        _ = try clientStream.write("GET /html HTTP/1.1\r\nHost: httpbin.org\r\n\r\n".makeBytes())
         try clientStream.flush()
         let received = try clientStream.read(max: 2048)
         try clientStream.close()
