@@ -4,10 +4,10 @@ public class UDPInternetSocket: InternetSocket {
 
     public let descriptor: Descriptor
     public let config: Config
-    public let address: ResolvedInternetAddress
+    public let addresses: [ResolvedInternetAddress]
     public private(set) var isClosed = false
 
-    public required init(descriptor: Descriptor?, config: Config, address: ResolvedInternetAddress) throws {
+    public required init(descriptor: Descriptor?, config: Config, address: [ResolvedInternetAddress]) throws {
 
         if let descriptor = descriptor {
             self.descriptor = descriptor
@@ -15,7 +15,7 @@ public class UDPInternetSocket: InternetSocket {
             self.descriptor = try Descriptor(config)
         }
         self.config = config
-        self.address = address
+        self.addresses = address
     }
 
     public convenience init(address: InternetAddress) throws {
@@ -61,7 +61,7 @@ public class UDPInternetSocket: InternetSocket {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let len = data.count
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
-        let destination = address ?? self.address
+        let destination = address ?? self.addresses.first!
 
         let sentLen = libc.sendto(
             descriptor.raw,

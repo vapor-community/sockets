@@ -9,7 +9,7 @@
 //Pretty types -> C types
 
 protocol InternetAddressResolver {
-    func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> ResolvedInternetAddress
+    func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> [ResolvedInternetAddress]
 }
 
 // Brief:   Given a hostname and a service this struct returns a list of
@@ -25,13 +25,14 @@ struct Resolver: InternetAddressResolver{
     //                  E.g. set them to .STREAM .TCP to obtain address for a TCP Stream socket
     //              -   Set the addressFamily field to .UNSPECIFIED if you don't care if the
     //                  name resolution leads to IPv4 or IPv6 addresses.
-    func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> ResolvedInternetAddress {
-
-                //
+    func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> [ResolvedInternetAddress] {
+        
+        //
         // Narrowing down the results we will get from the getaddrinfo call
         //
         var addressCriteria = socket_addrinfo.init()
         // IPv4 or IPv6
+        
         addressCriteria.ai_family = config.addressFamily.toCType()
         addressCriteria.ai_flags = AI_PASSIVE
         addressCriteria.ai_socktype = config.socketType.toCType()
@@ -53,33 +54,46 @@ struct Resolver: InternetAddressResolver{
             freeaddrinfo(addrList)
         }
         
-        //this takes the first resolved address, potentially we should
-        //get all of the addresses in the list and allow for iterative
+        //this gets all of the addresses in the list and allows for iterative
         //connecting
-        guard let addrInfo = addrList.pointee.ai_addr else { throw SocketsError(.ipAddressResolutionFailed) }
-        let family = try AddressFamily(fromCType: Int32(addrInfo.pointee.sa_family))
         
-        let ptr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
-        ptr.initialize(to: sockaddr_storage())
+        var currentAddrListItem: UnsafeMutablePointer<addrinfo> = addrList
+        var addrListPointerArray: [UnsafeMutablePointer<addrinfo>] = [addrList]
         
-        switch family {
-        case .inet:
-            let addr = UnsafeMutablePointer<sockaddr_in>.init(OpaquePointer(addrInfo))!
-            let specPtr = UnsafeMutablePointer<sockaddr_in>(OpaquePointer(ptr))
-            specPtr.assign(from: addr, count: 1)
-        case .inet6:
-            let addr = UnsafeMutablePointer<sockaddr_in6>(OpaquePointer(addrInfo))!
-            let specPtr = UnsafeMutablePointer<sockaddr_in6>(OpaquePointer(ptr))
-            specPtr.assign(from: addr, count: 1)
-        default:
-            throw SocketsError(.concreteSocketAddressFamilyRequired)
+        while let next = currentAddrListItem.pointee.ai_next {
+            currentAddrListItem = next
+            addrListPointerArray.append(next)
         }
         
-        let address = ResolvedInternetAddress(raw: ptr)
+        var addresses: [ResolvedInternetAddress] = []
         
-        // Adjust Config with the resolved address family
-        config.addressFamily = try address.addressFamily()
+        for addr in addrListPointerArray {
+            guard let addrInfo = addr.pointee.ai_addr else { throw SocketsError(.ipAddressResolutionFailed) }
+            let family = try AddressFamily(fromCType: Int32(addrInfo.pointee.sa_family))
+            let ptr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
+            ptr.initialize(to: sockaddr_storage())
+            
+            switch family {
+            case .inet:
+                let addr = UnsafeMutablePointer<sockaddr_in>.init(OpaquePointer(addrInfo))!
+                let specPtr = UnsafeMutablePointer<sockaddr_in>(OpaquePointer(ptr))
+                specPtr.assign(from: addr, count: 1)
+            case .inet6:
+                let addr = UnsafeMutablePointer<sockaddr_in6>(OpaquePointer(addrInfo))!
+                let specPtr = UnsafeMutablePointer<sockaddr_in6>(OpaquePointer(ptr))
+                specPtr.assign(from: addr, count: 1)
+            default:
+                throw SocketsError(.concreteSocketAddressFamilyRequired)
+            }
+            
+            let address = ResolvedInternetAddress(raw: ptr)
+            addresses.append(address)
+            print(address)
+            
+            // Adjust Config with the resolved address family
+            config.addressFamily = try address.addressFamily()
+        }
         
-        return address
+        return addresses
     }
 }

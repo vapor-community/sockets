@@ -8,7 +8,7 @@ public final class TCPInternetSocket {
     public let port: Port
 
     // sockets
-    public let address: ResolvedInternetAddress
+    public let addresses: [ResolvedInternetAddress]
     public private(set) var descriptor: Descriptor
     public let config: Config
     public private(set) var isClosed: Bool
@@ -46,15 +46,15 @@ public final class TCPInternetSocket {
     public init(
         _ descriptor: Descriptor,
         _ config: Config,
-        _ resolved: ResolvedInternetAddress,
+        _ resolved: [ResolvedInternetAddress],
         scheme: String = "http",
         hostname: String = "0.0.0.0"
     ) throws {
         self.descriptor = descriptor
         self.config = config
-        self.address = resolved
+        self.addresses = resolved
         self.hostname = hostname
-        port = resolved.port
+        port = resolved.first!.port //Should be the same
         self.scheme = scheme
         self.isClosed = false
     }
@@ -63,7 +63,18 @@ public final class TCPInternetSocket {
 
     public func connect() throws {
         if isClosed { throw SocketsError(.socketIsClosed) }
-        let res = libc.connect(descriptor.raw, address.raw, address.rawLen)
+        
+        var res: Int32 = -1
+        
+        for address in addresses {
+            res = libc.connect(descriptor.raw, address.raw, address.rawLen)
+            
+            if res > -1 {
+                print(address.raw)
+                break   //Connection works
+            }
+        }
+        
         guard res > -1 else {
             switch errno {
             case EINTR:
@@ -82,7 +93,7 @@ public final class TCPInternetSocket {
                     scheme: scheme,
                     hostname: hostname,
                     port: port
-                ))
+                    ))
             }
         }
     }
@@ -110,7 +121,7 @@ public final class TCPInternetSocket {
             throw SocketsError(.acceptFailed)
         }
 
-        let clientAddress = ResolvedInternetAddress(raw: addr)
+        let clientAddress = [ResolvedInternetAddress(raw: addr)]
         let clientSocket = try TCPInternetSocket(
             Descriptor(clientSocketDescriptor),
             config,
