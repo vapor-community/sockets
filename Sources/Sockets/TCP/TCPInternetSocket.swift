@@ -54,7 +54,10 @@ public final class TCPInternetSocket {
         self.config = config
         self.addresses = resolved
         self.hostname = hostname
-        port = resolved.first!.port //Should be the same
+        guard let firstAddr = resolved.first else {
+            throw SocketsError.init(.remoteAddressResolutionFailed)
+        }
+        self.port = firstAddr.port //Should be the same
         self.scheme = scheme
         self.isClosed = false
     }

@@ -61,7 +61,9 @@ public class UDPInternetSocket: InternetSocket {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let len = data.count
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
-        let destination = address ?? self.addresses.first!
+        guard let destination = address ?? self.addresses.first else {
+            throw SocketsError.init(.remoteAddressResolutionFailed)
+        }
 
         let sentLen = libc.sendto(
             descriptor.raw,
