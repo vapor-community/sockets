@@ -14,7 +14,6 @@ let package = Package(
     targets: [
         .target(name: "Transport", dependencies: ["Core"]),
         .target(name: "Sockets", dependencies: ["Transport"]),
-        .testTarget(name: "TransportTests", dependencies: ["Transport"]),
         .testTarget(name: "SocketsTests", dependencies: ["Sockets"]),
     ]
 )
