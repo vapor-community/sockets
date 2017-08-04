@@ -5,7 +5,7 @@ let package = Package(
     name: "Sockets",
     products: [
         .library(name: "Transport", targets: ["Transport"]),
-        .library(name: "Sockets", targets: ["Sockets"])
+        .library(name: "Sockets", targets: ["Sockets"]),
     ],
     dependencies: [
         // Core extensions, type-aliases, and functions that facilitate common tasks.
@@ -13,6 +13,8 @@ let package = Package(
     ],
     targets: [
         .target(name: "Transport", dependencies: ["Core"]),
-        .target(name: "Sockets", dependencies: ["Transport"])
+        .target(name: "Sockets", dependencies: ["Transport"]),
+        .testTarget(name: "TransportTests", dependencies: ["Transport"]),
+        .testTarget(name: "SocketsTests", dependencies: ["Sockets"]),
     ]
 )
