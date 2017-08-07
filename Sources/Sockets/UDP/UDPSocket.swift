@@ -4,10 +4,10 @@ public class UDPInternetSocket: InternetSocket {
 
     public let descriptor: Descriptor
     public let config: Config
-    public let address: ResolvedInternetAddress
+    public let addresses: [ResolvedInternetAddress]
     public private(set) var isClosed = false
 
-    public required init(descriptor: Descriptor?, config: Config, address: ResolvedInternetAddress) throws {
+    public required init(descriptor: Descriptor?, config: Config, addresses: [ResolvedInternetAddress]) throws {
 
         if let descriptor = descriptor {
             self.descriptor = descriptor
@@ -15,13 +15,13 @@ public class UDPInternetSocket: InternetSocket {
             self.descriptor = try Descriptor(config)
         }
         self.config = config
-        self.address = address
+        self.addresses = addresses
     }
 
     public convenience init(address: InternetAddress) throws {
         var conf: Config = .UDP(addressFamily: address.addressFamily)
         let resolved = try address.resolve(with: &conf)
-        try self.init(descriptor: nil, config: conf, address: resolved)
+        try self.init(descriptor: nil, config: conf, addresses: resolved)
     }
 
     deinit {
@@ -61,7 +61,9 @@ public class UDPInternetSocket: InternetSocket {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let len = data.count
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
-        let destination = address ?? self.address
+        guard let destination = address ?? self.addresses.first else {
+            throw SocketsError.init(.remoteAddressResolutionFailed)
+        }
 
         let sentLen = libc.sendto(
             descriptor.raw,
@@ -80,5 +82,18 @@ public class UDPInternetSocket: InternetSocket {
         if libc.close(descriptor.raw) != 0 {
             throw SocketsError(.closeSocketFailed)
         }
+    }
+}
+
+// MARK: Deprecated
+extension UDPInternetSocket {
+    @available(*, deprecated, message: "Use `addresses` instead.")
+    public var address: ResolvedInternetAddress {
+        return addresses[0]
+    }
+
+    @available(*, deprecated, message: "Use parameter label `addresses` instead.")
+    public convenience init(descriptor: Descriptor?, config: Config, address: ResolvedInternetAddress) throws {
+        try self.init(descriptor: descriptor, config: config, addresses: [address])
     }
 }

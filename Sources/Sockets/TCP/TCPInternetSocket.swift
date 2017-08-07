@@ -8,7 +8,7 @@ public final class TCPInternetSocket {
     public let port: Port
 
     // sockets
-    public let address: ResolvedInternetAddress
+    public let addresses: [ResolvedInternetAddress]
     public private(set) var descriptor: Descriptor
     public let config: Config
     public private(set) var isClosed: Bool
@@ -46,15 +46,15 @@ public final class TCPInternetSocket {
     public init(
         _ descriptor: Descriptor,
         _ config: Config,
-        _ resolved: ResolvedInternetAddress,
+        _ resolved: [ResolvedInternetAddress],
         scheme: String = "http",
         hostname: String = "0.0.0.0"
     ) throws {
         self.descriptor = descriptor
         self.config = config
-        self.address = resolved
+        self.addresses = resolved
         self.hostname = hostname
-        port = resolved.port
+        port = resolved[0].port
         self.scheme = scheme
         self.isClosed = false
     }
@@ -62,8 +62,21 @@ public final class TCPInternetSocket {
     // MARK: Client
 
     public func connect() throws {
-        if isClosed { throw SocketsError(.socketIsClosed) }
-        let res = libc.connect(descriptor.raw, address.raw, address.rawLen)
+        if isClosed {
+            throw SocketsError(.socketIsClosed)
+        }
+
+        var res: Int32 = -1
+
+        for address in addresses {
+            res = libc.connect(descriptor.raw, address.raw, address.rawLen)
+
+            if res > -1 {
+                // connection worked
+                break
+            }
+        }
+
         guard res > -1 else {
             switch errno {
             case EINTR:
@@ -114,7 +127,7 @@ public final class TCPInternetSocket {
         let clientSocket = try TCPInternetSocket(
             Descriptor(clientSocketDescriptor),
             config,
-            clientAddress,
+            [clientAddress],
             scheme: scheme,
             hostname: hostname
         )
@@ -166,5 +179,25 @@ extension TCPInternetSocket: InternetStream { }
 extension TCPInternetSocket: DescriptorRepresentable {
     public func makeDescriptor() -> Descriptor {
         return descriptor
+    }
+}
+
+// MARK: DEPRECATED
+
+extension TCPInternetSocket {
+    @available(*, deprecated, message: "Use `addresses` instead.")
+    public var address: ResolvedInternetAddress {
+        return addresses[0]
+    }
+
+    @available(*, deprecated, message: "Use array of addresses instead.")
+    public convenience init(
+        _ descriptor: Descriptor,
+        _ config: Config,
+        _ resolved: ResolvedInternetAddress,
+        scheme: String = "http",
+        hostname: String = "0.0.0.0"
+    ) throws {
+        try self.init(descriptor,  config, [resolved], scheme: scheme, hostname: hostname)
     }
 }
