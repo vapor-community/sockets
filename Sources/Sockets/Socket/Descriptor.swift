@@ -1,3 +1,5 @@
+import libc
+
 public struct Descriptor {
     public let raw: Int32
     public init(_ raw: Int32) {

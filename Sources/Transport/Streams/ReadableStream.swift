@@ -1,3 +1,5 @@
+import Bits
+
 /// A readable byte stream
 public protocol ReadableStream: Stream {
     func read(max: Int, into buffer: inout Bytes) throws -> Int

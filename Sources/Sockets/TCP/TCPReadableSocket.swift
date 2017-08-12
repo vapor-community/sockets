@@ -1,3 +1,4 @@
+import Bits
 import libc
 
 public protocol TCPReadableSocket: TCPSocket, ReadableStream {}

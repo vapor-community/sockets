@@ -1,3 +1,5 @@
+import Bits
+
 #if os(OSX) || os(iOS)
 import Foundation
 

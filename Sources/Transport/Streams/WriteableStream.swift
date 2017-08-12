@@ -1,3 +1,5 @@
+import Bits
+
 public protocol WriteableStream: Stream {
     func write(max: Int, from buffer: Bytes) throws -> Int
 }

@@ -1,5 +1,6 @@
+import Bits
+import Sockets
 import XCTest
-@testable import Sockets
 
 class LiveTests: XCTestCase {
 
