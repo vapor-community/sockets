@@ -38,10 +38,10 @@ class SelectTests: XCTestCase {
         try read.close()
         try write.close()
         
-        XCTAssertEqual(reads.count, 1)
-        XCTAssertEqual(reads[0], read.descriptor.raw)
-        XCTAssertEqual(writes.count, 1)
-        XCTAssertEqual(errors.count, 0)
+        XCTAssertEqual(reads.count, 1, "Wrong read count")
+        XCTAssertEqual(reads[0], read.descriptor.raw, "Read data is wrong")
+        XCTAssertEqual(writes.count, 1, "Wrong write count")
+        XCTAssertEqual(errors.count, 0, "Too many errors")
     }
     
     func testTwoPipesReadyToRead() throws {
