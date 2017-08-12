@@ -2,7 +2,7 @@ import Debugging
 
 /// Errors that may be thrown when interacting
 /// with streams.
-public enum StreamError {
+public enum StreamError: Error {
     case closed
 }
 
