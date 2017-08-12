@@ -2,26 +2,36 @@ import libc
 
 public class UDPInternetSocket: InternetSocket {
 
-    public let descriptor: Descriptor
-    public let config: Config
+    public let descriptors: [Descriptor]
+    public let configs: [Config]
     public let addresses: [ResolvedInternetAddress]
     public private(set) var isClosed = false
 
-    public required init(descriptor: Descriptor?, config: Config, addresses: [ResolvedInternetAddress]) throws {
+    public required init(descriptors: [Descriptor], configs: [Config], addresses: [ResolvedInternetAddress]) throws {
 
-        if let descriptor = descriptor {
-            self.descriptor = descriptor
+		
+        if descriptors.count == 0 {
+			self.descriptors = descriptors
         } else {
-            self.descriptor = try Descriptor(config)
+            self.descriptors = [try Descriptor(configs[0])]
         }
-        self.config = config
+        self.configs = configs
         self.addresses = addresses
     }
 
     public convenience init(address: InternetAddress) throws {
         var conf: Config = .UDP(addressFamily: address.addressFamily)
         let resolved = try address.resolve(with: &conf)
-        try self.init(descriptor: nil, config: conf, addresses: resolved)
+		var tempAddresses: [ResolvedInternetAddress] = []
+		var tempConfigs: [Config] = []
+		var tempDescriptors: [Descriptor] = []
+ 
+		for (address, config) in resolved {
+			tempAddresses.append(address)
+			tempConfigs.append(config)
+		}
+		
+        try self.init(descriptors: [], configs: tempConfigs, addresses: tempAddresses)
     }
 
     deinit {
@@ -91,9 +101,24 @@ extension UDPInternetSocket {
     public var address: ResolvedInternetAddress {
         return addresses[0]
     }
+	
+	@available(*, deprecated, message: "Use `descriptors` instead.")
+	public var descriptor: Descriptor {
+		return descriptors[0]
+	}
+	
+	@available(*, deprecated, message: "Use `configs` instead.")
+	public var config: Config {
+		return configs[0]
+	}
 
     @available(*, deprecated, message: "Use parameter label `addresses` instead.")
     public convenience init(descriptor: Descriptor?, config: Config, address: ResolvedInternetAddress) throws {
-        try self.init(descriptor: descriptor, config: config, addresses: [address])
+		if let descriptor = descriptor {
+			try self.init(descriptors: [descriptor], configs: [config], addresses: [address])
+
+		} else {
+			try self.init(descriptors: [], configs: [config], addresses: [address])
+		}
     }
 }

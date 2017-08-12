@@ -9,8 +9,8 @@ public final class TCPInternetSocket {
 
     // sockets
     public let addresses: [ResolvedInternetAddress]
-    public private(set) var descriptor: Descriptor
-    public let config: Config
+	public private(set) var descriptors: [Descriptor]
+	public let configs: [Config]
     public private(set) var isClosed: Bool
 
     // MARK: Init
@@ -33,28 +33,37 @@ public final class TCPInternetSocket {
     ) throws {
         var conf = Config.TCP(addressFamily: address.addressFamily)
         let resolved = try address.resolve(with: &conf)
-        let descriptor = try Descriptor(conf)
+		var tempDescriptors: [Descriptor] = []
+		var tempAddresses: [ResolvedInternetAddress] = []
+		var tempConfigs: [Config] = []
+		
+		for (address, config) in resolved {
+			tempAddresses.append(address)
+			tempDescriptors.append(try Descriptor(config))
+			tempConfigs.append(config)
+		}
+		
         try self.init(
-            descriptor,
-            conf,
-            resolved,
+            tempDescriptors,
+            tempConfigs,
+            tempAddresses,
             scheme: scheme,
             hostname: address.hostname
         )
     }
 
     public init(
-        _ descriptor: Descriptor,
-        _ config: Config,
+        _ descriptor: [Descriptor],
+        _ config: [Config],
         _ resolved: [ResolvedInternetAddress],
         scheme: String = "http",
         hostname: String = "0.0.0.0"
     ) throws {
-        self.descriptor = descriptor
-        self.config = config
+        self.descriptors = descriptor
+        self.configs = config
         self.addresses = resolved
         self.hostname = hostname
-        port = resolved[0].port
+        self.port = resolved[0].port
         self.scheme = scheme
         self.isClosed = false
     }
@@ -125,8 +134,8 @@ public final class TCPInternetSocket {
 
         let clientAddress = ResolvedInternetAddress(raw: addr)
         let clientSocket = try TCPInternetSocket(
-            Descriptor(clientSocketDescriptor),
-            config,
+            [Descriptor(clientSocketDescriptor)],
+            [config],
             [clientAddress],
             scheme: scheme,
             hostname: hostname
@@ -161,6 +170,13 @@ public final class TCPInternetSocket {
         descriptor = -1
         isClosed = true
     }
+	
+	@available(*, deprecated, message: "Use `descriptors` instead.")
+	public private(set) var descriptor: Descriptor {
+		get { return descriptors[0] }
+		set { descriptors[0] = newValue }
+	}
+	
 }
 
 // MARK: Socks
@@ -180,6 +196,7 @@ extension TCPInternetSocket: DescriptorRepresentable {
     public func makeDescriptor() -> Descriptor {
         return descriptor
     }
+	
 }
 
 // MARK: DEPRECATED
@@ -189,8 +206,13 @@ extension TCPInternetSocket {
     public var address: ResolvedInternetAddress {
         return addresses[0]
     }
+	
+	@available(*, deprecated, message: "Use `configs` instead.")
+	public var config: Config {
+		return configs[0]
+	}
 
-    @available(*, deprecated, message: "Use array of addresses instead.")
+    @available(*, deprecated, message: "Use array of addresses, desciptors and configs instead.")
     public convenience init(
         _ descriptor: Descriptor,
         _ config: Config,
@@ -198,6 +220,7 @@ extension TCPInternetSocket {
         scheme: String = "http",
         hostname: String = "0.0.0.0"
     ) throws {
-        try self.init(descriptor,  config, [resolved], scheme: scheme, hostname: hostname)
+        try self.init([descriptor],  [config], [resolved], scheme: scheme, hostname: hostname)
     }
+	
 }
