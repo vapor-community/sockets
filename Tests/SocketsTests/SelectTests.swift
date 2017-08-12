@@ -20,10 +20,10 @@ class SelectTests: XCTestCase {
         )
         try read.close()
         try write.close()
-        XCTAssertEqual(reads.count, 0)
-        XCTAssertEqual(writes.count, 1)
+        XCTAssertEqual(reads.count, 0, "Wrong read count")
+        XCTAssertEqual(writes.count, 1, "Wrong write count")
         XCTAssertEqual(writes[0], write.descriptor.raw)
-        XCTAssertEqual(errors.count, 0)
+        XCTAssertEqual(errors.count, 0, "Too many errors")
     }
     
     func testOnePipeReadyToReadOneToWrite() throws {
@@ -38,10 +38,10 @@ class SelectTests: XCTestCase {
         try read.close()
         try write.close()
         
-        XCTAssertEqual(reads.count, 1)
+        XCTAssertEqual(reads.count, 1, "Wrong read count")
         XCTAssertEqual(reads[0], read.descriptor.raw)
-        XCTAssertEqual(writes.count, 1)
-        XCTAssertEqual(errors.count, 0)
+        XCTAssertEqual(writes.count, 1, "Wrong write count")
+        XCTAssertEqual(errors.count, 0, "Too many errors")
     }
     
     func testTwoPipesReadyToRead() throws {
@@ -63,10 +63,10 @@ class SelectTests: XCTestCase {
         try read3.close()
         try write3.close()
         
-        XCTAssertEqual(reads.count, 2)
+        XCTAssertEqual(reads.count, 2, "Wrong read count")
         XCTAssertEqual(Set(reads), Set([read1.descriptor.raw, read3.descriptor.raw]))
-        XCTAssertEqual(writes.count, 0)
-        XCTAssertEqual(errors.count, 0)
+        XCTAssertEqual(writes.count, 0, "Wrong write count")
+        XCTAssertEqual(errors.count, 0, "Too many errors")
     }
 
 }

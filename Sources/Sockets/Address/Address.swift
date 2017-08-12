@@ -57,7 +57,7 @@ public struct InternetAddress {
 }
 
 extension InternetAddress {
-    func resolve(with config: inout Config) throws -> [ResolvedInternetAddress] {
+    func resolve(with config: inout Config) throws -> Zip2Sequence<[ResolvedInternetAddress],[Config]> {
         return try Resolver().resolve(self, with: &config)
     }
 }

@@ -9,7 +9,7 @@
 //Pretty types -> C types
 
 protocol InternetAddressResolver {
-    func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> [ResolvedInternetAddress]
+    func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> Zip2Sequence<[ResolvedInternetAddress],[Config]>
 }
 
 // Brief:   Given a hostname and a service this struct returns a list of
@@ -25,7 +25,8 @@ struct Resolver: InternetAddressResolver {
     //                  E.g. set them to .STREAM .TCP to obtain address for a TCP Stream socket
     //              -   Set the addressFamily field to .UNSPECIFIED if you don't care if the
     //                  name resolution leads to IPv4 or IPv6 addresses.
-    func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> [ResolvedInternetAddress] {
+	func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> Zip2Sequence<[ResolvedInternetAddress],[Config]>
+ {
 
                 //
         // Narrowing down the results we will get from the getaddrinfo call
@@ -57,6 +58,7 @@ struct Resolver: InternetAddressResolver {
         var currentAddrListItem: UnsafeMutablePointer<addrinfo> = addrList
 
         var addresses: [ResolvedInternetAddress] = []
+		var configs: [Config] = []
         while true {
             guard let addrInfo = currentAddrListItem.pointee.ai_addr else {
                 throw SocketsError(.ipAddressResolutionFailed)
@@ -81,7 +83,10 @@ struct Resolver: InternetAddressResolver {
             
             let address = ResolvedInternetAddress(raw: ptr)
             addresses.append(address)
-
+			
+			let config = try! Config(addressFamily: address.addressFamily(), socketType: config.socketType, protocolType: config.protocolType)	//TODO: handle error
+			configs.append(config)
+			
             if let next = currentAddrListItem.pointee.ai_next {
                 currentAddrListItem = next
             } else {
@@ -89,13 +94,7 @@ struct Resolver: InternetAddressResolver {
                 break
             }
         }
-
-        // Adjust Config with the resolved address family
-        guard let first = addresses.first else {
-            throw SocketsError(.remoteAddressResolutionFailed)
-        }
-        config.addressFamily = try first.addressFamily()
-
-        return addresses
+		
+        return zip(addresses,configs)
     }
 }
