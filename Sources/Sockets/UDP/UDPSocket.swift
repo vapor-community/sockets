@@ -11,10 +11,11 @@ public class UDPInternetSocket: InternetSocket {
 
 		
         if descriptors.count == 0 {
-			self.descriptors = descriptors
+			self.descriptors = [try Descriptor(configs[0])]
         } else {
-            self.descriptors = [try Descriptor(configs[0])]
+			self.descriptors = descriptors
         }
+		
         self.configs = configs
         self.addresses = addresses
     }
