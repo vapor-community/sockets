@@ -9,8 +9,11 @@ public final class TCPInternetSocket {
 	
 	// sockets
 	public let addresses: [ResolvedInternetAddress]
+	public private(set) var address: ResolvedInternetAddress
 	public private(set) var descriptors: [Descriptor]
+	public private(set) var descriptor: Descriptor
 	public let configs: [Config]
+	public let config: Config
 	public private(set) var isClosed: Bool
 	
 	// MARK: Init
@@ -53,15 +56,18 @@ public final class TCPInternetSocket {
 	}
 	
 	public init(
-		_ descriptor: [Descriptor],
-		_ config: [Config],
+		_ descriptors: [Descriptor],
+		_ configs: [Config],
 		_ resolved: [ResolvedInternetAddress],
 		scheme: String = "http",
 		hostname: String = "0.0.0.0"
 		) throws {
-		self.descriptors = descriptor
-		self.configs = config
+		self.descriptors = descriptors
+		self.descriptor = descriptors[0]
+		self.configs = configs
+		self.config = configs[0]
 		self.addresses = resolved
+		self.address = resolved[0]
 		self.hostname = hostname
 		self.port = resolved[0].port
 		self.scheme = scheme
@@ -83,6 +89,7 @@ public final class TCPInternetSocket {
 			
 			if res > -1 {
 				self.descriptor = descriptor
+				self.address = address
 				break
 			}
 		}
@@ -172,12 +179,6 @@ public final class TCPInternetSocket {
 		isClosed = true
 	}
 	
-	@available(*, deprecated, message: "Use `descriptors` instead.")
-	public private(set) var descriptor: Descriptor {
-		get { return descriptors[0] }
-		set { descriptors[0] = newValue }
-	}
-	
 }
 
 // MARK: Socks
@@ -203,15 +204,6 @@ extension TCPInternetSocket: DescriptorRepresentable {
 // MARK: DEPRECATED
 
 extension TCPInternetSocket {
-	@available(*, deprecated, message: "Use `addresses` instead.")
-	public var address: ResolvedInternetAddress {
-		return addresses[0]
-	}
-	
-	@available(*, deprecated, message: "Use `configs` instead.")
-	public var config: Config {
-		return configs[0]
-	}
 	
 	@available(*, deprecated, message: "Use array of addresses, desciptors and configs instead.")
 	public convenience init(

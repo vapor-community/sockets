@@ -3,21 +3,26 @@ import libc
 public class UDPInternetSocket: InternetSocket {
 
     public let descriptors: [Descriptor]
+	public private(set) var descriptor: Descriptor
     public let configs: [Config]
     public let addresses: [ResolvedInternetAddress]
+	public private(set) var address: ResolvedInternetAddress
     public private(set) var isClosed = false
 
     public required init(descriptors: [Descriptor], configs: [Config], addresses: [ResolvedInternetAddress]) throws {
 
-		
         if descriptors.count == 0 {
-			self.descriptors = [try Descriptor(configs[0])]
+			let fd = try Descriptor(configs[0])
+			self.descriptors = [fd]
+			self.descriptor = fd
         } else {
 			self.descriptors = descriptors
+			self.descriptor = descriptors[0]
         }
 		
         self.configs = configs
         self.addresses = addresses
+		self.address = addresses[0]
     }
 
     public convenience init(address: InternetAddress) throws {
@@ -25,7 +30,6 @@ public class UDPInternetSocket: InternetSocket {
         let resolved = try address.resolve(with: &conf)
 		var tempAddresses: [ResolvedInternetAddress] = []
 		var tempConfigs: [Config] = []
-		var tempDescriptors: [Descriptor] = []
  
 		for (address, config) in resolved {
 			tempAddresses.append(address)
@@ -47,22 +51,31 @@ public class UDPInternetSocket: InternetSocket {
         var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
+		var receivedBytes = -1
 
-        let receivedBytes = libc.recvfrom(
-            descriptor.raw,
-            data.pointer,
-            data.capacity,
-            flags,
-            addrSockAddr,
-            &length
-        )
+		for (address, descriptor) in zip(addresses, descriptors) {
+				receivedBytes = libc.recvfrom(
+				descriptor.raw,
+				data.pointer,
+				data.capacity,
+				flags,
+				addrSockAddr,
+				&length
+			)
+			
+			if receivedBytes > -1 {
+				self.descriptor = descriptor
+				self.address = address
+				break
+			}
+		}
+		
         guard receivedBytes > -1 else {
             addr.deallocate(capacity: 1)
             throw SocketsError(.readFailed)
         }
 
         let clientAddress = ResolvedInternetAddress(raw: addr)
-
         let finalBytes = data.bytes[0..<receivedBytes]
         let out = Array(finalBytes)
         return (data: out, sender: clientAddress)
@@ -72,18 +85,39 @@ public class UDPInternetSocket: InternetSocket {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let len = data.count
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
-        guard let destination = address ?? self.addresses.first else {
-            throw SocketsError.init(.remoteAddressResolutionFailed)
-        }
-
-        let sentLen = libc.sendto(
-            descriptor.raw,
-            data,
-            len,
-            flags,
-            destination.raw,
-            destination.rawLen
-        )
+		var sentLen = -1
+		
+        if let destination = address {
+			
+			sentLen = libc.sendto(
+				descriptor.raw,
+				data,
+				len,
+				flags,
+				destination.raw,
+				destination.rawLen
+				)
+		} else {
+			
+			guard addresses.count != 0 && descriptors.count != 0 else { throw SocketsError(.ipAddressResolutionFailed) }
+			
+			for (destination, descriptor) in zip(addresses, descriptors) {
+				
+				    sentLen = libc.sendto(
+					descriptor.raw,
+					data,
+					len,
+					flags,
+					destination.raw,
+					destination.rawLen
+				)
+				if sentLen > -1 {
+					self.descriptor = descriptor
+					self.address = destination
+					break
+				}
+			}
+		}
         guard sentLen == len else { throw SocketsError(.writeFailed) }
     }
 
@@ -98,15 +132,6 @@ public class UDPInternetSocket: InternetSocket {
 
 // MARK: Deprecated
 extension UDPInternetSocket {
-    @available(*, deprecated, message: "Use `addresses` instead.")
-    public var address: ResolvedInternetAddress {
-        return addresses[0]
-    }
-	
-	@available(*, deprecated, message: "Use `descriptors` instead.")
-	public var descriptor: Descriptor {
-		return descriptors[0]
-	}
 	
 	@available(*, deprecated, message: "Use `configs` instead.")
 	public var config: Config {
