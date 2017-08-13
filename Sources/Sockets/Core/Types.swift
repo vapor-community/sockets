@@ -31,6 +31,12 @@ public enum AddressFamily {
     }
 }
 
+public enum flags {
+	case msg_oob
+	case msg_peek
+	case msg_waitall
+}
+
 public typealias Port = UInt16
 
 //Extensions
@@ -101,8 +107,28 @@ extension AddressFamily: CTypeInt32Convertible {
     }
 }
 
+extension flags: CTypeInt32Convertible {
+	func toCType() -> Int32 {
+		switch self {
+		case .msg_oob: return Int32(MSG_OOB)
+		case .msg_peek: return Int32(MSG_PEEK)
+		case .msg_waitall: return Int32(MSG_WAITALL)
+		}
+	}
+}
+
+extension flags {
+	init(fromCType cType: Int32) throws {
+		switch cType {
+		case Int32(MSG_OOB): self = .msg_oob
+		case Int32(MSG_PEEK): self = .msg_peek
+		case Int32(MSG_WAITALL): self = .msg_waitall
+		default: throw SocketsError(.unsupportedSocketFlag(cType))
+		}
+	}
+}
+
 extension AddressFamily {
-    
     init(fromCType cType: Int32) throws {
         switch cType {
         case Int32(AF_INET): self = .inet
