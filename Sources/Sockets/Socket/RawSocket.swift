@@ -1,4 +1,5 @@
 import libc
+import Transport
 
 public protocol RawSocket: Stream {
     var descriptor: Descriptor { get }
