@@ -28,7 +28,7 @@ public class UDPInternetSocket: InternetSocket {
         try? self.close()
     }
 
-	public func recvfrom(maxBytes: Int = BufferCapacity, flags flagArray: [flags] = []) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
+	public func recvfrom(maxBytes: Int = BufferCapacity, flags flagArray: [UDPSocketRecvSendFlags] = []) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let data = Buffer(capacity: maxBytes)
 		var flags: Int32 = 0
@@ -58,7 +58,7 @@ public class UDPInternetSocket: InternetSocket {
         return (data: out, sender: clientAddress)
     }
 
-	public func sendto(data: [UInt8], address: ResolvedInternetAddress? = nil, flags flagArray: [flags] = []) throws {
+	public func sendto(data: [UInt8], address: ResolvedInternetAddress? = nil, flags flagArray: [UDPSocketRecvSendFlags] = []) throws {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let len = data.count
 		var flags: Int32 = 0

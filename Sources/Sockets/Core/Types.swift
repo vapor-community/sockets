@@ -31,10 +31,14 @@ public enum AddressFamily {
     }
 }
 
-public enum flags {
+public enum UDPSocketRecvSendFlags {
+	/// process out-of-band data
 	case msg_oob
+	/// peek at incoming message
 	case msg_peek
+	/// wait for full request or error
 	case msg_waitall
+	/// bypass routing, use direct interface
 	case msg_dontroute
 }
 
@@ -119,7 +123,7 @@ extension AddressFamily {
 	}
 }
 
-extension flags: CTypeInt32Convertible {
+extension UDPSocketRecvSendFlags: CTypeInt32Convertible {
 	func toCType() -> Int32 {
 		switch self {
 		case .msg_oob: return Int32(MSG_OOB)
@@ -130,7 +134,7 @@ extension flags: CTypeInt32Convertible {
 	}
 }
 
-extension flags {
+extension UDPSocketRecvSendFlags {
 	init(fromCType cType: Int32) throws {
 		switch cType {
 		case Int32(MSG_OOB): self = .msg_oob
