@@ -58,7 +58,7 @@ struct Resolver: InternetAddressResolver {
         var currentAddrListItem: UnsafeMutablePointer<addrinfo> = addrList
 
         var addresses: [ResolvedInternetAddress] = []
-		var configs: [Config] = []
+        var configs: [Config] = []
         while true {
             guard let addrInfo = currentAddrListItem.pointee.ai_addr else {
                 throw SocketsError(.ipAddressResolutionFailed)

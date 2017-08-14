@@ -139,11 +139,11 @@ extension UDPInternetSocket {
 
     @available(*, deprecated, message: "Use parameter label `addresses` instead.")
     public convenience init(descriptor: Descriptor?, config: Config, address: ResolvedInternetAddress) throws {
-		if let descriptor = descriptor {
-			try self.init(descriptors: [descriptor], configs: [config], addresses: [address])
+        if let descriptor = descriptor {
+            try self.init(descriptors: [descriptor], configs: [config], addresses: [address])
 
-		} else {
-			try self.init(descriptors: [], configs: [config], addresses: [address])
-		}
+        } else {
+            try self.init(descriptors: [], configs: [config], addresses: [address])
+        }
     }
 }
