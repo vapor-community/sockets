@@ -10,32 +10,31 @@ public class UDPInternetSocket: InternetSocket {
     public private(set) var isClosed = false
 
     public required init(descriptors: [Descriptor], configs: [Config], addresses: [ResolvedInternetAddress]) throws {
-
         if descriptors.count == 0 {
-			let fd = try Descriptor(configs[0])
-			self.descriptors = [fd]
-			self.descriptor = fd
+            let fd = try Descriptor(configs[0])
+            self.descriptors = [fd]
+            self.descriptor = fd
         } else {
-			self.descriptors = descriptors
-			self.descriptor = descriptors[0]
+            self.descriptors = descriptors
+            self.descriptor = descriptors[0]
         }
-		
+
         self.configs = configs
         self.addresses = addresses
-		self.address = addresses[0]
+        self.address = addresses[0]
     }
 
     public convenience init(address: InternetAddress) throws {
         var conf: Config = .UDP(addressFamily: address.addressFamily)
         let resolved = try address.resolve(with: &conf)
-		var tempAddresses: [ResolvedInternetAddress] = []
-		var tempConfigs: [Config] = []
- 
-		for (address, config) in resolved {
-			tempAddresses.append(address)
-			tempConfigs.append(config)
-		}
-		
+        var tempAddresses: [ResolvedInternetAddress] = []
+        var tempConfigs: [Config] = []
+
+        for (address, config) in resolved {
+            tempAddresses.append(address)
+            tempConfigs.append(config)
+        }
+
         try self.init(descriptors: [], configs: tempConfigs, addresses: tempAddresses)
     }
 
@@ -51,25 +50,25 @@ public class UDPInternetSocket: InternetSocket {
         var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
-		var receivedBytes = -1
+        var receivedBytes = -1
 
-		for (address, descriptor) in zip(addresses, descriptors) {
-				receivedBytes = libc.recvfrom(
-				descriptor.raw,
-				data.pointer,
-				data.capacity,
-				flags,
-				addrSockAddr,
-				&length
-			)
-			
-			if receivedBytes > -1 {
-				self.descriptor = descriptor
-				self.address = address
-				break
-			}
-		}
-		
+        for (address, descriptor) in zip(addresses, descriptors) {
+                receivedBytes = libc.recvfrom(
+                descriptor.raw,
+                data.pointer,
+                data.capacity,
+                flags,
+                addrSockAddr,
+                &length
+            )
+
+            if receivedBytes > -1 {
+                self.descriptor = descriptor
+                self.address = address
+                break
+            }
+        }
+
         guard receivedBytes > -1 else {
             addr.deallocate(capacity: 1)
             throw SocketsError(.readFailed)
@@ -88,36 +87,36 @@ public class UDPInternetSocket: InternetSocket {
 		var sentLen = -1
 		
         if let destination = address {
-			
-			sentLen = libc.sendto(
-				descriptor.raw,
-				data,
-				len,
-				flags,
-				destination.raw,
-				destination.rawLen
-				)
-		} else {
-			
-			guard addresses.count != 0 && descriptors.count != 0 else { throw SocketsError(.ipAddressResolutionFailed) }
-			
-			for (destination, descriptor) in zip(addresses, descriptors) {
-				
-				    sentLen = libc.sendto(
-					descriptor.raw,
-					data,
-					len,
-					flags,
-					destination.raw,
-					destination.rawLen
-				)
-				if sentLen > -1 {
-					self.descriptor = descriptor
-					self.address = destination
-					break
-				}
-			}
-		}
+            
+            sentLen = libc.sendto(
+                descriptor.raw,
+                data,
+                len,
+                flags,
+                destination.raw,
+                destination.rawLen
+                )
+        } else {
+            
+            guard addresses.count != 0 && descriptors.count != 0 else { throw SocketsError(.ipAddressResolutionFailed) }
+            
+            for (destination, descriptor) in zip(addresses, descriptors) {
+                
+                    sentLen = libc.sendto(
+                    descriptor.raw,
+                    data,
+                    len,
+                    flags,
+                    destination.raw,
+                    destination.rawLen
+                )
+                if sentLen > -1 {
+                    self.descriptor = descriptor
+                    self.address = destination
+                    break
+                }
+            }
+        }
         guard sentLen == len else { throw SocketsError(.writeFailed) }
     }
 

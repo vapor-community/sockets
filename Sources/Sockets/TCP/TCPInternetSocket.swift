@@ -22,7 +22,7 @@ public final class TCPInternetSocket {
         scheme: String = "http",
         hostname: String = "0.0.0.0",
         port: Port = 80
-        ) throws {
+    ) throws {
         let address = InternetAddress(
             hostname: hostname,
             port: port
@@ -33,7 +33,7 @@ public final class TCPInternetSocket {
     public convenience init(
         _ address: InternetAddress,
         scheme: String = "http"
-        ) throws {
+    ) throws {
         var conf = Config.TCP(addressFamily: address.addressFamily)
         let resolved = try address.resolve(with: &conf)
         var tempDescriptors: [Descriptor] = []
@@ -61,7 +61,7 @@ public final class TCPInternetSocket {
         _ resolved: [ResolvedInternetAddress],
         scheme: String = "http",
         hostname: String = "0.0.0.0"
-        ) throws {
+    ) throws {
         self.descriptors = descriptors
         self.descriptor = descriptors[0]
         self.configs = configs
