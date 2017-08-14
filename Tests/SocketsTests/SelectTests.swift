@@ -22,7 +22,7 @@ class SelectTests: XCTestCase {
         try write.close()
         XCTAssertEqual(reads.count, 0, "Wrong read count")
         XCTAssertEqual(writes.count, 1, "Wrong write count")
-        XCTAssertEqual(writes[0], write.descriptor.raw)
+        XCTAssertEqual(writes.first, write.descriptor.raw)
         XCTAssertEqual(errors.count, 0, "Too many errors")
     }
     
@@ -39,7 +39,7 @@ class SelectTests: XCTestCase {
         try write.close()
         
         XCTAssertEqual(reads.count, 1, "Wrong read count")
-        XCTAssertEqual(reads[0], read.descriptor.raw)
+        XCTAssertEqual(reads.first, read.descriptor.raw)
         XCTAssertEqual(writes.count, 1, "Wrong write count")
         XCTAssertEqual(errors.count, 0, "Too many errors")
     }
