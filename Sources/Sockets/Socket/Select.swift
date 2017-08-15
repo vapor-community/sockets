@@ -52,11 +52,12 @@ private func filter(_ sockets: [Int32]?, _ set: inout fd_set) -> [Int32] {
         } ?? []
 }
 
-public func select(reads: [Int32] = [],
-                   writes: [Int32] = [],
-                   errors: [Int32] = [],
-                   timeout: timeval? = nil) throws
-    -> (reads: [Int32], writes: [Int32], errors: [Int32]) {
+public func select(
+    reads: [Int32] = [],
+    writes: [Int32] = [],
+    errors: [Int32] = [],
+    timeout: timeval? = nil
+) throws -> (reads: [Int32], writes: [Int32], errors: [Int32]) {
         
     var readFDs = fd_set()
     fdZero(&readFDs)

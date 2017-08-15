@@ -10,7 +10,7 @@ public class UDPInternetSocket: InternetSocket {
     public private(set) var isClosed = false
     
     public required init(descriptors: [Descriptor], configs: [Config], addresses: [ResolvedInternetAddress]) throws {
-        
+
         if descriptors.count == 0 {
             let fd = try Descriptor(configs[0])
             self.descriptors = [fd]
@@ -19,10 +19,9 @@ public class UDPInternetSocket: InternetSocket {
             self.descriptors = descriptors
             self.descriptor = descriptors[0]
         }
-        
-        self.configs = configs
-        self.addresses = addresses
-        self.address = addresses[0]
+            self.configs = configs
+            self.addresses = addresses
+            self.address = addresses[0]
     }
     
     public convenience init(address: InternetAddress) throws {
@@ -30,12 +29,11 @@ public class UDPInternetSocket: InternetSocket {
         let resolved = try address.resolve(with: &conf)
         var tempAddresses: [ResolvedInternetAddress] = []
         var tempConfigs: [Config] = []
-        
+      
         for (address, config) in resolved {
             tempAddresses.append(address)
             tempConfigs.append(config)
         }
-        
         try self.init(descriptors: [], configs: tempConfigs, addresses: tempAddresses)
     }
     
@@ -52,9 +50,9 @@ public class UDPInternetSocket: InternetSocket {
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
         var receivedBytes = -1
-        
+
         for (address, descriptor) in zip(addresses, descriptors) {
-            receivedBytes = libc.recvfrom(
+                receivedBytes = libc.recvfrom(
                 descriptor.raw,
                 data.pointer,
                 data.capacity,
@@ -62,14 +60,12 @@ public class UDPInternetSocket: InternetSocket {
                 addrSockAddr,
                 &length
             )
-            
             if receivedBytes > -1 {
                 self.descriptor = descriptor
                 self.address = address
                 break
             }
         }
-        
         guard receivedBytes > -1 else {
             addr.deallocate(capacity: 1)
             throw SocketsError(.readFailed)
@@ -142,7 +138,6 @@ extension UDPInternetSocket {
     public convenience init(descriptor: Descriptor?, config: Config, address: ResolvedInternetAddress) throws {
         if let descriptor = descriptor {
             try self.init(descriptors: [descriptor], configs: [config], addresses: [address])
-            
         } else {
             try self.init(descriptors: [], configs: [config], addresses: [address])
         }
