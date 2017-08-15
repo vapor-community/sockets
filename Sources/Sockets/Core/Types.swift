@@ -32,14 +32,14 @@ public enum AddressFamily {
 }
 
 public enum UDPSocketRecvSendFlags {
-	/// process out-of-band data
-	case msg_oob
-	/// peek at incoming message
-	case msg_peek
-	/// wait for full request or error
-	case msg_waitall
-	/// bypass routing, use direct interface
-	case msg_dontroute
+    /// process out-of-band data
+    case msg_oob
+    /// peek at incoming message
+    case msg_peek
+    /// wait for full request or error
+    case msg_waitall
+    /// bypass routing, use direct interface
+    case msg_dontroute
 }
 
 public typealias Port = UInt16
@@ -113,35 +113,35 @@ extension AddressFamily: CTypeInt32Convertible {
 }
 
 extension AddressFamily {
-	init(fromCType cType: Int32) throws {
-		switch cType {
-		case Int32(AF_INET): self = .inet
-		case Int32(AF_INET6): self = .inet6
-		case Int32(AF_UNSPEC): self = .unspecified
-		default: throw SocketsError(.unsupportedSocketAddressFamily(cType))
-		}
-	}
+    init(fromCType cType: Int32) throws {
+        switch cType {
+        case Int32(AF_INET): self = .inet
+        case Int32(AF_INET6): self = .inet6
+        case Int32(AF_UNSPEC): self = .unspecified
+        default: throw SocketsError(.unsupportedSocketAddressFamily(cType))
+        }
+    }
 }
 
 extension UDPSocketRecvSendFlags: CTypeInt32Convertible {
-	func toCType() -> Int32 {
-		switch self {
-		case .msg_oob: return Int32(MSG_OOB)
-		case .msg_peek: return Int32(MSG_PEEK)
-		case .msg_waitall: return Int32(MSG_WAITALL)
-		case .msg_dontroute: return Int32(MSG_DONTROUTE)
-		}
-	}
+    func toCType() -> Int32 {
+        switch self {
+        case .msg_oob: return Int32(MSG_OOB)
+        case .msg_peek: return Int32(MSG_PEEK)
+        case .msg_waitall: return Int32(MSG_WAITALL)
+        case .msg_dontroute: return Int32(MSG_DONTROUTE)
+        }
+    }
 }
 
 extension UDPSocketRecvSendFlags {
-	init(fromCType cType: Int32) throws {
-		switch cType {
-		case Int32(MSG_OOB): self = .msg_oob
-		case Int32(MSG_PEEK): self = .msg_peek
-		case Int32(MSG_WAITALL): self = .msg_waitall
-		case Int32(MSG_DONTROUTE): self = .msg_dontroute
-		default: throw SocketsError(.unsupportedSocketFlag(cType))
-		}
-	}
+    init(fromCType cType: Int32) throws {
+        switch cType {
+        case Int32(MSG_OOB): self = .msg_oob
+        case Int32(MSG_PEEK): self = .msg_peek
+        case Int32(MSG_WAITALL): self = .msg_waitall
+        case Int32(MSG_DONTROUTE): self = .msg_dontroute
+        default: throw SocketsError(.generic("unsupportedSocketAddressFamily"))
+        }
+    }
 }

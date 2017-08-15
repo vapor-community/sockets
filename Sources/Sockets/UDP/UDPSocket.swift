@@ -31,8 +31,8 @@ public class UDPInternetSocket: InternetSocket {
 	public func recvfrom(maxBytes: Int = BufferCapacity, flags flagArray: [UDPSocketRecvSendFlags] = []) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let data = Buffer(capacity: maxBytes)
-		var flags: Int32 = 0
-		flagArray.forEach { flags |= $0.toCType() }
+        var flags: Int32 = 0
+        flagArray.forEach { flags |= $0.toCType() }
 
         var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
@@ -61,8 +61,8 @@ public class UDPInternetSocket: InternetSocket {
 	public func sendto(data: [UInt8], address: ResolvedInternetAddress? = nil, flags flagArray: [UDPSocketRecvSendFlags] = []) throws {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let len = data.count
-		var flags: Int32 = 0
-		flagArray.forEach { flags |= $0.toCType() }
+        var flags: Int32 = 0
+        flagArray.forEach { flags |= $0.toCType() }
         let destination = address ?? self.address
 
         let sentLen = libc.sendto(

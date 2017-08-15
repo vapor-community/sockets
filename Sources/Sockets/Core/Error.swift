@@ -30,7 +30,6 @@ public enum ErrorReason {
     case writeFailed
     
     case unsupportedSocketAddressFamily(Int32)
-	case unsupportedSocketFlag(Int32)
     case concreteSocketAddressFamilyRequired
     
     case socketIsClosed
@@ -107,9 +106,7 @@ extension SocketsError: Debuggable {
             return "Socket is closed"
         case .generic(let s):
             return s
-		case .unsupportedSocketFlag:
-			return "Unsupported socket flag"
-		}
+        }
     }
 
     public var identifier: String {
@@ -160,9 +157,7 @@ extension SocketsError: Debuggable {
             return "socketIsClosed"
         case .generic:
             return "generic"
-		case .unsupportedSocketFlag:
-			return "unsupportedSocketFlag"
-		}
+        }
     }
 
     public var possibleCauses: [String] {
