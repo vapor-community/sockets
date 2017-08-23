@@ -18,17 +18,17 @@ protocol InternetAddressResolver {
 //          IP addresses of the machine that runs the program and port set to 7
 //
 struct Resolver: InternetAddressResolver {
-
+    
     // config       -   the provided Config object guides the name resolution
     //                  the socketType and protocolType fields control which kind
     //                  kind of socket you want to create.
     //                  E.g. set them to .STREAM .TCP to obtain address for a TCP Stream socket
     //              -   Set the addressFamily field to .UNSPECIFIED if you don't care if the
     //                  name resolution leads to IPv4 or IPv6 addresses.
-	func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> Zip2Sequence<[ResolvedInternetAddress],[Config]>
- {
-
-                //
+    func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> Zip2Sequence<[ResolvedInternetAddress],[Config]>
+    {
+        
+        //
         // Narrowing down the results we will get from the getaddrinfo call
         //
         var addressCriteria = socket_addrinfo.init()
@@ -56,7 +56,7 @@ struct Resolver: InternetAddressResolver {
         
         //this takes the first resolved address
         var currentAddrListItem: UnsafeMutablePointer<addrinfo> = addrList
-
+        
         var addresses: [ResolvedInternetAddress] = []
         var configs: [Config] = []
         while true {
@@ -64,10 +64,10 @@ struct Resolver: InternetAddressResolver {
                 throw SocketsError(.ipAddressResolutionFailed)
             }
             let family = try AddressFamily(fromCType: Int32(addrInfo.pointee.sa_family))
-
+            
             let ptr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
             ptr.initialize(to: sockaddr_storage())
-
+            
             switch family {
             case .inet:
                 let addr = UnsafeMutablePointer<sockaddr_in>.init(OpaquePointer(addrInfo))!
@@ -83,10 +83,10 @@ struct Resolver: InternetAddressResolver {
             
             let address = ResolvedInternetAddress(raw: ptr)
             addresses.append(address)
-			
-			let config = try! Config(addressFamily: address.addressFamily(), socketType: config.socketType, protocolType: config.protocolType)	//TODO: handle error
-			configs.append(config)
-			
+            
+            let config = try! Config(addressFamily: address.addressFamily(), socketType: config.socketType, protocolType: config.protocolType)    //TODO: handle error
+            configs.append(config)
+            
             if let next = currentAddrListItem.pointee.ai_next {
                 currentAddrListItem = next
             } else {
@@ -94,7 +94,8 @@ struct Resolver: InternetAddressResolver {
                 break
             }
         }
-		
+        
         return zip(addresses,configs)
     }
 }
+
