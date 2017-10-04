@@ -38,10 +38,10 @@ extension ReadableStream {
     /// Reads all bytes from the stream using
     /// a chunk size.
     public func readAll(chunkSize: Int = 512) throws -> Bytes {
-        var lastSize = 0
+        var lastSize = chunkSize
         var bytes: Bytes = []
 
-        while lastSize < chunkSize {
+        while lastSize >= chunkSize {
             let chunk = try read(max: chunkSize)
             bytes += chunk
             lastSize = chunk.count
