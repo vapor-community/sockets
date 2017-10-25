@@ -1,4 +1,4 @@
-public protocol ServerStream: InternetStream {
+public protocol ServerStream: InternetStream, Stream {
     associatedtype Client: DuplexStream, InternetStream
     func bind() throws
     func listen(max: Int) throws

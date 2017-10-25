@@ -91,6 +91,21 @@ class StreamTests: XCTestCase {
                     .read(max: 2048)
                     .makeString()
                 XCTAssert(message == "Hello, World!")
+                try client.close()
+                
+                try serverStream.close()
+
+                XCTAssertThrowsError(_ = try serverStream.accept(), "Should fail to accept on closed server stream") {
+                    XCTAssertNotNil($0 as? SocketsError, "Should throw a SocketsError")
+                    if case .socketIsClosed = ($0 as! SocketsError).type {} // Swift does not have pattern matching expressions.
+                    else { XCTFail("Should throw a SocketsError.socketIsClosed") }
+                }
+                let failConnect = try TCPInternetSocket(scheme: "http", hostname: "0.0.0.0", port: 8692)
+                XCTAssertThrowsError(try failConnect.connect(), "Should not be able to connect to closed server stream") {
+                    XCTAssertNotNil($0 as? SocketsError, "Should throw a SocketsError")
+                    if case .connectFailed(_, _, _) = ($0 as! SocketsError).type {}
+                    else { XCTFail("Should have thrown a SocketsError.connectFailed()") }
+                }
             } catch {
                 XCTFail("\(error)")
             }
