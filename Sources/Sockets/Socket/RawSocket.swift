@@ -1,6 +1,7 @@
 import libc
+import Transport
 
-public protocol RawSocket: Stream {
+public protocol RawSocket: Transport.Stream {
     var descriptor: Descriptor { get }
     var isClosed: Bool { get }
     func close() throws
