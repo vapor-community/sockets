@@ -49,8 +49,6 @@ extension TimeoutTests {
     static var allTests : [(String, (TimeoutTests) -> () throws -> Void)] {
         return [
             ("testDefaults", testDefaults),
-            ("testReceiveTimeoutTiny", testReceiveTimeoutTiny),
-            ("testReceiveTimeoutSmall", testReceiveTimeoutSmall),
             ("testSendTimeoutSmall", testSendTimeoutSmall),
         ]
     }

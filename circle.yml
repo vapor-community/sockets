@@ -1,3 +1,15 @@
+dependencies:
+  override:
+    - eval "$(curl -sL https://apt.vapor.sh)"
+    - sudo apt-get install swift
+    - sudo chmod -R a+rx /usr/
 test:
   override:
-    - eval "$(curl -sL https://swift.vapor.sh/ci-3.1)"
+    - swift build
+    - swift build -c release
+    - swift test
+    - sudo apt-get remove swift
+    - sudo apt-get install swift-beta
+    - swift build
+    - swift build -c release
+    - swift test

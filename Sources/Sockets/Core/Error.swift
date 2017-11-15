@@ -21,13 +21,13 @@ public enum ErrorReason {
     case failedToGetIPFromHostname(String)
     case unparsableBytes
     
-    case connectFailed
+    case connectFailed(scheme: String, hostname: String, port: Port)
     case connectTimedOut
-    case sendFailedToSendAllBytes
     case readFailed
     case bindFailed
     case listenFailed
     case acceptFailed
+    case writeFailed
     
     case unsupportedSocketAddressFamily(Int32)
     case concreteSocketAddressFamilyRequired
@@ -37,7 +37,7 @@ public enum ErrorReason {
     case generic(String)
 }
 
-public struct SocketsError: Error, CustomStringConvertible {
+public struct SocketsError: Error {
     
     public let type: ErrorReason
     public let number: Int32
@@ -50,15 +50,6 @@ public struct SocketsError: Error, CustomStringConvertible {
     public init(message: String) {
         self.type = .generic(message)
         self.number = -1
-    }
-    
-    func getReason() -> String {
-        let reason = String(validatingUTF8: strerror(number)) ?? "?"
-        return reason
-    }
-    
-    public var description: String {
-        return "Socket failed with code \(self.number) (\"\(getReason())\") [\(self.type)]"
     }
 
     public static let interruptedSystemCall: Int32 = EINTR
@@ -93,12 +84,12 @@ extension SocketsError: Debuggable {
             return "Failed to get IP from hostname: \(s)"
         case .unparsableBytes:
             return "Encountered unparsable bytes"
-        case .connectFailed:
-            return "Failed trying to connect"
+        case .connectFailed(let scheme, let hostname, let port):
+            return "Failed trying to connect to \(scheme)://\(hostname):\(port)"
         case .connectTimedOut:
             return "Connection timed out"
-        case .sendFailedToSendAllBytes:
-            return "Failed sending all bytes"
+        case .writeFailed:
+            return "Failed to write from socket"
         case .readFailed:
             return "Failed trying to read from socket"
         case .bindFailed:
@@ -148,8 +139,8 @@ extension SocketsError: Debuggable {
             return "connectFailed"
         case .connectTimedOut:
             return "connectTimedOut"
-        case .sendFailedToSendAllBytes:
-            return "sendFailedToSendAllBytes"
+        case .writeFailed:
+            return "writeFailed"
         case .readFailed:
             return "readFailed"
         case .bindFailed:

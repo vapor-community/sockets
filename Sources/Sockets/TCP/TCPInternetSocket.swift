@@ -1,4 +1,5 @@
 import libc
+import Dispatch
 
 public final class TCPInternetSocket {
     // program
@@ -66,10 +67,22 @@ public final class TCPInternetSocket {
         guard res > -1 else {
             switch errno {
             case EINTR:
-                // try again
-                return try connect()
+                // special case: socket connect has become async.
+                // we must wait until it is ready
+                let group = DispatchGroup()
+                group.enter()
+                let write = DispatchSource.makeWriteSource(fileDescriptor: descriptor.raw)
+                write.setEventHandler {
+                    group.leave()
+                }
+                group.wait()
+                return
             default:
-                throw SocketsError(.connectFailed)
+                throw SocketsError(.connectFailed(
+                    scheme: scheme,
+                    hostname: hostname,
+                    port: port
+                ))
             }
         }
     }
@@ -148,3 +161,10 @@ extension TCPInternetSocket: InternetSocket { }
 extension TCPInternetSocket: ClientStream { }
 extension TCPInternetSocket: ServerStream { }
 extension TCPInternetSocket: InternetStream { }
+
+
+extension TCPInternetSocket: DescriptorRepresentable {
+    public func makeDescriptor() -> Descriptor {
+        return descriptor
+    }
+}

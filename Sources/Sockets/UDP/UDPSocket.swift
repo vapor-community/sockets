@@ -28,10 +28,11 @@ public class UDPInternetSocket: InternetSocket {
         try? self.close()
     }
 
-    public func recvfrom(maxBytes: Int = BufferCapacity) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
+	public func recvfrom(maxBytes: Int = BufferCapacity, flags flagArray: [UDPSocketRecvSendFlags] = []) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let data = Buffer(capacity: maxBytes)
-        let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
+        var flags: Int32 = 0
+        flagArray.forEach { flags |= $0.toCType() }
 
         var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
@@ -57,10 +58,11 @@ public class UDPInternetSocket: InternetSocket {
         return (data: out, sender: clientAddress)
     }
 
-    public func sendto(data: [UInt8], address: ResolvedInternetAddress? = nil) throws {
+	public func sendto(data: [UInt8], address: ResolvedInternetAddress? = nil, flags flagArray: [UDPSocketRecvSendFlags] = []) throws {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let len = data.count
-        let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
+        var flags: Int32 = 0
+        flagArray.forEach { flags |= $0.toCType() }
         let destination = address ?? self.address
 
         let sentLen = libc.sendto(
@@ -71,7 +73,7 @@ public class UDPInternetSocket: InternetSocket {
             destination.raw,
             destination.rawLen
         )
-        guard sentLen == len else { throw SocketsError(.sendFailedToSendAllBytes) }
+        guard sentLen == len else { throw SocketsError(.writeFailed) }
     }
 
     public func close() throws {

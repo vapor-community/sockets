@@ -21,6 +21,10 @@ public struct Descriptor {
     }
 }
 
+public protocol DescriptorRepresentable {
+    func makeDescriptor() -> Descriptor
+}
+
 extension Descriptor: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: Int32) {
         self.init(value)
