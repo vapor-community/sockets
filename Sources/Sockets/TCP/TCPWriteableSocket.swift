@@ -4,6 +4,10 @@ public protocol TCPWriteableSocket: TCPSocket, WriteableStream { }
 
 extension TCPWriteableSocket {
     public func write(max: Int, from buffer: Bytes) throws -> Int {
+        guard !isClosed else {
+            throw SocketsError(.socketIsClosed)
+        }
+        
         let bytesWritten = libc.send(descriptor.raw, buffer, max, 0)
         
         guard bytesWritten != -1 else {
