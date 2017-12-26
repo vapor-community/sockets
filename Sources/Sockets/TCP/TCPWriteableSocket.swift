@@ -19,6 +19,13 @@ extension TCPWriteableSocket {
                 // itself throws an error.
                 _ = try self.close()
                 return 0
+            case EBADF:
+                // socket is (probably) already closed
+                if isClosed {
+                    throw SocketsError(.socketIsClosed)
+                } else {
+                    throw SocketsError(.writeFailed)
+                }
             default:
                 throw SocketsError(.writeFailed)
             }
