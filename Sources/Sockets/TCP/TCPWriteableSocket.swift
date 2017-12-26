@@ -4,10 +4,6 @@ public protocol TCPWriteableSocket: TCPSocket, WriteableStream { }
 
 extension TCPWriteableSocket {
     public func write(max: Int, from buffer: Bytes) throws -> Int {
-        guard !isClosed else {
-            throw SocketsError(.socketIsClosed)
-        }
-        
         let bytesWritten = libc.send(descriptor.raw, buffer, max, 0)
         
         guard bytesWritten != -1 else {
@@ -21,6 +17,13 @@ extension TCPWriteableSocket {
                 // itself throws an error.
                 _ = try self.close()
                 return 0
+            case EBADF:
+                // socket is (probably) already closed
+                if isClosed {
+                    throw SocketsError(.socketIsClosed)
+                } else {
+                    throw SocketsError(.writeFailed)
+                }
             default:
                 throw SocketsError(.writeFailed)
             }
