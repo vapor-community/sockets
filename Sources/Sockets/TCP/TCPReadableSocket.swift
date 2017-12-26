@@ -6,6 +6,10 @@ public protocol TCPReadableSocket: TCPSocket, ReadableStream {}
 
 extension TCPReadableSocket {
     public func read(max: Int, into buffer: inout Bytes) throws -> Int {
+        guard !isClosed else {
+            throw SocketsError(.socketIsClosed)
+        }
+        
         let receivedBytes = libc.read(descriptor.raw, &buffer, max)
 
         guard receivedBytes != -1 else {

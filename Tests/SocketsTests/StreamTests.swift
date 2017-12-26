@@ -10,6 +10,7 @@ class StreamTests: XCTestCase {
         ("testTCPInternetSocket", testTCPInternetSocket),
         ("testDirect", testDirect),
         ("testTCPInternetSocketThrows", testTCPInternetSocketThrows),
+        ("testTCPInternetSocketThrowsClosedError", testTCPInternetSocketThrowsClosedError),
         ("testTCPServer", testTCPServer),
     ]
 
@@ -56,20 +57,34 @@ class StreamTests: XCTestCase {
             hostname: "google.com",
             port: 80
         )
-
-        do {
-            _ = try google.write("GET /\r\n\r\n".makeBytes())
-            XCTFail("should throw -- not connected")
-        } catch {
-            // pass
+        
+        XCTAssertThrowsError(_ = try google.write("GET /\r\n\r\n".makeBytes()), "should throw -- not connected")
+        XCTAssertThrowsError(_ = try google.read(max: 2048), "should throw -- not connected")
+    }
+    
+    func testTCPInternetSocketThrowsClosedError() throws {
+        let httpBin = try TCPInternetSocket(
+            scheme: "http",
+            hostname: "httpbin.org",
+            port: 80
+        )
+        try httpBin.setTimeout(10)
+        try httpBin.connect()
+        try httpBin.close()
+        
+        let errorCheck = { (error: Error) -> Void in
+            guard let socketError = error as? SocketsError else {
+                XCTFail("thrown error must be a SocketsError")
+                return
+            }
+            guard case .socketIsClosed = socketError.type else {
+                XCTFail("thrown error must be specifically a .socketIsClosed error")
+                return
+            }
         }
-
-        do {
-            _ = try google.read(max: 2048)
-            XCTFail("should throw -- not connected")
-        } catch {
-            // pass
-        }
+        
+        XCTAssertThrowsError(_ = try httpBin.write("GET /\r\n\r\n"), "should throw -- not connected", errorCheck)
+        XCTAssertThrowsError(_ = try httpBin.read(max: 2048), "should throw -- not connected", errorCheck)
     }
 
 
