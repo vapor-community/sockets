@@ -6,10 +6,6 @@ public protocol TCPReadableSocket: TCPSocket, ReadableStream {}
 
 extension TCPReadableSocket {
     public func read(max: Int, into buffer: inout Bytes) throws -> Int {
-        guard !isClosed else {
-            throw SocketsError(.socketIsClosed)
-        }
-        
         let receivedBytes = libc.read(descriptor.raw, &buffer, max)
 
         guard receivedBytes != -1 else {
@@ -26,6 +22,13 @@ extension TCPReadableSocket {
             case EAGAIN:
                 // timeout reached (linux)
                 return 0
+            case EBADF:
+                // socket is (probably) already closed
+                if isClosed {
+                    throw SocketsError(.socketIsClosed)
+                } else {
+                    throw SocketsError(.readFailed)
+                }
             default:
                 throw SocketsError(.readFailed)
             }
