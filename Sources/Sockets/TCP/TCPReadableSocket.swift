@@ -20,6 +20,13 @@ extension TCPReadableSocket {
             case EAGAIN:
                 // timeout reached (linux)
                 return 0
+            case EBADF:
+                // socket is (probably) already closed
+                if isClosed {
+                    throw SocketsError(.socketIsClosed)
+                } else {
+                    throw SocketsError(.readFailed)
+                }
             default:
                 throw SocketsError(.readFailed)
             }
