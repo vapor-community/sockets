@@ -7,7 +7,7 @@ import libc
 //  assign a string to the hostname e.g. google.com
 //  and specify the Port via an integer
 //
-//  hostname -  can be set to a string that denotes 
+//  hostname -  can be set to a string that denotes
 //              a hostname e.g. "localhost" or
 //              an IPv4 address e.g. "127.0.0.1" or
 //              an IPv6 address e.g. "::1"
@@ -57,7 +57,7 @@ public struct InternetAddress {
 }
 
 extension InternetAddress {
-    func resolve(with config: inout Config) throws -> ResolvedInternetAddress {
+    func resolve(with config: inout Config) throws -> Zip2Sequence<[ResolvedInternetAddress],[Config]> {
         return try Resolver().resolve(self, with: &config)
     }
 }
@@ -75,7 +75,7 @@ public class ResolvedInternetAddress {
         self._raw = raw
         precondition((try! addressFamily()).isConcrete(), "Cannot create ResolvedInternetAddress with a unspecified address family")
     }
-
+    
     var rawLen: socklen_t {
         switch try! addressFamily() {
         case .inet: return socklen_t(MemoryLayout<sockaddr_in>.size)
@@ -135,7 +135,7 @@ public class ResolvedInternetAddress {
         let out = Array(buffer)
         return out
     }
-
+    
     deinit {
         self._raw.deinitialize(count: 1)
         self._raw.deallocate(capacity: 1)
@@ -187,3 +187,4 @@ extension Socket {
         return clientAddress
     }
 }
+
