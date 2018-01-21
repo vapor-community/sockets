@@ -4,16 +4,17 @@ import PackageDescription
 let package = Package(
     name: "Sockets",
     products: [
-        .library(name: "Transport", targets: ["Transport"]),
-        .library(name: "Sockets", targets: ["Sockets"]),
+        .library(name: "TCP", targets: ["TCP"]),
     ],
     dependencies: [
+        // Swift Promises, Futures, and Streams.
+        .package(url: "https://github.com/vapor/async.git", .branch("beta")),
+
         // Core extensions, type-aliases, and functions that facilitate common tasks.
         .package(url: "https://github.com/vapor/core.git", .branch("beta")),
     ],
     targets: [
-        .target(name: "Transport", dependencies: ["Core"]),
-        .target(name: "Sockets", dependencies: ["Transport"]),
-        .testTarget(name: "SocketsTests", dependencies: ["Sockets"]),
+        .target(name: "TCP", dependencies: ["Async", "Bits", "COperatingSystem", "Debugging"]),
+        .testTarget(name: "TCPTests", dependencies: ["Async", "TCP"]),
     ]
 )
