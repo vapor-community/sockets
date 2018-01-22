@@ -56,9 +56,7 @@ public final class TCPClientStream: OutputStream {
                 // the client was rejected or not available
                 return
             }
-            downstream?.next(client) {
-                // ignore, this is a fire-hose stream
-            }
+            try downstream?.next(client).requireCompleted()
         } catch {
             downstream?.error(error)
         }

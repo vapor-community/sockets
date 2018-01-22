@@ -23,11 +23,10 @@ class SocketsTests: XCTestCase {
             let serverStream = server.stream(on: workerLoop)
 
             /// set up the server stream
-            serverStream.drain { client, done in
+            serverStream.drain { client in
                 let clientSource = client.socket.source(on: workerLoop)
                 let clientSink = client.socket.sink(on: workerLoop)
                 clientSource.output(to: clientSink)
-                done()
             }.catch { err in
                 XCTFail("\(err)")
             }.finally {
