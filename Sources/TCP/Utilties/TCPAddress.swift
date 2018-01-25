@@ -135,7 +135,8 @@ extension TCPAddress {
         
         defer {
             // Clean up
-            stringData.deallocate(capacity: numericCast(maxStringLength))
+            stringData.deinitialize(count: numericCast(maxStringLength))
+            stringData.deallocate()
         }
         
         // This cannot fail
