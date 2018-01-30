@@ -8,6 +8,11 @@ public final class TCPSocket: Socket {
     /// The file descriptor related to this socket
     public var descriptor: Int32
 
+    /// The size of this file descriptor which is always `nil`
+    ///
+    /// TCPSocket does not support consuming the stream partially
+    public var size: Int? { return nil }
+    
     /// The remote's address
     public var address: TCPAddress?
 
