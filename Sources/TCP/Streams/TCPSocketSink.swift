@@ -56,7 +56,11 @@ public final class TCPSocketSink: Async.InputStream {
                 fatalError("SocketSink upstream is illegally overproducing input buffers.")
             }
             inputBuffer = input
-            writeData(ready: ready)
+            guard currentReadyPromise == nil else {
+                fatalError("SocketSink currentReadyPromise illegally not nil during input.")
+            }
+            currentReadyPromise = ready
+            resumeIfSuspended()
         case .close:
             close()
         case .error(let e):

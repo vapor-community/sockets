@@ -60,7 +60,7 @@ public final class TCPSocketSource: Async.OutputStream {
     /// See OutputStream.output
     public func output<S>(to inputStream: S) where S: Async.InputStream, S.Input == Output {
         downstream = AnyInputStream(inputStream)
-        readData()
+        resumeIfSuspended()
     }
 
     /// Cancels reading
