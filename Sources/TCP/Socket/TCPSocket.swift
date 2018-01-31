@@ -4,7 +4,7 @@ import COperatingSystem
 import Foundation
 
 /// Any TCP socket. It doesn't specify being a server or client yet.
-public final class TCPSocket: Socket {
+public final class TCPSocket {
     /// The file descriptor related to this socket
     public var descriptor: Int32
 
@@ -85,7 +85,7 @@ public final class TCPSocket: Socket {
 
     /// Read data from the socket into the supplied buffer.
     /// Returns the amount of bytes actually read.
-    public func read(into buffer: MutableByteBuffer) throws -> SocketReadStatus {
+    public func read(into buffer: MutableByteBuffer) throws -> TCPSocketStatus {
         let receivedBytes = COperatingSystem.read(descriptor, buffer.baseAddress!, buffer.count)
 
         guard receivedBytes != -1 else {
@@ -98,7 +98,7 @@ public final class TCPSocket: Socket {
                 // Since this is not an error, no need to throw unless the close
                 // itself throws an error.
                 _ = close()
-                return .read(count: 0)
+                return .success(count: 0)
             case EAGAIN, EWOULDBLOCK:
                 // no data yet
                 return .wouldBlock
@@ -113,16 +113,16 @@ public final class TCPSocket: Socket {
             // if already closed, no issue.
             // do NOT propogate as error
             self.close()
-            return .read(count: 0)
+            return .success(count: 0)
         }
 
-        return .read(count: receivedBytes)
+        return .success(count: receivedBytes)
     }
 
     /// Writes all data from the pointer's position with the length specified to this socket.
-    public func write(from buffer: ByteBuffer) throws -> SocketWriteStatus {
+    public func write(from buffer: ByteBuffer) throws -> TCPSocketStatus {
         guard let pointer = buffer.baseAddress else {
-            return .wrote(count: 0)
+            return .success(count: 0)
         }
 
         let sent = send(descriptor, pointer, buffer.count, 0)
@@ -134,12 +134,12 @@ public final class TCPSocket: Socket {
                 return try write(from: buffer)
             case ECONNRESET:
                 self.close()
-                return .wrote(count: 0)
+                return .success(count: 0)
             case EBADF:
                 // closed by peer, need to close this side.
                 // Since this is not an error, no need to throw unless the close
                 // itself throws an error.
-                return .wrote(count: 0)
+                return .success(count: 0)
             case EAGAIN, EWOULDBLOCK:
                 return .wouldBlock
             default:
@@ -147,7 +147,7 @@ public final class TCPSocket: Socket {
             }
         }
 
-        return .wrote(count: sent)
+        return .success(count: sent)
     }
 
     /// Closes the socket
