@@ -33,7 +33,7 @@ public final class TCPSocketStream: Stream {
 
 extension TCPSocket {
     /// Create a `TCPSocketStream` for this socket.
-    public func stream(bufferSize: Int = 4096, on worker: Worker) {
-        self.stream(bufferSize: bufferSize, on: worker)
+    public func stream(bufferSize: Int = 4096, on worker: Worker) -> TCPSocketStream {
+        return TCPSocketStream(socket: self, bufferSize: bufferSize, on: worker)
     }
 }
