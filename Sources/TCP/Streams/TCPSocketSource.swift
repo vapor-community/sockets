@@ -1,4 +1,5 @@
 import Async
+import Bits
 import Dispatch
 import Foundation
 
@@ -7,20 +8,20 @@ private let maxExcessSignalCount: Int = 2
 /// Data stream wrapper for a dispatch socket.
 public final class TCPSocketSource: Async.OutputStream {
     /// See OutputStream.Output
-    public typealias Output = UnsafeBufferPointer<UInt8>
+    public typealias Output = ByteBuffer
 
     /// The client stream's underlying socket.
     public var socket: TCPSocket
 
     /// Bytes from the socket are read into this buffer.
     /// Views into this buffer supplied to output streams.
-    private var buffer: UnsafeMutableBufferPointer<UInt8>
+    private var buffer: MutableByteBuffer
 
     /// Stores read event source.
     private var readSource: EventSource?
 
     /// Use a basic stream to easily implement our output stream.
-    private var downstream: AnyInputStream<UnsafeBufferPointer<UInt8>>?
+    private var downstream: AnyInputStream<Output>?
 
     /// A strong reference to the current eventloop
     private var eventLoop: EventLoop
@@ -57,7 +58,7 @@ public final class TCPSocketSource: Async.OutputStream {
     }
 
     /// See OutputStream.output
-    public func output<S>(to inputStream: S) where S: Async.InputStream, S.Input == UnsafeBufferPointer<UInt8> {
+    public func output<S>(to inputStream: S) where S: Async.InputStream, S.Input == Output {
         downstream = AnyInputStream(inputStream)
         readData()
     }
@@ -94,7 +95,7 @@ public final class TCPSocketSource: Async.OutputStream {
                     return
                 }
 
-                let view = UnsafeBufferPointer<UInt8>(start: buffer.baseAddress, count: count)
+                let view = ByteBuffer(start: buffer.baseAddress, count: count)
                 downstreamIsReady = false
                 let promise = Promise(Void.self)
                 downstream.input(.next(view, promise))

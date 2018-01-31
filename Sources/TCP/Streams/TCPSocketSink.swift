@@ -1,4 +1,5 @@
 import Async
+import Bits
 import Dispatch
 import Foundation
 
@@ -7,13 +8,13 @@ private let maxExcessSignalCount: Int = 2
 /// Data stream wrapper for a dispatch socket.
 public final class TCPSocketSink: Async.InputStream {
     /// See InputStream.Input
-    public typealias Input = UnsafeBufferPointer<UInt8>
+    public typealias Input = ByteBuffer
 
     /// The client stream's underlying socket.
     public var socket: TCPSocket
 
     /// Data being fed into the client stream is stored here.
-    private var inputBuffer: UnsafeBufferPointer<UInt8>?
+    private var inputBuffer: ByteBuffer?
 
     /// Stores write event source.
     private var writeSource: EventSource?
@@ -47,7 +48,7 @@ public final class TCPSocketSink: Async.InputStream {
     }
 
     /// See InputStream.input
-    public func input(_ event: InputEvent<UnsafeBufferPointer<UInt8>>) {
+    public func input(_ event: InputEvent<ByteBuffer>) {
         // update variables
         switch event {
         case .next(let input, let ready):
@@ -93,7 +94,7 @@ public final class TCPSocketSink: Async.InputStream {
                     self.inputBuffer = nil
                     ready.complete()
                 default:
-                    inputBuffer = UnsafeBufferPointer<UInt8>(
+                    inputBuffer = ByteBuffer(
                         start: buffer.baseAddress?.advanced(by: count),
                         count: buffer.count - count
                     )
