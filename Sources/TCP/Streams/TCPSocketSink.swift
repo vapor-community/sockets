@@ -168,6 +168,7 @@ public final class TCPSocketSink: Async.InputStream {
 /// MARK: Create
 
 extension TCPSocket {
+    /// Creates a data stream for this socket on the supplied event loop.
     public func sink(on eventLoop: Worker, onError: @escaping TCPSocketSink.ErrorHandler) -> TCPSocketSink {
         return .init(socket: self, on: eventLoop, onError: onError)
     }
