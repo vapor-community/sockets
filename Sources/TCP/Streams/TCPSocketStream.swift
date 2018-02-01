@@ -16,9 +16,9 @@ public final class TCPSocketStream: ByteStream {
     internal let sink: TCPSocketSink
 
     /// Internal stream init. Use socket convenience method.
-    internal init(socket: TCPSocket, bufferSize: Int, on worker: Worker) {
+    internal init(socket: TCPSocket, bufferSize: Int, on worker: Worker, onError: @escaping TCPSocketSink.ErrorHandler) {
         self.source = socket.source(on: worker, bufferSize: bufferSize)
-        self.sink = socket.sink(on: worker)
+        self.sink = socket.sink(on: worker, onError: onError)
     }
 
     /// See `InputStream.input(_:)`
@@ -34,7 +34,15 @@ public final class TCPSocketStream: ByteStream {
 
 extension TCPSocket {
     /// Create a `TCPSocketStream` for this socket.
+    public func stream(bufferSize: Int = 4096, on worker: Worker, onError: @escaping TCPSocketSink.ErrorHandler) -> TCPSocketStream {
+        return TCPSocketStream(socket: self, bufferSize: bufferSize, on: worker, onError: onError)
+    }
+    
+    /// Create a `TCPSocketStream` for this socket.
+    @available(*, deprecated)
     public func stream(bufferSize: Int = 4096, on worker: Worker) -> TCPSocketStream {
-        return TCPSocketStream(socket: self, bufferSize: bufferSize, on: worker)
+        return TCPSocketStream(socket: self, bufferSize: bufferSize, on: worker) { _, error in
+            fatalError("Uncaught error in TCPSocketStream: \(error).")
+        }
     }
 }
