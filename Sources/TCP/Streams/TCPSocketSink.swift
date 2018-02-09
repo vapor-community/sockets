@@ -7,6 +7,9 @@ private let maxExcessSignalCount: Int = 2
 
 /// Data stream wrapper for a dispatch socket.
 public final class TCPSocketSink: Async.InputStream {
+    /// Able to handle errors that are thrown to the Sink
+    public typealias ErrorHandler = (TCPSocketSink, Error) -> ()
+    
     /// See InputStream.Input
     public typealias Input = ByteBuffer
 
@@ -34,15 +37,19 @@ public final class TCPSocketSink: Async.InputStream {
     /// The current number of signals received while downstream was not ready
     /// since it was last ready
     private var excessSignalCount: Int
+    
+    /// This closure will be called with an error thrown from upstream
+    private let onError: ErrorHandler
 
     /// Creates a new `SocketSink`
-    internal init(socket: TCPSocket, on worker: Worker) {
+    internal init(socket: TCPSocket, on worker: Worker, onError: @escaping ErrorHandler) {
         self.socket = socket
         self.eventLoop = worker.eventLoop
         self.inputBuffer = nil
         self.isClosed = false
         self.sourceIsSuspended = true
         self.excessSignalCount = 0
+        self.onError = onError
         let writeSource = self.eventLoop.onWritable(descriptor: socket.descriptor, writeSourceSignal)
         self.writeSource = writeSource
     }
@@ -64,8 +71,7 @@ public final class TCPSocketSink: Async.InputStream {
         case .close:
             close()
         case .error(let e):
-            close()
-            fatalError("\(e)")
+            onError(self, e)
         }
     }
 
@@ -163,8 +169,15 @@ public final class TCPSocketSink: Async.InputStream {
 
 extension TCPSocket {
     /// Creates a data stream for this socket on the supplied event loop.
+    public func sink(on eventLoop: Worker, onError: @escaping TCPSocketSink.ErrorHandler) -> TCPSocketSink {
+        return .init(socket: self, on: eventLoop, onError: onError)
+    }
+    
+    /// Creates a data stream for this socket on the supplied event loop.
+    @available(*, deprecated)
     public func sink(on eventLoop: Worker) -> TCPSocketSink {
-        return .init(socket: self, on: eventLoop)
+        return .init(socket: self, on: eventLoop) { _, error in
+            fatalError("Uncaught error in TCPSocketSink: \(error).")
+        }
     }
 }
-
