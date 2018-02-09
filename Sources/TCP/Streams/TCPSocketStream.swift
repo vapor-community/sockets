@@ -42,7 +42,8 @@ extension TCPSocket {
     @available(*, deprecated)
     public func stream(bufferSize: Int = 4096, on worker: Worker) -> TCPSocketStream {
         return TCPSocketStream(socket: self, bufferSize: bufferSize, on: worker) { _, error in
-            fatalError("Uncaught error in TCPSocketStream: \(error).")
+            ERROR("Uncaught error in TCPSocketStream: \(error).")
+            return
         }
     }
 }

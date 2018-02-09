@@ -60,11 +60,13 @@ public final class TCPSocketSink: Async.InputStream {
         switch event {
         case .next(let input, let ready):
             guard inputBuffer == nil else {
-                fatalError("SocketSink upstream is illegally overproducing input buffers.")
+                ERROR("SocketSink upstream is illegally overproducing input buffers.")
+                return
             }
             inputBuffer = input
             guard currentReadyPromise == nil else {
-                fatalError("SocketSink currentReadyPromise illegally not nil during input.")
+                ERROR("SocketSink currentReadyPromise illegally not nil during input.")
+                return
             }
             currentReadyPromise = ready
             resumeIfSuspended()
@@ -81,7 +83,8 @@ public final class TCPSocketSink: Async.InputStream {
             return
         }
         guard let writeSource = self.writeSource else {
-            fatalError("SocketSink writeSource illegally nil during close.")
+            ERROR("SocketSink writeSource illegally nil during close.")
+            return
         }
         writeSource.cancel()
         socket.close()
@@ -93,7 +96,8 @@ public final class TCPSocketSink: Async.InputStream {
     private func writeData(ready: Promise<Void>) {
         do {
             guard let buffer = self.inputBuffer else {
-                fatalError("Unexpected nil SocketSink inputBuffer during writeData")
+                ERROR("Unexpected nil SocketSink inputBuffer during writeData")
+                return
             }
 
             let write = try socket.write(from: buffer)
@@ -102,7 +106,7 @@ public final class TCPSocketSink: Async.InputStream {
                 switch count {
                 case buffer.count:
                     self.inputBuffer = nil
-                    ready.complete()
+                    ready.complete(onNextTick: eventLoop)
                 default:
                     inputBuffer = ByteBuffer(
                         start: buffer.baseAddress?.advanced(by: count),
@@ -113,13 +117,14 @@ public final class TCPSocketSink: Async.InputStream {
             case .wouldBlock:
                 resumeIfSuspended()
                 guard currentReadyPromise == nil else {
-                    fatalError("SocketSink currentReadyPromise illegally not nil during wouldBlock.")
+                    ERROR("SocketSink currentReadyPromise illegally not nil during wouldBlock.")
+                    return
                 }
                 currentReadyPromise = ready
             }
         } catch {
             self.error(error)
-            ready.complete()
+            ready.complete(onNextTick: eventLoop)
         }
     }
 
@@ -136,7 +141,8 @@ public final class TCPSocketSink: Async.InputStream {
             excessSignalCount = excessSignalCount &+ 1
             if excessSignalCount >= maxExcessSignalCount {
                 guard let writeSource = self.writeSource else {
-                    fatalError("SocketSink writeSource illegally nil during signal.")
+                    ERROR("SocketSink writeSource illegally nil during signal.")
+                    return
                 }
                 writeSource.suspend()
                 sourceIsSuspended = true
@@ -145,7 +151,8 @@ public final class TCPSocketSink: Async.InputStream {
         }
 
         guard let ready = currentReadyPromise else {
-            fatalError("SocketSink currentReadyPromise illegaly nil during signal.")
+            ERROR("SocketSink currentReadyPromise illegaly nil during signal.")
+            return
         }
         currentReadyPromise = nil
         writeData(ready: ready)
@@ -157,7 +164,8 @@ public final class TCPSocketSink: Async.InputStream {
         }
 
         guard let writeSource = self.writeSource else {
-            fatalError("SocketSink writeSource illegally nil during resumeIfSuspended.")
+            ERROR("SocketSink writeSource illegally nil during resumeIfSuspended.")
+            return
         }
         sourceIsSuspended = false
         // start listening for ready notifications
@@ -177,7 +185,8 @@ extension TCPSocket {
     @available(*, deprecated)
     public func sink(on eventLoop: Worker) -> TCPSocketSink {
         return .init(socket: self, on: eventLoop) { _, error in
-            fatalError("Uncaught error in TCPSocketSink: \(error).")
+            ERROR("Uncaught error in TCPSocketSink: \(error).")
+            return
         }
     }
 }

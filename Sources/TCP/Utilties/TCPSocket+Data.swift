@@ -21,7 +21,9 @@ extension TCPSocket {
 
         switch read {
         case .success(let count): data.removeLast(data.count &- count)
-        case .wouldBlock: fatalError()
+        case .wouldBlock:
+            ERROR("TCPSocket blocked during read Data.")
+            return data
         }
 
         return data
