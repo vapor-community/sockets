@@ -62,4 +62,6 @@ public struct TCPError: Traceable, Debuggable, Helpable, Swift.Error, Encodable 
     }
 }
 
-
+func ERROR(_ message: String, file: StaticString = #file, line: Int = #line) {
+    print("[TCP] \(message) [\(file):\(line)]")
+}

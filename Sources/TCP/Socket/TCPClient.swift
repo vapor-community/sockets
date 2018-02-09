@@ -88,7 +88,8 @@ extension TCPSocket {
                 // http://www.madore.org/~david/computers/connect-intr.html
             case EINPROGRESS:
                 if !isNonBlocking {
-                    fatalError("EINPROGRESS on a blocking socket")
+                    ERROR("EINPROGRESS on a blocking socket")
+                    return
                 }
             default: throw TCPError.posix(errno, identifier: "connect")
             }
