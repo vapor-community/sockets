@@ -8,10 +8,10 @@ let package = Package(
     ],
     dependencies: [
         // Swift Promises, Futures, and Streams.
-        .package(url: "https://github.com/vapor/async.git", .branch("beta")),
+        .package(url: "https://github.com/vapor/async.git", .exact("1.0.0-beta.1")),
 
         // Core extensions, type-aliases, and functions that facilitate common tasks.
-        .package(url: "https://github.com/vapor/core.git", .branch("beta")),
+        .package(url: "https://github.com/vapor/core.git", .exact("3.0.0-beta.1")),
     ],
     targets: [
         .target(name: "TCP", dependencies: ["Async", "Bits", "COperatingSystem", "Debugging"]),
