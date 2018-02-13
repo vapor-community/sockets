@@ -33,7 +33,7 @@ public final class TCPSocket {
     /// Creates a new TCP socket
     public convenience init(
         isNonBlocking: Bool = true,
-        shouldReuseAddress: Bool = true
+        shouldReuseAddress: Bool = false
     ) throws {
         let sockfd = socket(AF_INET, SOCK_STREAM, 0)
         guard sockfd > 0 else {
