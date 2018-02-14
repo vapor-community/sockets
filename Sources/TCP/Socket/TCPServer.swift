@@ -98,11 +98,11 @@ extension TCPSocket {
 
         var res = getaddrinfo(hostname, port.description, &hints, &result)
         guard res == 0 else {
-            throw TCPError.posix(
-                errno,
+            throw TCPError.gaierrno(
+                res,
                 identifier: "getAddressInfo",
                 possibleCauses: [
-                    "The address that binding was attempted on does not refer to your machine."
+                    "The address that binding was attempted on (\"\(hostname)\":\(port)) does not refer to your machine."
                 ],
                 suggestedFixes: [
                     "Bind to `0.0.0.0` or to your machine's IP address"
@@ -165,3 +165,36 @@ extension TCPSocket {
     }
 }
 
+extension TCPError {
+    static func gaierrno(
+        _ gaires: Int32,
+        identifier: String,
+        possibleCauses: [String] = [],
+        suggestedFixes: [String] = [],
+        file: String = #file,
+        function: String = #function,
+        line: UInt = #line,
+        column: UInt = #column
+    ) -> TCPError {
+        guard gaires != EAI_SYSTEM else {
+            return .posix(
+                errno,
+                identifier: identifier,
+                possibleCauses: possibleCauses,
+                suggestedFixes: suggestedFixes,
+                file: file, function: function, line: line, column: column)
+        }
+        let message = COperatingSystem.gai_strerror(gaires)
+        let string = String(cString: message!, encoding: .utf8) ?? "unknown"
+        return TCPError(
+            identifier: identifier,
+            reason: string,
+            possibleCauses: possibleCauses,
+            suggestedFixes: suggestedFixes,
+            file: file,
+            function: function,
+            line: line,
+            column: column
+        )
+    }
+}
