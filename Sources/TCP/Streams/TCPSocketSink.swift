@@ -56,6 +56,7 @@ public final class TCPSocketSink: Async.InputStream {
 
     /// See InputStream.input
     public func input(_ event: InputEvent<ByteBuffer>) {
+        DEBUG("TCPSocketSink.(\(event))")
         // update variables
         switch event {
         case .next(let input, let ready):
@@ -79,6 +80,7 @@ public final class TCPSocketSink: Async.InputStream {
 
     /// Cancels reading
     public func close() {
+        DEBUG("TCPSocketSink.close()")
         guard !isClosed else {
             return
         }
@@ -94,12 +96,14 @@ public final class TCPSocketSink: Async.InputStream {
 
     /// Writes the buffered data to the socket.
     private func writeData(ready: Promise<Void>) {
+        DEBUG("TCPSocketSink.writeData(\(ready))")
         do {
             guard let buffer = self.inputBuffer else {
                 ERROR("Unexpected nil SocketSink inputBuffer during writeData")
                 return
             }
 
+            DEBUG("TCPSocketSink.buffer = \(String(bytes: buffer, encoding: .ascii) ?? "nil")")
             let write = try socket.write(from: buffer)
             switch write {
             case .success(let count):
@@ -130,6 +134,7 @@ public final class TCPSocketSink: Async.InputStream {
 
     /// Called when the write source signals.
     private func writeSourceSignal(isCancelled: Bool) {
+        DEBUG("TCPSocketSink.writeSourceSignal(\(isCancelled))")
         guard !isCancelled else {
             // source is cancelled, we will never receive signals again
             close()
@@ -144,6 +149,7 @@ public final class TCPSocketSink: Async.InputStream {
                     ERROR("SocketSink writeSource illegally nil during signal.")
                     return
                 }
+                DEBUG("TCPSocketSink [suspending write]")
                 writeSource.suspend()
                 sourceIsSuspended = true
             }
@@ -159,6 +165,7 @@ public final class TCPSocketSink: Async.InputStream {
     }
 
     private func resumeIfSuspended() {
+        DEBUG("TCPSocketSink.resumeIfSuspended()")
         guard sourceIsSuspended else {
             return
         }

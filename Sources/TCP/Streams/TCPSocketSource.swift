@@ -45,6 +45,7 @@ public final class TCPSocketSource: Async.OutputStream {
 
     /// Creates a new `SocketSource`
     internal init(socket: TCPSocket, on worker: Worker, bufferSize: Int) {
+        DEBUG("TCPSocketSource.init(bufferSize: \(bufferSize))")
         self.socket = socket
         self.eventLoop = worker.eventLoop
         self.isClosed = false
@@ -59,12 +60,14 @@ public final class TCPSocketSource: Async.OutputStream {
 
     /// See OutputStream.output
     public func output<S>(to inputStream: S) where S: Async.InputStream, S.Input == Output {
+        DEBUG("TCPSocketSource.output<\(S.self)>(to: \(inputStream))")
         downstream = AnyInputStream(inputStream)
         resumeIfSuspended()
     }
 
     /// Cancels reading
     public func close() {
+        DEBUG("TCPSocketSource.close()")
         guard !isClosed else {
             return
         }
@@ -84,12 +87,14 @@ public final class TCPSocketSource: Async.OutputStream {
     /// important: the socket _must_ be ready to read data
     /// as indicated by a read source.
     private func readData() {
+        DEBUG("TCPSocketSource.readData()")
         guard let downstream = self.downstream else {
             ERROR("Unexpected nil downstream on SocketSource during readData.")
             return
         }
         do {
             let read = try socket.read(into: buffer)
+            DEBUG("TCPSocketSource.socket.read() -> \(read)")
             switch read {
             case .success(let count):
                 guard count > 0 else {
@@ -98,10 +103,12 @@ public final class TCPSocketSource: Async.OutputStream {
                 }
 
                 let view = ByteBuffer(start: buffer.baseAddress, count: count)
+                DEBUG("TCPSocketSource.view = \(String(bytes: view, encoding: .ascii) ?? "nil")")
                 downstreamIsReady = false
                 let promise = Promise(Void.self)
                 downstream.input(.next(view, promise))
                 promise.future.addAwaiter { result in
+                    DEBUG("TCPSocketSource.downstream.input.future.complete(\(result)) [cancelIsPending: \(self.cancelIsPending)]")
                     switch result {
                     case .error(let e): downstream.error(e)
                     case .expectation:
@@ -129,6 +136,7 @@ public final class TCPSocketSource: Async.OutputStream {
 
     /// Called when the read source signals.
     private func readSourceSignal(isCancelled: Bool) {
+        DEBUG("TCPSocketSource.readSourceSignal(\(isCancelled))")
         guard !isCancelled else {
             // source is cancelled, we will never receive signals again
             cancelIsPending = true
@@ -146,6 +154,7 @@ public final class TCPSocketSource: Async.OutputStream {
                     ERROR("SocketSource readSource illegally nil during signal.")
                     return
                 }
+                DEBUG("TCPSocketSource.resumeIfSuspended() [sourceIsSuspended: \(sourceIsSuspended)]")
                 readSource.suspend()
                 sourceIsSuspended = true
             }
@@ -159,6 +168,7 @@ public final class TCPSocketSource: Async.OutputStream {
 
     /// Resumes the readSource if it was currently suspended.
     private func resumeIfSuspended() {
+        DEBUG("TCPSocketSource.resumeIfSuspended() [sourceIsSuspended: \(sourceIsSuspended)]")
         guard sourceIsSuspended else {
             return
         }
