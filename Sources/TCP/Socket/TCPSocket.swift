@@ -17,6 +17,11 @@ public final class TCPSocket {
     /// True if the socket should re-use addresses
     public let shouldReuseAddress: Bool
 
+    /// True if the socket has been closed.
+    public var isClosed: Bool {
+        return descriptor < 0
+    }
+
     /// Creates a TCP socket around an existing descriptor
     public init(
         established: Int32,
@@ -86,6 +91,9 @@ public final class TCPSocket {
     /// Read data from the socket into the supplied buffer.
     /// Returns the amount of bytes actually read.
     public func read(into buffer: MutableByteBuffer) throws -> TCPSocketStatus {
+        guard !isClosed else {
+            throw TCPError(identifier: "read", reason: "Socket is closed.")
+        }
         let receivedBytes = COperatingSystem.read(descriptor, buffer.baseAddress!, buffer.count)
 
         guard receivedBytes != -1 else {
@@ -121,6 +129,10 @@ public final class TCPSocket {
 
     /// Writes all data from the pointer's position with the length specified to this socket.
     public func write(from buffer: ByteBuffer) throws -> TCPSocketStatus {
+        guard !isClosed else {
+            throw TCPError(identifier: "write", reason: "Socket is closed.")
+        }
+
         guard let pointer = buffer.baseAddress else {
             return .success(count: 0)
         }
