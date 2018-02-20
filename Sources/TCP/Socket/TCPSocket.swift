@@ -91,9 +91,6 @@ public final class TCPSocket {
     /// Read data from the socket into the supplied buffer.
     /// Returns the amount of bytes actually read.
     public func read(into buffer: MutableByteBuffer) throws -> TCPSocketStatus {
-        guard !isClosed else {
-            throw TCPError(identifier: "read", reason: "Socket is closed.")
-        }
         let receivedBytes = COperatingSystem.read(descriptor, buffer.baseAddress!, buffer.count)
 
         guard receivedBytes != -1 else {
@@ -110,6 +107,9 @@ public final class TCPSocket {
             case EAGAIN, EWOULDBLOCK:
                 // no data yet
                 return .wouldBlock
+            case EBADF:
+                assert(isClosed, "EBADF when socket not closed")
+                throw TCPError(identifier: "read", reason: "Socket is closed.")
             default:
                 throw TCPError.posix(errno, identifier: "read")
             }
@@ -129,10 +129,6 @@ public final class TCPSocket {
 
     /// Writes all data from the pointer's position with the length specified to this socket.
     public func write(from buffer: ByteBuffer) throws -> TCPSocketStatus {
-        guard !isClosed else {
-            throw TCPError(identifier: "write", reason: "Socket is closed.")
-        }
-
         guard let pointer = buffer.baseAddress else {
             return .success(count: 0)
         }
@@ -148,10 +144,8 @@ public final class TCPSocket {
                 self.close()
                 return .success(count: 0)
             case EBADF:
-                // closed by peer, need to close this side.
-                // Since this is not an error, no need to throw unless the close
-                // itself throws an error.
-                return .success(count: 0)
+                assert(isClosed, "EBADF when socket not closed")
+                throw TCPError(identifier: "write", reason: "Socket is closed.")
             case EAGAIN, EWOULDBLOCK:
                 return .wouldBlock
             default:
