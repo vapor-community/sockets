@@ -88,6 +88,11 @@ public final class TCPSocketSource: Async.OutputStream {
     /// as indicated by a read source.
     private func readData() {
         DEBUG("TCPSocketSource.readData()")
+        guard !socket.isClosed else {
+            close()
+            return
+        }
+        
         guard let downstream = self.downstream else {
             ERROR("Unexpected nil downstream on SocketSource during readData.")
             return

@@ -97,6 +97,11 @@ public final class TCPSocketSink: Async.InputStream {
     /// Writes the buffered data to the socket.
     private func writeData(ready: Promise<Void>) {
         DEBUG("TCPSocketSink.writeData(\(ready))")
+        guard !socket.isClosed else {
+            close()
+            return
+        }
+
         do {
             guard let buffer = self.inputBuffer else {
                 ERROR("Unexpected nil SocketSink inputBuffer during writeData")
