@@ -142,7 +142,7 @@ public final class TCPSocketSource: Async.OutputStream {
     /// Called when the read source signals.
     private func readSourceSignal(isCancelled: Bool) {
         DEBUG("TCPSocketSource.readSourceSignal(\(isCancelled))")
-        if !isCancelled {
+        if isCancelled {
             // source is cancelled, we will never receive signals again
             cancelIsPending = true
         }
