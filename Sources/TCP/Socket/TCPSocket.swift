@@ -42,14 +42,14 @@ public final class TCPSocket {
     ) throws {
         let sockfd = socket(AF_INET, SOCK_STREAM, 0)
         guard sockfd > 0 else {
-            throw TCPError.posix(errno, identifier: "socketCreate")
+            throw TCPError.posix(errno, identifier: "socketCreate", source: .capture())
         }
 
         if isNonBlocking {
             // Set the socket to async/non blocking I/O
             guard fcntl(sockfd, F_SETFL, O_NONBLOCK) == 0 else {
                 _ = COperatingSystem.close(sockfd)
-                throw TCPError.posix(errno, identifier: "setNonBlocking")
+                throw TCPError.posix(errno, identifier: "setNonBlocking", source: .capture())
             }
         }
 
@@ -62,7 +62,7 @@ public final class TCPSocket {
                 setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, intSize) == 0
             else {
                 _ = COperatingSystem.close(sockfd)
-                throw TCPError.posix(errno, identifier: "setReuseAddress")
+                throw TCPError.posix(errno, identifier: "setReuseAddress", source: .capture())
             }
         }
 
@@ -109,9 +109,9 @@ public final class TCPSocket {
                 return .wouldBlock
             case EBADF:
                 assert(isClosed, "EBADF when socket not closed")
-                throw TCPError(identifier: "read", reason: "Socket is closed.")
+                throw TCPError(identifier: "read", reason: "Socket is closed.", source: .capture())
             default:
-                throw TCPError.posix(errno, identifier: "read")
+                throw TCPError.posix(errno, identifier: "read", source: .capture())
             }
         }
 
@@ -145,11 +145,11 @@ public final class TCPSocket {
                 return .success(count: 0)
             case EBADF:
                 assert(isClosed, "EBADF when socket not closed")
-                throw TCPError(identifier: "write", reason: "Socket is closed.")
+                throw TCPError(identifier: "write", reason: "Socket is closed.", source: .capture())
             case EAGAIN, EWOULDBLOCK:
                 return .wouldBlock
             default:
-                throw TCPError.posix(errno, identifier: "write")
+                throw TCPError.posix(errno, identifier: "write", source: .capture())
             }
         }
 

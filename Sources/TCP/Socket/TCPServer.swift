@@ -1,5 +1,6 @@
 import Async
 import Bits
+import Debugging
 import Dispatch
 import COperatingSystem
 
@@ -106,7 +107,8 @@ extension TCPSocket {
                 ],
                 suggestedFixes: [
                     "Bind to `0.0.0.0` or to your machine's IP address"
-                ]
+                ],
+                source: .capture()
             )
         }
         defer {
@@ -114,12 +116,12 @@ extension TCPSocket {
         }
 
         guard let info = result else {
-            throw TCPError(identifier: "unwrapAddress", reason: "Could not unwrap address info.")
+            throw TCPError(identifier: "unwrapAddress", reason: "Could not unwrap address info.", source: .capture())
         }
 
         res = COperatingSystem.bind(descriptor, info.pointee.ai_addr, info.pointee.ai_addrlen)
         guard res == 0 else {
-            throw TCPError.posix(errno, identifier: "bind")
+            throw TCPError.posix(errno, identifier: "bind", source: .capture())
         }
     }
 
@@ -128,7 +130,7 @@ extension TCPSocket {
     fileprivate func listen(backlog: Int32 = 4096) throws {
         let res = COperatingSystem.listen(descriptor, backlog)
         guard res == 0 else {
-            throw TCPError.posix(errno, identifier: "listen")
+            throw TCPError.posix(errno, identifier: "listen", source: .capture())
         }
     }
 
@@ -143,7 +145,7 @@ extension TCPSocket {
             guard descriptor > 0 else {
                 switch errno {
                 case EAGAIN: return nil // FIXME: enum return
-                default: throw TCPError.posix(errno, identifier: "accept")
+                default: throw TCPError.posix(errno, identifier: "accept", source: .capture())
                 }
             }
 
@@ -171,10 +173,7 @@ extension TCPError {
         identifier: String,
         possibleCauses: [String] = [],
         suggestedFixes: [String] = [],
-        file: String = #file,
-        function: String = #function,
-        line: UInt = #line,
-        column: UInt = #column
+        source: SourceLocation
     ) -> TCPError {
         guard gaires != EAI_SYSTEM else {
             return .posix(
@@ -182,7 +181,8 @@ extension TCPError {
                 identifier: identifier,
                 possibleCauses: possibleCauses,
                 suggestedFixes: suggestedFixes,
-                file: file, function: function, line: line, column: column)
+                source: source
+            )
         }
         let message = COperatingSystem.gai_strerror(gaires)
         let string = String(cString: message!, encoding: .utf8) ?? "unknown"
@@ -191,10 +191,7 @@ extension TCPError {
             reason: string,
             possibleCauses: possibleCauses,
             suggestedFixes: suggestedFixes,
-            file: file,
-            function: function,
-            line: line,
-            column: column
+            source: source
         )
     }
 }

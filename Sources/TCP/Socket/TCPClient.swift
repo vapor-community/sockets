@@ -68,7 +68,8 @@ extension TCPSocket {
                 identifier: "getAddressInfo",
                 possibleCauses: [
                     "The address supplied could not be resolved."
-                ]
+                ],
+                source: .capture()
             )
         }
         defer {
@@ -76,7 +77,7 @@ extension TCPSocket {
         }
 
         guard let info = result else {
-            throw TCPError(identifier: "unwrapAddress", reason: "Could not unwrap address info.")
+            throw TCPError(identifier: "unwrapAddress", reason: "Could not unwrap address info.", source: .capture())
         }
 
         res = cConnect(descriptor, info.pointee.ai_addr, info.pointee.ai_addrlen)
@@ -91,7 +92,7 @@ extension TCPSocket {
                     ERROR("EINPROGRESS on a blocking socket")
                     return
                 }
-            default: throw TCPError.posix(errno, identifier: "connect")
+            default: throw TCPError.posix(errno, identifier: "connect", source: .capture())
             }
         }
 
