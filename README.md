@@ -19,6 +19,8 @@
     </a>
 </center>
 
+<hr>
+
 **Original authors**
 
 - Honza Dvorsky - http://honzadvorsky.com, [@czechboy0](http://twitter.com/czechboy0)  
