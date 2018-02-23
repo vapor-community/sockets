@@ -2,7 +2,7 @@
     <img src="https://user-images.githubusercontent.com/1342803/36575217-ab24b066-1817-11e8-859d-e71cdd16a902.png" height="64" alt="Sockets">
     <br>
     <br>
-    <a href="https://docs.vapor.codes/sockets/package/">
+    <a href="https://docs.vapor.codes/3.0/">
         <img src="http://img.shields.io/badge/read_the-docs-2196f3.svg" alt="Documentation">
     </a>
     <a href="http://vapor.team">
