@@ -115,7 +115,7 @@ public final class TCPSocketSink: Async.InputStream {
                 switch count {
                 case buffer.count:
                     self.inputBuffer = nil
-                    ready.complete(onNextTick: eventLoop)
+                    ready.complete() //onNextTick: eventLoop)
                 default:
                     inputBuffer = ByteBuffer(
                         start: buffer.baseAddress?.advanced(by: count),
@@ -133,7 +133,7 @@ public final class TCPSocketSink: Async.InputStream {
             }
         } catch {
             self.error(error)
-            ready.complete(onNextTick: eventLoop)
+            ready.complete() //onNextTick: eventLoop)
         }
     }
 
