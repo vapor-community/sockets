@@ -19,7 +19,8 @@
     </a>
 </center>
 
-Original authors:
+**Original authors**
+
 - Honza Dvorsky - http://honzadvorsky.com, [@czechboy0](http://twitter.com/czechboy0)  
 - Matthias Kreileder - [@matthiaskr1](https://twitter.com/matthiaskr1)
 
