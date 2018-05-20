@@ -103,7 +103,11 @@ public final class TCPInternetSocket {
         let clientSocketDescriptor = libc.accept(descriptor.raw, addrSockAddr, &length)
 
         guard clientSocketDescriptor > -1 else {
+            #if swift(>=4.1)
+            addr.deallocate()
+            #else
             addr.deallocate(capacity: 1)
+            #endif
             if errno == SocketsError.interruptedSystemCall {
                 return try accept()
             }
