@@ -92,8 +92,13 @@ extension Descriptor {
         var length = socklen_t(MemoryLayout<T>.stride)
         var val = UnsafeMutablePointer<T>.allocate(capacity: 1)
         defer {
+            #if swift(>=4.1)
+            val.deinitialize(count: 1)
+            val.deallocate()
+            #else
             val.deinitialize()
             val.deallocate(capacity: 1)
+            #endif
         }
         guard getsockopt(raw, level, name, val, &length) != -1 else {
             throw SocketsError(

@@ -121,7 +121,11 @@ public class ResolvedInternetAddress {
         }
         
         let maybeStr = String(validatingUTF8: strData)
+        #if swift(>=4.1)
+        strData.deallocate()
+        #else
         strData.deallocate(capacity: Int(maxLen))
+        #endif
         
         guard let str = maybeStr else {
             return "Invalid ip string"
@@ -139,7 +143,11 @@ public class ResolvedInternetAddress {
 
     deinit {
         self._raw.deinitialize(count: 1)
+        #if swift(>=4.1)
+        self._raw.deallocate()
+        #else
         self._raw.deallocate(capacity: 1)
+        #endif
     }
 }
 
@@ -168,7 +176,11 @@ extension Socket {
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
         let res = getpeername(descriptor.raw, addrSockAddr, &length)
         guard res > -1 else {
+            #if swift(>=4.1)
+            addr.deallocate()
+            #else
             addr.deallocate(capacity: 1)
+            #endif
             throw SocketsError(.remoteAddressResolutionFailed)
         }
         let clientAddress = ResolvedInternetAddress(raw: addr)
@@ -181,7 +193,11 @@ extension Socket {
         let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
         let res = getsockname(descriptor.raw, addrSockAddr, &length)
         guard res > -1 else {
+            #if swift(>=4.1)
+            addr.deallocate()
+            #else
             addr.deallocate(capacity: 1)
+            #endif
             throw SocketsError(.localAddressResolutionFailed)
         }
         let clientAddress = ResolvedInternetAddress(raw: addr)

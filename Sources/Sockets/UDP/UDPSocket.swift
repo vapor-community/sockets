@@ -47,7 +47,11 @@ public class UDPInternetSocket: InternetSocket {
             &length
         )
         guard receivedBytes > -1 else {
+            #if swift(>=4.1)
+            addr.deallocate()
+            #else
             addr.deallocate(capacity: 1)
+            #endif
             throw SocketsError(.readFailed)
         }
 
